@@ -1,0 +1,36 @@
+/* RSS styles - lk@nuxeo.com - May 11 2011*/
+
+.entry {
+  font: normal 11px "Trebuchet MS", Helvetica, sans-serif;
+  border-bottom: 1px solid #eaeaea;
+  padding: 0 7px 10px;
+  color: #333;
+  }
+
+.title {
+  color: #b11916;
+  font-size: 125%;
+  font-weight: bold;
+  padding: 10px 0 5px;
+  }
+  
+.entryInfo {
+  color: #9e9e9e;
+  padding: 0 0 2px;
+  }
+  
+.source {
+  font-style: italic;
+  }
+  
+.rssLinks {
+  font: normal 14px "Trebuchet MS", Helvetica, sans-serif;
+  color: orange;
+  text-align: right;
+  padding: 0 7px;
+  }
+  
+ .rssLinks span {
+  padding-left: 3px;
+  vertical-align: top;
+  }

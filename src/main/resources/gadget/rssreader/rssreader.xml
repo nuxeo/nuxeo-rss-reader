@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+  <ModulePrefs title="RSS Reader"
+    description="Nuxeo RSS Reader"
+    author="Eugen Ionica" author_email="ei@nuxeo.com"
+    height="420">
+    <Require feature="setprefs"/>
+    <Require feature="dynamic-height" />
+    <#include "dynamic-translations.ftl"/>
+    <#include "default-oauth-prefs.ftl"/>
+  </ModulePrefs>
+  <#include "context-prefs.ftl"/>
+  <Content type="html">
+<![CDATA[
+<html>
+  <head>
+  <link rel="stylesheet" type="text/css" href="/nuxeo/site/skin/gadgets/css/gadget-common.css"/>
+  <link rel="stylesheet" type="text/css" href="${clientSideBaseUrl}site/gadgets/rssreader/rssreader.css"/>
+
+  <!-- insert JS Context -->
+  ${jsContext}
+
+  <script src="${specDirectoryUrl}default-automation-request.js"></script>
+  <script src="${specDirectoryUrl}context-management.js"></script>
+
+  <script>
+   var prefs = new _IG_Prefs(__MODULE_ID__);
+
+   var opCallParameters = {
+   		operationId : 'Feed.Parser',
+   		operationParams : {
+   		  feedUrl : 'http://rss.lemonde.fr/c/205/f/3052/index.rss',
+   		  limit : 4
+   		},
+   		entityType : 'blob',
+   		operationContext : {},
+   		operationCallback : renderFeed
+   };
+
+    function renderFeed(response, opCallParameters) {
+        _gel("feedEntries").innerHTML = buildFeed(response);
+        gadgets.window.adjustHeight();
+    };
+
+    function buildFeed(response) {
+    	provider = response.data["FEED_TITLE"];
+        entries = response.data["ENTRIES"];
+        if ( typeof entries == undefined ) {
+        	return 'No entries';
+        }
+        feed = '';
+
+        for (var i = 0; i < entries.length; i++) {
+        	feed += buildEntry(entries[i], provider);
+        }
+		return feed;
+    };
+
+    function buildEntry(entryData, provider) {
+    	entry = '';
+    	entry += '<div class="entry">';
+
+    	entry += '<div class="title">';
+    	entry += entryData["TITLE"];
+    	entry += '</div>';
+
+		entry += '<div class="entryInfo">';
+		entry += entryData["PUBDATE"] + ' - ';
+		entry += '<span class="source">';
+		entry += provider;
+		entry += '</span>';
+		entry += '</div>';
+
+    	entry += '<div class="description">';
+    	entry += entryData["DESCRIPTION"];
+    	entry += '</div>';
+
+		entry += '</div>';
+		return entry;
+    };
+
+	gadgets.util.registerOnLoadHandler(
+		function() {
+			doAutomationRequest(opCallParameters);
+		}
+	);
+  </script>
+
+  </head>
+    <body>
+      <div id="content">
+      	<#include "default-request-controls.ftl"/>
+      	<div id="feedEntries">
+      	</div>
+      </div>
+    </body>
+</html>
+]]>
+  </Content>
+</Module>

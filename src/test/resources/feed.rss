@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8'?><?xml-stylesheet type='text/xsl' href='http://rss.lemonde.fr/xsl/fr/rss.xsl'?>
+
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:taxo="http://purl.org/rss/1.0/modules/taxonomy/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" version="2.0">
+  <channel>
+    <title>Feed title</title>
+    <link>http://nuxeo.com/</link>
+    <description>Feed description. Random text : Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras commodo, diam nec ornare porta, nisl elit euismod arcu, sit amet adipiscing enim tortor ac erat. </description>
+    <language>en</language>
+    <copyright>Feed Copyright</copyright>
+    <pubDate>Wed, 11 May 2011 10:10:10 GMT</pubDate>
+    <lastBuildDate>Wed, 11 May 2011 10:10:10 GMT</lastBuildDate>
+    <ttl>30</ttl>
+    <item>
+      <title>Random title1: Vestibulum orci sapien, blandit vitae. </title>
+      <link>http://nuxeo.com/</link>
+      <description>
+        Random description 1: Pellentesque non odio magna. Vestibulum pharetra mi vitae sapien facilisis pretium. Ut iaculis, velit luctus dapibus dapibus, leo turpis bibendum lorem, cursus feugiat arcu turpis eu velit. Aenean placerat dapibus orci, in rutrum purus interdum in. Fusce tristique gravida vulputate. Ut nec leo quis nibh condimentum molestie. Pellentesque porttitor dictum mauris in fermentum. Quisque pharetra nulla eget dui molestie aliquam. 
+      </description>
+      <pubDate>Wed, 11 May 2011 10:10:10 GMT</pubDate>
+      <guid isPermaLink="false">http://nuxeo.com</guid>
+    </item>
+    <item>
+      <title>Random title2: In hac habitasse platea dictumst. Nulla euismod.  </title>
+      <link>http://nuxeo.com/</link>
+      <description>
+        Random description 1: Integer libero purus, mollis nec vestibulum ornare, lacinia non sem. Aliquam erat volutpat. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nam elementum faucibus enim, nec faucibus sapien lobortis ullamcorper. Praesent vel dolor id metus consequat viverra. Suspendisse tortor justo, congue ac fermentum in, bibendum. 
+      </description>
+      <pubDate>Wed, 11 May 2011 10:10:8 GMT</pubDate>
+      <guid isPermaLink="false">http://nuxeo.com</guid>
+    </item>
+    <item>
+      <title>Random title3: Aliquam tortor risus, sollicitudin in hendrerit quis, molestie.   </title>
+      <link>http://nuxeo.com/</link>
+      <description>
+        Random description 3: Curabitur sed erat erat. Proin ut urna turpis. Etiam suscipit convallis tempor. Curabitur lacinia, urna sit amet volutpat pulvinar, mi lectus bibendum ligula, eget porttitor nisi est vitae nunc. Nunc quis quam eget diam luctus pretium. Vestibulum egestas tempus ligula ac convallis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus vulputate tincidunt vulputate. Suspendisse sed sapien libero, eu sagittis urna. Vivamus at erat quam, ut suscipit sapien. Sed dolor tortor, pharetra id posuere sit amet, convallis lobortis ligula. Phasellus. 
+      </description>
+      <pubDate>Wed, 11 May 2011 10:10:6 GMT</pubDate>
+      <guid isPermaLink="false">http://nuxeo.com</guid>
+    </item>
+  </channel>
+</rss>
+
