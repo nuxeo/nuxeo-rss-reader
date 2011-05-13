@@ -5,7 +5,7 @@
     point="operations">
 
 	<operation
-      class="org.nuxeo.rss.reader.ParseFeedOperation" />
+      class="org.nuxeo.rss.reader.FeedProviderOperation" />
 
   </extension>
 

@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8'?><?xml-stylesheet type='text/xsl' href='http://rss.lemonde.fr/xsl/fr/rss.xsl'?>
+
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:taxo="http://purl.org/rss/1.0/modules/taxonomy/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" version="2.0">
+  <channel>
+    <title>Feed title</title>
+    <link>http://nuxeo.com/</link>
+    <description>feed 2</description>
+    <language>en</language>
+    <copyright>Feed Copyright</copyright>
+    <pubDate>Wed, 13 May 2011 12:00:00 GMT</pubDate>
+    <item>
+      <title>title 2</title>
+      <link>http://nuxeo.com/</link>
+      <description>
+        desc 2
+      </description>
+      <pubDate>Wed, 13 May 2011 09:00:00 GMT</pubDate>
+      <guid isPermaLink="false">http://nuxeo.com</guid>
+    </item>
+    <item>
+      <title>title 4</title>
+      <link>http://nuxeo.com/</link>
+      <description>
+        desc 4
+      </description>
+      <pubDate>Wed, 13 May 2011 07:00:00 GMT</pubDate>
+      <guid isPermaLink="false">http://nuxeo.com</guid>
+    </item>
+    <item>
+      <title>title 6</title>
+      <link>http://nuxeo.com/</link>
+      <description>
+        desc 6
+      </description>
+      <pubDate>Wed, 13 May 2011 05:00:00 GMT</pubDate>
+      <guid isPermaLink="false">http://nuxeo.com</guid>
+    </item>
+  </channel>
+</rss>
+
