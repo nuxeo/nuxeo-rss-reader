@@ -19,6 +19,8 @@ package org.nuxeo.rss.reader;
 import static org.junit.Assert.*;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -29,6 +31,7 @@ import org.nuxeo.ecm.automation.AutomationService;
 import org.nuxeo.ecm.automation.OperationChain;
 import org.nuxeo.ecm.automation.OperationContext;
 import org.nuxeo.ecm.automation.OperationParameters;
+import org.nuxeo.ecm.automation.core.util.StringList;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.test.annotations.BackendType;
@@ -59,7 +62,7 @@ public class TestParseFeedOperation {
     AutomationService service;
 
     @Test
-    public void testParseFeedOperation() throws Exception {
+    public void testFeedProvider() throws Exception {
         OperationContext ctx = new OperationContext(session);
         assertNotNull(ctx);
 
@@ -68,16 +71,16 @@ public class TestParseFeedOperation {
 
         OperationChain chain = new OperationChain("fakeChain");
         OperationParameters oparams = new OperationParameters(
-                ParseFeedOperation.ID);
-        oparams.set("feedUrl", url.toExternalForm());
+                FeedProviderOperation.ID);
+        oparams.set("urls", url.toExternalForm());
         chain.add(oparams);
 
         Blob result = (Blob) service.run(ctx, chain);
 
         JSONObject object = JSONObject.fromObject(result.getString());
         assertEquals("Feed title",
-                object.get(ParseFeedOperation.Field.FEED_TITLE.name()));
-        JSONArray array = object.getJSONArray(ParseFeedOperation.Field.ENTRIES.name());
+                object.get(FeedHelper.Field.FEED_TITLE.name()));
+        JSONArray array = object.getJSONArray(FeedHelper.Field.ENTRIES.name());
         assertEquals(3, array.size());
 
         // test limit
@@ -85,8 +88,45 @@ public class TestParseFeedOperation {
         result = (Blob) service.run(ctx, chain);
 
         object = JSONObject.fromObject(result.getString());
-        array = object.getJSONArray(ParseFeedOperation.Field.ENTRIES.name());
+        array = object.getJSONArray(FeedHelper.Field.ENTRIES.name());
         assertEquals(1, array.size());
+
+    }
+
+    @Test
+    public void testMerge() throws Exception {
+        OperationContext ctx = new OperationContext(session);
+        assertNotNull(ctx);
+
+        URL url1 = this.getClass().getClassLoader().getResource("feed_1.rss");
+        assertNotNull(url1);
+        URL url2 = this.getClass().getClassLoader().getResource("feed_2.rss");
+        assertNotNull(url2);
+
+        StringList urls = new StringList();
+        urls.add(url2.toExternalForm());
+        urls.add(url1.toExternalForm());
+
+        OperationChain chain = new OperationChain("fakeChain");
+        OperationParameters oparams = new OperationParameters(
+                FeedProviderOperation.ID);
+        oparams.set("urls", urls);
+        chain.add(oparams);
+
+        Blob result = (Blob) service.run(ctx, chain);
+
+        JSONObject object = JSONObject.fromObject(result.getString());
+        JSONArray array = object.getJSONArray(FeedHelper.Field.ENTRIES.name());
+
+        // check the merge
+        assertEquals(6, array.size());
+
+        // check the order
+        for (int i = 0; i < 6; i++) {
+            JSONObject entry = (JSONObject) array.get(i);
+            assertEquals("title " + (i + 1),
+                    entry.get(FeedHelper.Field.TITLE.name()));
+        }
 
     }
 
