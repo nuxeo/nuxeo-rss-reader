@@ -76,7 +76,7 @@
     	entry += '<div class="entry">';
 
     	entry += '<div class="title">';
-    	entry += '<a href="'+ entryData["LINK"] + '">';
+    	entry += '<a href="'+ entryData["LINK"] + '" target="_blank">';
     	entry += entryData["TITLE"];
     	entry += '</a>'
     	entry += '</div>';
@@ -84,7 +84,7 @@
 
 		entry += '<div class="entryInfo">';
 		entry += buildDate(entryData["PUBDATE"]) + ' - ';
-		entry += '<a class="source" href="'+ feed_link + '">';
+		entry += '<a class="source" href="'+ feed_link + '" target="_blank">';
 		entry += feed_title;
 		entry += '</a>';
 		entry += '</div>';
