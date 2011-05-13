@@ -54,7 +54,7 @@ public class FeedHelper {
     /**
      * return a complete feed as JSON object
      *
-     * @param feedUrl - feed url
+     * @param feedUrl - URL of the feed
      * @return - feed as JSON object
      * @throws Exception
      */
@@ -65,7 +65,7 @@ public class FeedHelper {
     /**
      * return partial feed as JSON object
      *
-     * @param feedUrl - feed url
+     * @param feedUrl - URL of the feed
      * @param limit -
      * @return - feed as JSON object
      * @throws Exception
@@ -79,7 +79,7 @@ public class FeedHelper {
     /**
      * merge two or more feeds and return all the entries
      *
-     * @param urls - urls of the feeds that will be merged
+     * @param urls - URLs of the feeds that will be merged
      * @return
      */
     public static JSONObject mergeFeeds(String[] urls) {
@@ -89,7 +89,7 @@ public class FeedHelper {
     /**
      * merge two or more feeds and return first "limit" entries
      *
-     * @param urls - urls of the feeds that will be merged
+     * @param urls - URLs of the feeds that will be merged
      * @param limit -
      * @return
      */
@@ -154,7 +154,7 @@ public class FeedHelper {
 
     /**
      * @param feed object
-     * @return build the JSON object that represets the feed
+     * @return build the JSON object that represents the feed
      *
      */
     private static JSONObject buildJson(SyndFeed feed, int limit) {

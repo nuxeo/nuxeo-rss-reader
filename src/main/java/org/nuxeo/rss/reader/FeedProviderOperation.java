@@ -32,9 +32,9 @@ import org.nuxeo.ecm.core.api.impl.blob.InputStreamBlob;
 /**
  * @author <a href="mailto:ei@nuxeo.com">Eugen Ionica</a>
  *
- *         Operation that will retrive one or more feeds from the url(s)
+ *         Operation that will retrieve one or more feeds from the url(s)
  *         provided, merge the entries if necessary and return the result in a
- *         SJON object
+ *         JSON object
  *
  */
 
