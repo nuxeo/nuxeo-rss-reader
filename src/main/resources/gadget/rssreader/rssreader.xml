@@ -47,32 +47,31 @@
     	feed_title = response.data["FEED_TITLE"];
     	feed_link = response.data["FEED_LINK"];
         entries = response.data["ENTRIES"];
-        if ( typeof entries == undefined ) {
+        if ( typeof entries == 'undefined' ) {
         	return 'No entries';
         }
         feed = '';
 
         for (var i = 0; i < entries.length; i++) {
-        	alert(i);
         	entry = entries[i];
 
 			// handle the case when more feed are merged
 			entry_feed_title = entry["FEED_TITLE"];
 			entry_feed_link = entry["FEED_LINK"];
-			if ( typeof entry_feed_title == undefined ) {
+			if ( typeof entry_feed_title == 'undefined' ) {
 				entry_feed_title = feed_title;
 			}
-			if ( typeof entry_feed_link == undefined ) {
+			if ( typeof entry_feed_link == 'undefined' ) {
 				entry_feed_link = feed_link;
 			}
 			// end -
 
-        	feed += buildEntry(entries[i], entry_feed_title, entry_feed_title);
+        	feed += buildEntry(entries[i], entry_feed_title, entry_feed_link);
         }
 		return feed;
     };
 
-    function buildEntry(entryData, feed_title, feed_url) {
+    function buildEntry(entryData, feed_title, feed_link) {
     	entry = '';
     	entry += '<div class="entry">';
 
