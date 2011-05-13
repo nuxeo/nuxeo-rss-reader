@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://www.nuxeo.org/ecm/schemas/rss-feed"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:nxs="http://www.nuxeo.org/ecm/schemas/rss-feed">
+
+  <xs:element name="rss_address" type="xs:string" />
+  <xs:element name="is_default_feed" type="xs:boolean" />
+
+</xs:schema>

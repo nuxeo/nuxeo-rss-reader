@@ -5,4 +5,7 @@ Bundle-SymbolicName: org.nuxeo.rss.reader;singleton:=true
 Bundle-Version: 0.0.1
 Bundle-Vendor: Nuxeo
 Nuxeo-Component: OSGI-INF/gadgets-contrib.xml,
- OSGI-INF/operations-contrib.xml
+ OSGI-INF/operations-contrib.xml,
+ OSGI-INF/rss-feed-core-types-contrib.xml,
+ OSGI-INF/rss-feed-layout-contrib.xml,
+ OSGI-INF/rss-feed-ui-types-contrib.xml
