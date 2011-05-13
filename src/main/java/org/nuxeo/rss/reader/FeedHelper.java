@@ -36,9 +36,9 @@ import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 
 /**
- * @author <a href="mailto:ei@nuxeo.com">Eugen Ionica</a>
- * varous static method to retrive a feed, put feed content in a
- * JSON object, merge two or more feeds, etc.
+ * @author <a href="mailto:ei@nuxeo.com">Eugen Ionica</a> various static method
+ *         to retrieve a feed, put feed content in a JSON object, merge two or
+ *         more feeds, etc.
  *
  */
 public class FeedHelper {
@@ -51,19 +51,48 @@ public class FeedHelper {
         FEED_TITLE, FEED_LINK, FEED_DESCRIPTION, FEED_PUBDATE, TITLE, DESCRIPTION, LINK, PUBDATE, ENTRIES, FEEDS
     };
 
+    /**
+     * return a complete feed as JSON object
+     *
+     * @param feedUrl - feed url
+     * @return - feed as JSON object
+     * @throws Exception
+     */
     public static JSONObject getFeed(String feedUrl) throws Exception {
         return getFeed(feedUrl, NO_LIMIT);
     }
 
+    /**
+     * return partial feed as JSON object
+     *
+     * @param feedUrl - feed url
+     * @param limit -
+     * @return - feed as JSON object
+     * @throws Exception
+     */
     public static JSONObject getFeed(String feedUrl, int limit)
             throws Exception {
         SyndFeed feed = parseFeed(feedUrl);
         return buildJson(feed, limit);
     }
 
-    public static JSONObject mergeFeeds(String[] urls) throws Exception {
+    /**
+     * merge two or more feeds and return all the entries
+     *
+     * @param urls - urls of the feeds that will be merged
+     * @return
+     */
+    public static JSONObject mergeFeeds(String[] urls) {
         return mergeFeeds(urls, NO_LIMIT);
     }
+
+    /**
+     * merge two or more feeds and return first "limit" entries
+     *
+     * @param urls - urls of the feeds that will be merged
+     * @param limit -
+     * @return
+     */
 
     public static JSONObject mergeFeeds(String[] urls, int limit) {
         List<SyndFeed> feeds = new ArrayList<SyndFeed>();
@@ -80,8 +109,10 @@ public class FeedHelper {
                 if (limit != NO_LIMIT && limit < list.size()) {
                     list = list.subList(0, limit);
                 }
-                for ( SyndEntry entry : list ){
-                    if ( entry.getSource() == null ){ // source needed when merged entries are rendered
+                for (SyndEntry entry : list) {
+                    if (entry.getSource() == null) { // source needed when
+                                                     // merged entries are
+                                                     // rendered
                         entry.setSource(feed);
                     }
                 }
