@@ -76,14 +76,17 @@
     	entry += '<div class="entry">';
 
     	entry += '<div class="title">';
+    	entry += '<a href="'+ entryData["LINK"] + '">';
     	entry += entryData["TITLE"];
+    	entry += '</a>'
     	entry += '</div>';
+
 
 		entry += '<div class="entryInfo">';
 		entry += buildDate(entryData["PUBDATE"]) + ' - ';
-		entry += '<span class="source">';
+		entry += '<a class="source" href="'+ feed_link + '">';
 		entry += feed_title;
-		entry += '</span>';
+		entry += '</a>';
 		entry += '</div>';
 
     	entry += '<div class="description">';
