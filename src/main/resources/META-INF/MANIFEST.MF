@@ -11,3 +11,4 @@ Nuxeo-Component: OSGI-INF/gadgets-contrib.xml,
  OSGI-INF/rss-feed-ui-types-contrib.xml,
  OSGI-INF/rss-feed-actions-contrib.xml,
  OSGI-INF/rss-Feed-content-view.xml
+Nuxeo-WebModule: org.nuxeo.ecm.webengine.app.WebEngineModule
