@@ -11,7 +11,7 @@
       <description>syndication flux</description>
       <default-view>view_documents</default-view>
       <layouts mode="any">
-        <layout>heading_</layout>
+        <layout>heading</layout>
         <layout>rss_diplay</layout>
       </layouts>
     </type>

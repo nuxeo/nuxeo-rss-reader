@@ -1,25 +1,27 @@
 <?xml version="1.0"?>
 <component name="org.nuxeo.rss.feed.ui">
 
+<require>org.nuxeo.ecm.platform.forms.layouts.webapp</require>
+
   <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager"
     point="widgets">
 
-    <widget name="title" type="text">
+<widget name="rss_title_listing" type="text">
       <labels>
-        <label mode="any">label.rss feed title</label>
+        <label mode="any">label.rss.feed.title</label>
       </labels>
-      <translated>false</translated>
+      <translated>true</translated>
       <fields>
-        <field>dc:title</field>
+        <field>data.dc.title</field>
       </fields>
       <properties mode="any">
         <property name="help">help.rss.feed.title</property>
       </properties>
     </widget>
 
-    <widget name="rssUrl" type="text">
+    <widget name="rss_url" type="text">
       <labels>
-        <label mode="any">label.rss feed address</label>
+        <label mode="any">label.rss.feed.address</label>
       </labels>
       <translated>true</translated>
       <fields>
@@ -30,7 +32,22 @@
       </properties>
     </widget>
 
-    <widget name="defineAsDefaultRssFeed" type="checkbox">
+    <widget name="define_as_default_rss_feed_listing" type="checkbox">
+      <labels>
+        <label mode="any">label.rss.feed.default</label>
+      </labels>
+      <translated>true</translated>
+      <fields>
+        <field>data.rf.is_default_feed</field>
+      </fields>
+      <!-- <properties widgetMode="any"> -->
+      <properties widgetMode="edit">
+        <property name="required">true</property>
+        <property name="styleClass">dataInputText</property>
+        <property name="help">help.rss.feed.default</property>
+      </properties>
+    </widget>
+    <widget name="define_as_default_rss_feed" type="checkbox">
       <labels>
         <label mode="any">label.rss.feed.default</label>
       </labels>
@@ -38,13 +55,22 @@
       <fields>
         <field>rf:is_default_feed</field>
       </fields>
-<!--       <properties widgetMode="any"> -->
-      <properties mode="any">
+      <!-- <properties widgetMode="any"> -->
+      <properties widgetMode="edit">
         <property name="required">true</property>
         <property name="styleClass">dataInputText</property>
         <property name="help">help.rss.feed.default</property>
       </properties>
     </widget>
+    <widget name="rss_url_list" type="text">
+        <labels>
+          <label mode="any">label.rss.feed.address</label>
+        </labels>
+        <translated>true</translated>
+        <fields>
+          <field>data.rf.rss_address</field>
+        </fields>
+      </widget>
 
   </extension>
 
@@ -58,7 +84,7 @@
       </templates>
       <rows>
         <row>
-          <widget>title</widget>
+          <widget>dc:title</widget>
         </row>
       </rows>
     </layout>
@@ -70,13 +96,54 @@
       </templates>
       <rows>
         <row>
-          <widget>rssUrl</widget>
+          <widget>rss_url</widget>
         </row>
         <row>
-          <widget>defineAsDefaultRssFeed</widget>
+          <widget>define_as_default_rss_feed</widget>
         </row>
       </rows>
     </layout>
+
+    <layout name="rss_diplay_list">
+      <templates>
+        <template mode="any">
+          /layouts/layout_listing_template.xhtml
+        </template>
+        <template mode="csv">
+          /layouts/layout_listing_csv_template.xhtml
+        </template>
+        <template mode="pdf">
+          /layouts/layout_listing_pdf_template.xhtml
+        </template>
+      </templates>
+      <properties mode="any">
+        <property name="showListingHeader">true</property>
+        <property name="showRowEvenOddClass">true</property>
+      </properties>
+      <columns>
+        <column>
+          <properties mode="any">
+            <property name="useFirstWidgetLabelAsColumnHeader">true</property>
+          </properties>
+          <widget>rss_title_listing</widget>
+        </column>
+        <column>
+          <properties mode="any">
+            <property name="useFirstWidgetLabelAsColumnHeader">true</property>
+          </properties>
+          <widget>rss_url_list</widget>
+        </column>
+        <column>
+          <properties mode="any">
+            <property name="useFirstWidgetLabelAsColumnHeader">true</property>
+          </properties>
+          <widget>define_as_default_rss_feed_listing</widget>
+        </column>
+
+      </columns>
+    </layout>
+
   </extension>
+
 
 </component>

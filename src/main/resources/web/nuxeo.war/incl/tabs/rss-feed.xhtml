@@ -1,9 +1,13 @@
 <f:subview
   xmlns:f="http://java.sun.com/jsf/core"
-  xmlns:nxl="http://nuxeo.org/nxforms/layout"
-  id="rssfeedView">
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:nxu="http://nuxeo.org/nxweb/util"
+  id="rssFeed">
 
-  <nxl:layout name="rss_diplay" mode="any"
-        value="#{currentDocument}"/>
-
-</f:subview>
+  <nxu:set var="contentViewName" value="rss_feed_management">
+      <ui:decorate template="/incl/content_view.xhtml">
+          <ui:define name="content_view_title">
+          </ui:define>
+        </ui:decorate>
+    </nxu:set>
+  </f:subview>
