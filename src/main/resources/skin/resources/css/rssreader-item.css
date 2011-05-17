@@ -1,0 +1,36 @@
+.popupContent {
+  font: normal 12px "Trebuchet MS", Helvetica, sans-serif;
+}
+
+.navLinks {
+  border-width: 1px 0;
+  border-color: #eaeaea;
+  border-style: solid;
+  padding: 5px 0;
+  margin-bottom: 15px;
+}
+
+a.itemNav, a.itemNav:hover, a.itemNav:visited  {
+  color: #b11916;
+  font-weight: bold;
+  text-decoration: none;
+  display: block;
+}
+
+a.itemNav:hover {
+  text-decoration: underline;
+}
+
+.previousItem {
+ float:left;
+}
+
+.nextItem {
+ float:right;
+}
+
+.itemContent {
+ max-height: 290px;
+ overflow: auto;
+ width: 100%;
+}

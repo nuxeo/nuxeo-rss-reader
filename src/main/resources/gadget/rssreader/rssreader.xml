@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Module>
-  <ModulePrefs title="RSS Reader"
-    description="Nuxeo RSS Reader"
-    author="Eugen Ionica" author_email="ei@nuxeo.com"
-    height="420">
-    <Require feature="setprefs"/>
+  <ModulePrefs title="RSS Reader" description="Nuxeo RSS Reader"
+    author="Eugen Ionica" author_email="ei@nuxeo.com" height="420">
+    <Require feature="setprefs" />
     <Require feature="dynamic-height" />
     <#include "dynamic-translations.ftl"/>
-    <#include "default-oauth-prefs.ftl"/>
+    <#include
+    "default-oauth-prefs.ftl"/>
   </ModulePrefs>
   <#include "context-prefs.ftl"/>
   <Content type="html">
@@ -24,97 +23,99 @@
   <script src="${specDirectoryUrl}context-management.js"></script>
 
   <script>
-   var prefs = new _IG_Prefs(__MODULE_ID__);
+    var prefs = new _IG_Prefs(__MODULE_ID__);
 
-   var opCallParameters = {
-   		operationId : 'Feed.Provider',
-   		operationParams : {
-   		  urls :  'http://rss.lemonde.fr/c/205/f/3052/index.rss,http://actu.voila.fr/Magic/XML/rss-a-la-une.xml',
-   		  limit : 4
-   		},
-   		entityType : 'blob',
-   		operationContext : {},
-   		operationCallback : renderFeed
-   };
+    var opCallParameters = {
+        operationId : 'Feed.Provider',
+        operationParams : {
+         urls :  'http://rss.lemonde.fr/c/205/f/3052/index.rss,http://actu.voila.fr/Magic/XML/rss-a-la-une.xml',
+         limit : 4
+        },
+        entityType : 'blob',
+        operationContext : {},
+        operationCallback : renderFeed
+    };
 
-	// main method ; called after operation is executed
+    // main method ; called after operation is executed
     function renderFeed(response, opCallParameters) {
         _gel("feedEntries").innerHTML = buildFeed(response);
         gadgets.window.adjustHeight();
     };
 
     function buildFeed(response) {
-    	feed_title = response.data["FEED_TITLE"];
-    	feed_link = response.data["FEED_LINK"];
+        feed_title = response.data["FEED_TITLE"];
+        feed_link = response.data["FEED_LINK"];
         entries = response.data["ENTRIES"];
         if ( typeof entries == 'undefined' ) {
-        	return 'No entries';
+            return 'No entries';
         }
         feed = '';
 
         for (var i = 0; i < entries.length; i++) {
-        	entry = entries[i];
+            entry = entries[i];
 
-			// handle the case when more feed are merged
-			entry_feed_title = entry["FEED_TITLE"];
-			entry_feed_link = entry["FEED_LINK"];
-			if ( typeof entry_feed_title == 'undefined' ) {
-				entry_feed_title = feed_title;
-			}
-			if ( typeof entry_feed_link == 'undefined' ) {
-				entry_feed_link = feed_link;
-			}
-			// end -
+            // handle the case when more feed are merged
+            entry_feed_title = entry["FEED_TITLE"];
+            entry_feed_link = entry["FEED_LINK"];
+            if ( typeof entry_feed_title == 'undefined' ) {
+                entry_feed_title = feed_title;
+            }
+            if ( typeof entry_feed_link == 'undefined' ) {
+                entry_feed_link = feed_link;
+            }
+            // end -
 
-        	feed += buildEntry(entries[i], entry_feed_title, entry_feed_link);
+            feed += buildEntry(entries[i], entry_feed_title, entry_feed_link);
         }
-		return feed;
+        return feed;
     };
 
     function buildEntry(entryData, feed_title, feed_link) {
-    	entry = '';
-    	entry += '<div class="entry">';
+        entry = '';
+        entry += '<div class="entry">';
 
-    	entry += '<div class="title">';
-    	entry += '<a href="'+ entryData["LINK"] + '" target="_blank">';
-    	entry += entryData["TITLE"];
-    	entry += '</a>'
-    	entry += '</div>';
+        entry += '<div class="title">';
+        entry += '<a href="'+ entryData["LINK"] + '" target="_blank">';
+        entry += entryData["TITLE"];
+        entry += '</a>'
+        entry += '</div>';
 
 
-		entry += '<div class="entryInfo">';
-		entry += buildDate(entryData["PUBDATE"]) + ' - ';
-		entry += '<a class="source" href="'+ feed_link + '" target="_blank">';
-		entry += feed_title;
-		entry += '</a>';
-		entry += '</div>';
+        entry += '<div class="entryInfo">';
+        entry += buildDate(entryData["PUBDATE"]) + ' - ';
+        entry += '<a class="source" href="'+ feed_link + '" target="_blank">';
+        entry += feed_title;
+        entry += '</a>';
+        entry += '</div>';
 
-    	entry += '<div class="description">';
-    	entry += entryData["DESCRIPTION"];
-    	entry += '</div>';
+        entry += '<div class="description">';
+        entry += entryData["DESCRIPTION"];
+        entry += '</div>';
 
-		entry += '</div>';
-		return entry;
+        entry += '</div>';
+        return entry;
     };
 
-	function buildDate(dataInfo) {
-		d = new Date(dataInfo["time"]);
-		return d.getDate() + '/' + ( d.getMonth() + 1 ) + '/' + d.getFullYear();
-	};
+    function buildDate(dataInfo) {
+        d = new Date(dataInfo["time"]);
+        return d.getDate() + '/' + ( d.getMonth() + 1 ) + '/' + d.getFullYear();
+    };
 
-	gadgets.util.registerOnLoadHandler(
-		function() {
-			doAutomationRequest(opCallParameters);
-		}
-	);
+    gadgets.util.registerOnLoadHandler(
+        function() {
+            doAutomationRequest(opCallParameters);
+            window.parent.addFancyBoxTo(document.getElementById("testPopupButton"));
+        }
+    );
   </script>
 
   </head>
     <body>
       <div id="content">
-      	<#include "default-request-controls.ftl"/>
-      	<div id="feedEntries">
-      	</div>
+        <#include "default-request-controls.ftl"/>
+        <div id="feedEntries">
+        </div>
+        <a id="testPopupButton" href="${clientSideBaseUrl}site/rssreader/item">test</a>
       </div>
     </body>
 </html>

@@ -1,0 +1,3 @@
+<?xml version="1.0"?>
+<module name="rssreader" root-type="rssreader" path="/rssreader" extends="base">
+</module>
