@@ -33,7 +33,12 @@ public class RssFeedActions implements Serializable {
 
     private static final long serialVersionUID = 8882417548656036277L;
 
-    public static final String RSS_FEED_CONTAINER_PATH = "/report-models";
+    private static final String RSS_FEEDS_FOLDER = "rssFeeds";
+
+    private static final String MANAGEMENT_ROOT_PATH = "/management";
+
+    public static final String RSS_FEED_CONTAINER_PATH = MANAGEMENT_ROOT_PATH
+            + "/" + RSS_FEEDS_FOLDER;
 
     protected static final Log log = LogFactory.getLog(RssFeedActions.class);
 
@@ -53,7 +58,7 @@ public class RssFeedActions implements Serializable {
     protected boolean showForm = false;
 
     public DocumentModel getBareReportModel() throws ClientException {
-        return documentManager.createDocumentModel(Constants.RSS_FEED_MODEL_TYPE);
+        return documentManager.createDocumentModel(Constants.RSS_FEED_TYPE);
     }
 
     public DocumentModel getNewReportModel() throws ClientException {
@@ -82,6 +87,11 @@ public class RssFeedActions implements Serializable {
         showForm = !showForm;
     }
 
+    public void toggleAndReset() {
+        toggleForm();
+        resetDocument();
+    }
+
     protected void createRssFeedModelContainerIfNeeded() throws ClientException {
         if (!documentManager.exists(new PathRef(RSS_FEED_CONTAINER_PATH))) {
             createRssFeedContainer(RSS_FEED_CONTAINER_PATH);
@@ -90,6 +100,11 @@ public class RssFeedActions implements Serializable {
 
     protected void createRssFeedContainer(String path) throws ClientException {
         new UnrestrictedRssFeedContainerCreator(path).runUnrestricted();
+    }
+
+    public String getRssFeedsContainerPath() throws ClientException {
+
+        return RSS_FEED_CONTAINER_PATH;
     }
 
     public class UnrestrictedRssFeedContainerCreator extends
@@ -107,8 +122,7 @@ public class RssFeedActions implements Serializable {
         public void run() throws ClientException {
             if (!session.exists(new PathRef(rssFeedModelContainerPath))) {
                 DocumentModel doc = session.createDocumentModel(
-                        session.getRootDocument().getPathAsString(),
-                        rssFeedModelContainerPath.substring(1),
+                        MANAGEMENT_ROOT_PATH, RSS_FEEDS_FOLDER,
                         Constants.RSS_FEED_ROOT_TYPE);
                 doc.setPropertyValue("dc:title", "Rss Feed Models");
                 doc = session.createDocument(doc);

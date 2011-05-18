@@ -8,7 +8,7 @@ public class Constants {
 
     public static final String RSS_FEED_ROOT_TYPE="RssFeedRoot";
 
-    public static final String RSS_FEED_MODEL_TYPE = "RssFeedRootModel";
+    public static final String RSS_FEED_TYPE = "RssFeed";
 
     public static final String RSS_FEED = "RssFeed";
 

@@ -1,13 +1,63 @@
-<f:subview
+<a4j:outputPanel xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:a4j="https://ajax4jsf.dev.java.net/ajax"
+  xmlns:h="http://java.sun.com/jsf/html"
   xmlns:f="http://java.sun.com/jsf/core"
-  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:nxl="http://nuxeo.org/nxforms/layout"
   xmlns:nxu="http://nuxeo.org/nxweb/util"
-  id="rssFeed">
+  xmlns:c="http://java.sun.com/jstl/core" id="rssFeedModelPanel">
 
-  <nxu:set var="contentViewName" value="rss_feed_management">
+  <f:subview id="rssFeedCreationForm"
+    rendered="#{rssFeedActions.showForm}">
+    <h3>
+      <h:outputText
+        value="#{messages['title.create.document']} #{messages['label.rss.feed']}" />
+    </h3>
+    <h:form enctype="multipart/form-data" id="document_create">
+      <nxl:documentLayout mode="create"
+        value="#{rssFeedActions.newReportModel}" />
+      <input type="hidden" name="parentDocumentPath"
+        value="#{rssFeedActions.rssFeedsContainerPath}" />
+      <p class="buttonsGadget">
+        <a4j:commandButton styleClass="button"
+          value="#{messages['command.create']}"
+          action="#{rssFeedActions.saveDocument}" id="button_create"
+          reRender="rssFeedModelPanel">
+          <nxu:actionListenerMethod
+            value="#{contentViewActions.reset('rss_feed_management')}" />
+        </a4j:commandButton>
+        <a4j:commandButton styleClass="button"
+          value="#{messages['command.cancel']}"
+          action="#{rssFeedActions.toggleAndReset()}" immediate="true"
+          reRender="rssFeedModelPanel" />
+      </p>
+    </h:form>
+
+  </f:subview>
+
+  <f:subview id="rssFeedListing" rendered="#{!rssFeedActions.showForm}">
+    <style type="text/css">
+.contentViewPageSelectorDesc {
+  display: inline;
+}
+</style>
+    <div class="action_bar">
+      <h:form>
+        <a4j:commandButton action="#{rssFeedActions.toggleForm()}"
+          value="#{messages['label.rss.feed.create']}" immediate="true"
+          styleClass="button" reRender="rssFeedModelPanel" />
+      </h:form>
+      <a4j:status>
+        <f:facet name="start">
+          <h:graphicImage value="/img/standart_waiter.gif" />
+        </f:facet>
+      </a4j:status>
+    </div>
+    <nxu:set var="contentViewName" value="rss_feed_management">
       <ui:decorate template="/incl/content_view.xhtml">
-          <ui:define name="content_view_title">
-          </ui:define>
-        </ui:decorate>
+        <ui:define name="content_view_title">
+        </ui:define>
+      </ui:decorate>
     </nxu:set>
   </f:subview>
+
+</a4j:outputPanel>
