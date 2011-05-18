@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <component name="org.nuxeo.rss.feed.ui">
 
-<require>org.nuxeo.ecm.platform.forms.layouts.webapp</require>
+  <require>org.nuxeo.ecm.platform.forms.layouts.webapp</require>
 
   <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager"
     point="widgets">
 
-<widget name="rss_title_listing" type="text">
+    <widget name="rss_title_listing" type="text">
       <labels>
         <label mode="any">label.rss.feed.title</label>
       </labels>
@@ -63,14 +63,14 @@
       </properties>
     </widget>
     <widget name="rss_url_list" type="text">
-        <labels>
-          <label mode="any">label.rss.feed.address</label>
-        </labels>
-        <translated>true</translated>
-        <fields>
-          <field>data.rf.rss_address</field>
-        </fields>
-      </widget>
+      <labels>
+        <label mode="any">label.rss.feed.address</label>
+      </labels>
+      <translated>true</translated>
+      <fields>
+        <field>data.rf.rss_address</field>
+      </fields>
+    </widget>
 
   </extension>
 
@@ -89,7 +89,7 @@
       </rows>
     </layout>
 
-    <layout name="rss_diplay">
+    <layout name="rss_display">
       <templates>
         <template mode="any">/layouts/layout_default_template.xhtml
         </template>
@@ -104,7 +104,7 @@
       </rows>
     </layout>
 
-    <layout name="rss_diplay_list">
+    <layout name="rss_display_list">
       <templates>
         <template mode="any">
           /layouts/layout_listing_template.xhtml

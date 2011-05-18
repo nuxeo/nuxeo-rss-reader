@@ -30,7 +30,7 @@
       <cacheSize>1</cacheSize>
 
       <resultLayouts>
-        <layout name="rss_diplay_list" title="document_listing"
+        <layout name="rss_display_list" title="document_listing"
           translateTitle="true" iconPath="/icons/document_listing_icon.png"/>
       </resultLayouts>
 

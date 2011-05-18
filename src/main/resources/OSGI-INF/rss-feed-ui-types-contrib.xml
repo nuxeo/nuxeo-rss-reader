@@ -12,7 +12,7 @@
       <default-view>view_documents</default-view>
       <layouts mode="any">
         <layout>heading</layout>
-        <layout>rss_diplay</layout>
+        <layout>rss_display</layout>
       </layouts>
     </type>
 
