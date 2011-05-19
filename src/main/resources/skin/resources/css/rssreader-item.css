@@ -65,3 +65,19 @@ a.itemNav:hover {
 .title a:hover {
   text-decoration: underline;
 }
+
+.entryInfo {
+  color: #9e9e9e;
+  padding: 0 0 2px;
+  }
+
+a.source, a.source:visited {
+  font-style: italic;
+  color: #9e9e9e;
+  text-decoration: none;
+  }
+
+a.source:hover {
+  text-decoration: underline;
+}
+
