@@ -18,7 +18,7 @@
       <a href="${entry.link}" target="_blank">${entry.title}</a>
     </div
     <div class="entryInfo">
-      ${entry.publishedDate} - <a class="source" href="${entry.source.link}" target="_blank">${entry.source.title}</a>
+      ${entry.publishedDate?datetime} - <a class="source" href="${entry.source.link}" target="_blank">${entry.source.title}</a>
     </div>
     <div class="navLinks">
       <#if previous??>
