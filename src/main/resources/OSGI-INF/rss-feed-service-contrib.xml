@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<component name="org.nuxeo.rss.feed.service"
+  version="1.0.0">
+  <implementation class="org.nuxeo.rss.reader.service.FeedReaderComponent" />
+  <service>
+    <provide
+      interface="org.nuxeo.rss.reader.service.FeedReaderService"/>
+  </service>
+</component>
