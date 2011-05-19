@@ -57,13 +57,13 @@ public class RssFeedActions implements Serializable {
 
     protected boolean showForm = false;
 
-    public DocumentModel getBareReportModel() throws ClientException {
+    public DocumentModel getBareFeedReaderModel() throws ClientException {
         return documentManager.createDocumentModel(Constants.RSS_FEED_TYPE);
     }
 
     public DocumentModel getNewReportModel() throws ClientException {
         if (newRssFeedModel == null) {
-            newRssFeedModel = getBareReportModel();
+            newRssFeedModel = getBareFeedReaderModel();
         }
         return newRssFeedModel;
     }
