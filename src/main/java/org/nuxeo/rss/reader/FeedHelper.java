@@ -21,7 +21,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -143,6 +145,58 @@ public class FeedHelper {
         addProperty(object, Field.FEEDS, buildFeedsInfoArray(feeds));
         addProperty(object, Field.ENTRIES, buildEntriesArray(entries, true));
         return object;
+    }
+
+    public static Map<String, Object> searchFeedEntry(String[] urls, String link) {
+        List<SyndFeed> feeds = new ArrayList<SyndFeed>();
+        List<SyndEntry> entries = new ArrayList<SyndEntry>();
+
+        // collect entries from feeds
+        for (String url : urls) {
+            try {
+                SyndFeed feed = parseFeed(url);
+                feeds.add(feed);
+
+                @SuppressWarnings("unchecked")
+                List<SyndEntry> list = feed.getEntries();
+                for (SyndEntry entry : list) {
+                    if (entry.getSource() == null) { // source needed when
+                                                     // merged entries are
+                                                     // rendered
+                        entry.setSource(feed);
+                    }
+                }
+                entries.addAll(list);
+            } catch (Exception e) {
+                log.warn("failed to retrieve feed " + url, e);
+            }
+        }
+
+        // sort entries
+        Collections.sort(entries, new Comparator<SyndEntry>() {
+            public int compare(SyndEntry o1, SyndEntry o2) {
+                Calendar c1 = Calendar.getInstance();
+                Calendar c2 = Calendar.getInstance();
+                c1.setTime(o1.getPublishedDate());
+                c2.setTime(o2.getPublishedDate());
+                return -c1.compareTo(c2);
+            }
+        });
+
+        Map<String, Object> foundEntry = new HashMap<String, Object>();
+        for (int i = 0; i < entries.size(); i++) {
+            SyndEntry entry = entries.get(i);
+            if (link.equals(entry.getLink())) {
+                foundEntry.put("entry", entry);
+                if (i > 0) {
+                    foundEntry.put("previous", entries.get(i - 1).getLink());
+                }
+                if (i < entries.size() - 1) {
+                    foundEntry.put("next", entries.get(i + 1).getLink());
+                }
+            }
+        }
+        return foundEntry;
     }
 
     public static SyndFeed parseFeed(String feedUrl) throws Exception {

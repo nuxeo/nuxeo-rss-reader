@@ -4,6 +4,7 @@
     author="Eugen Ionica" author_email="ei@nuxeo.com" height="420">
     <Require feature="setprefs" />
     <Require feature="dynamic-height" />
+    <Require feature="jquery" />
     <#include "dynamic-translations.ftl"/>
     <#include
     "default-oauth-prefs.ftl"/>
@@ -28,7 +29,7 @@
     var opCallParameters = {
         operationId : 'Feed.Provider',
         operationParams : {
-         urls :  'http://rss.lemonde.fr/c/205/f/3052/index.rss,http://actu.voila.fr/Magic/XML/rss-a-la-une.xml',
+         urls :  'http://rss.lemonde.fr/c/205/f/3052/index.rss,http://actu.voila.fr/Magic/XML/rss-a-la-une.xml,http://feeds.feedburner.com/fubiz',
          limit : 4
         },
         entityType : 'blob',
@@ -40,6 +41,7 @@
     function renderFeed(response, opCallParameters) {
         _gel("feedEntries").innerHTML = buildFeed(response);
         gadgets.window.adjustHeight();
+        window.parent.addFancyBoxTo(jQuery(".feedItemPopup"));
     };
 
     function buildFeed(response) {
@@ -75,7 +77,7 @@
         entry += '<div class="entry">';
 
         entry += '<div class="title">';
-        entry += '<a href="'+ entryData["LINK"] + '" target="_blank">';
+        entry += '<a class="feedItemPopup" href="${clientSideBaseUrl}site/rssreader/item?i='+ entryData["LINK"] + '">';
         entry += entryData["TITLE"];
         entry += '</a>'
         entry += '</div>';
@@ -104,7 +106,6 @@
     gadgets.util.registerOnLoadHandler(
         function() {
             doAutomationRequest(opCallParameters);
-            window.parent.addFancyBoxTo(document.getElementById("testPopupButton"));
         }
     );
   </script>
@@ -115,7 +116,6 @@
         <#include "default-request-controls.ftl"/>
         <div id="feedEntries">
         </div>
-        <a id="testPopupButton" href="${clientSideBaseUrl}site/rssreader/item">test</a>
       </div>
     </body>
 </html>
