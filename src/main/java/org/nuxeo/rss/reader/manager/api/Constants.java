@@ -12,4 +12,11 @@ public class Constants {
 
     public static final String RSS_FEED = "RssFeed";
 
+    public static final String RSS_FEEDS_FOLDER = "rssFeeds";
+
+    public static final String MANAGEMENT_ROOT_PATH = "/management";
+
+    public static final String RSS_FEED_CONTAINER_PATH = MANAGEMENT_ROOT_PATH
+            + "/" + RSS_FEEDS_FOLDER;
+
 }

@@ -17,6 +17,7 @@
 
 package org.nuxeo.rss.reader.service;
 
+import org.nuxeo.ecm.core.api.ClientException;import org.nuxeo.ecm.core.api.CoreSession;
 /**
  * Service to provide some FeedReader features
  *
@@ -25,4 +26,6 @@ package org.nuxeo.rss.reader.service;
  */
 public interface FeedReaderService {
 
+    void createRssFeedModelContainerIfNeeded(CoreSession session)
+            throws ClientException;
 }

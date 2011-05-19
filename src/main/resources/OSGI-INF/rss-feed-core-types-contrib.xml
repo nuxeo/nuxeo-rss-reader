@@ -13,6 +13,7 @@
       <schema name="rss-feed" />
       <schema name="uid" />
       <schema name="dublincore" />
+      <facet name="orderable" />
     </doctype>
 
     <doctype name="RssFeedRoot" extends="OrderedFolder"/>
