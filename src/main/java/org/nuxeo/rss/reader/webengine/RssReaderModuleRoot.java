@@ -17,4 +17,11 @@ public class RssReaderModuleRoot extends ModuleRoot {
     public Object getItemContent() {
         return getView("item");
     }
+
+    @GET
+    @Path("/sample")
+    public Object getSample() {
+        return getView("sample");
+    }
+
 }
