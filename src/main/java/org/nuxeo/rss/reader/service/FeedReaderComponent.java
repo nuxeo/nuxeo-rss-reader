@@ -17,7 +17,7 @@
 
 package org.nuxeo.rss.reader.service;
 
-import static org.nuxeo.rss.reader.manager.api.Constants.MANAGEMENT_ROOT_PATH;
+import static org.nuxeo.ecm.core.management.storage.DocumentStoreManager.MANAGEMENT_ROOT_PATH;
 import static org.nuxeo.rss.reader.manager.api.Constants.RSS_FEEDS_FOLDER;
 import static org.nuxeo.rss.reader.manager.api.Constants.RSS_FEED_CONTAINER_PATH;
 
