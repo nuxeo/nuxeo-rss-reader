@@ -17,7 +17,6 @@
 
 package org.nuxeo.rss.reader.service;
 
-import static org.nuxeo.rss.reader.manager.api.Constants.RSS_FEED;
 import static org.nuxeo.rss.reader.manager.api.Constants.RSS_FEEDS_FOLDER;
 import static org.nuxeo.rss.reader.manager.api.Constants.RSS_FEED_CONTAINER_PATH;
 
@@ -28,16 +27,9 @@ import org.nuxeo.ecm.core.api.CoreInstance;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.PathRef;
-import org.nuxeo.ecm.core.api.UnrestrictedSessionRunner;
-import org.nuxeo.ecm.core.api.security.ACE;
-import org.nuxeo.ecm.core.api.security.ACL;
-import org.nuxeo.ecm.core.api.security.ACP;
-import org.nuxeo.ecm.core.api.security.SecurityConstants;
-import org.nuxeo.ecm.core.api.security.impl.ACLImpl;
-import org.nuxeo.ecm.core.api.security.impl.ACPImpl;
-import org.nuxeo.ecm.platform.usermanager.UserManager;
 import org.nuxeo.ecm.platform.userworkspace.api.UserWorkspaceService;
-import org.nuxeo.rss.reader.manager.api.Constants;
+import org.nuxeo.rss.reader.runner.UnrestrictedDefaultRssFeedsCopier;
+import org.nuxeo.rss.reader.runner.UnrestrictedRssFeedContainerCreator;
 import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.model.DefaultComponent;
 
@@ -50,6 +42,7 @@ import org.nuxeo.runtime.model.DefaultComponent;
  */
 public class RSSFeedComponent extends DefaultComponent implements
         RSSFeedService {
+
     private static Log log = LogFactory.getLog(RSSFeedComponent.class);
 
     @Override
@@ -67,10 +60,12 @@ public class RSSFeedComponent extends DefaultComponent implements
 
     protected String getAndCreateUserRssFeedPathContainerIfNeeded(
             String userWorkspace, CoreSession session) throws ClientException {
-        String userRssFeedPath = userWorkspace + "/" + RSS_FEED;
+        String userRssFeedPath = userWorkspace + "/" + RSS_FEEDS_FOLDER;
         if (!session.exists(new PathRef(userRssFeedPath))) {
             new UnrestrictedRssFeedContainerCreator(session, userRssFeedPath).changeACPNeeded(
                     false).runUnrestricted();
+            new UnrestrictedDefaultRssFeedsCopier(session, userRssFeedPath,
+                    getRssFeedModelContainerPath()).run();
         }
         return userRssFeedPath;
     }
@@ -95,67 +90,7 @@ public class RSSFeedComponent extends DefaultComponent implements
         new UnrestrictedRssFeedContainerCreator(session, path).runUnrestricted();
     }
 
-    protected UserManager getUserManager() throws Exception {
-        return Framework.getService(UserManager.class);
-    }
-
     protected UserWorkspaceService getUserWorkspaceService() throws Exception {
         return Framework.getService(UserWorkspaceService.class);
-    }
-
-    protected class UnrestrictedRssFeedContainerCreator extends
-            UnrestrictedSessionRunner {
-
-        protected String basePath;
-
-        protected String rssFeedModelContainerPath;
-
-        protected boolean isACPNeeded = true;
-
-        protected UnrestrictedRssFeedContainerCreator(CoreSession session,
-                String reportModelsContainerPath) {
-            super(session);
-            this.basePath = reportModelsContainerPath.subSequence(0,
-                    reportModelsContainerPath.lastIndexOf("/")).toString();
-            this.rssFeedModelContainerPath = reportModelsContainerPath;
-        }
-
-        public UnrestrictedRssFeedContainerCreator changeACPNeeded(
-                boolean addACP) {
-            this.isACPNeeded = addACP;
-            return this;
-        }
-
-        @Override
-        public void run() throws ClientException {
-            if (!session.exists(new PathRef(rssFeedModelContainerPath))) {
-                DocumentModel doc = session.createDocumentModel(basePath,
-                        RSS_FEEDS_FOLDER, Constants.RSS_FEED_ROOT_TYPE);
-                doc.setPropertyValue("dc:title", "Rss Feed Models");
-                doc = session.createDocument(doc);
-                setACP(doc);
-                session.save();
-            }
-        }
-
-        protected void setACP(DocumentModel doc) throws ClientException {
-            if (!isACPNeeded) {
-                return;
-            }
-
-            ACP acp = new ACPImpl();
-            ACL acl = new ACLImpl();
-            try {
-                for (String administratorGroup : getUserManager().getAdministratorsGroups()) {
-                    ACE ace = new ACE(administratorGroup,
-                            SecurityConstants.EVERYTHING, true);
-                    acl.add(ace);
-                }
-            } catch (Exception e) {
-                log.error("Cannot set default ACE on " + basePath, e);
-            }
-            acp.addACL(acl);
-            doc.setACP(acp, true);
-        }
     }
 }

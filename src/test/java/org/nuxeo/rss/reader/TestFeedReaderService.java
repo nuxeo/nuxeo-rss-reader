@@ -22,6 +22,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.nuxeo.rss.reader.manager.api.Constants.RSS_FEEDS_FOLDER;
 import static org.nuxeo.rss.reader.manager.api.Constants.RSS_FEED_CONTAINER_PATH;
+import static org.nuxeo.rss.reader.manager.api.Constants.RSS_FEED_TYPE;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -64,16 +65,7 @@ public class TestFeedReaderService {
 
     @Test
     public void testFeedRootsCreation() throws ClientException {
-
-        DocumentModel management = session.createDocumentModel("Workspace");
-        management.setPropertyValue("dc:title", "management");
-        management.setPathInfo("/", "management");
-        session.createDocument(management);
-
-        DocumentModel domain = session.createDocumentModel("Domain");
-        domain.setPropertyValue("dc:title", "default-domain");
-        domain.setPathInfo("/", "default-domain");
-        session.createDocument(domain);
+        addSystemRoot();
 
         DocumentRef feedContainer = new PathRef(RSS_FEED_CONTAINER_PATH);
         assertFalse(session.exists(feedContainer));
@@ -86,5 +78,45 @@ public class TestFeedReaderService {
         rssFeedService.getCurrentUserRssFeedModelContainerPath("Administrator",
                 session.getDocument(new PathRef("/default-domain")));
         assertTrue(session.exists(userFeedContainer));
+    }
+
+    @Test
+    public void testChildrenCopy() throws ClientException {
+        addSystemRoot();
+
+        rssFeedService.createRssFeedModelContainerIfNeeded(session);
+        buildFeed("default1", true);
+        buildFeed("john", false);
+        buildFeed("doh", false);
+        buildFeed("default2", true);
+
+        String userFeeds = rssFeedService.getCurrentUserRssFeedModelContainerPath("Administrator",
+                session.getDocument(new PathRef("/default-domain")));
+        assertEquals("/default-domain/UserWorkspaces/Administrator/" + RSS_FEEDS_FOLDER, userFeeds);
+        DocumentRef userFeedsRef = new PathRef(userFeeds);
+        assertTrue(session.exists(userFeedsRef));
+        session.save();
+
+        assertEquals(2, session.getChildren(userFeedsRef).size());
+    }
+
+    protected DocumentModel buildFeed(String name, boolean isDefault) throws ClientException {
+        DocumentModel feed = session.createDocumentModel(RSS_FEED_TYPE);
+        feed.setPropertyValue("dc:title", name);
+        feed.setPropertyValue("rf:is_default_feed", isDefault);
+        feed.setPathInfo(RSS_FEED_CONTAINER_PATH, name);
+        return session.createDocument(feed);
+    }
+
+    protected void addSystemRoot() throws ClientException {
+        DocumentModel management = session.createDocumentModel("Workspace");
+        management.setPropertyValue("dc:title", "management");
+        management.setPathInfo("/", "management");
+        session.createDocument(management);
+
+        DocumentModel domain = session.createDocumentModel("Domain");
+        domain.setPropertyValue("dc:title", "default-domain");
+        domain.setPathInfo("/", "default-domain");
+        session.createDocument(domain);
     }
 }
