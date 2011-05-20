@@ -19,7 +19,6 @@ import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.platform.usermanager.UserManager;
 import org.nuxeo.ecm.webapp.contentbrowser.DocumentActions;
 import org.nuxeo.rss.reader.service.FeedReaderService;
-import org.nuxeo.runtime.api.Framework;
 
 @Name("rssFeedActions")
 @Scope(ScopeType.CONVERSATION)
@@ -39,7 +38,8 @@ public class RssFeedActions implements Serializable {
     @In(create = true)
     protected transient UserManager userManager;
 
-    protected transient FeedReaderService feedReaderService;
+    @In(create = true)
+    protected transient FeedReaderService feedReader;
 
     protected DocumentModel newRssFeedModel = null;
 
@@ -57,7 +57,7 @@ public class RssFeedActions implements Serializable {
     }
 
     public void saveDocument() throws ClientException {
-        getFeedReaderService().createRssFeedModelContainerIfNeeded(documentManager);
+        feedReader.createRssFeedModelContainerIfNeeded(documentManager);
         documentActions.saveDocument(newRssFeedModel);
         resetDocument();
         toggleForm();
@@ -83,16 +83,5 @@ public class RssFeedActions implements Serializable {
     public String getRssFeedsContainerPath() throws ClientException {
 
         return RSS_FEED_CONTAINER_PATH;
-    }
-
-    protected FeedReaderService getFeedReaderService() throws ClientException {
-        if (feedReaderService == null) {
-            try {
-                feedReaderService = Framework.getService(FeedReaderService.class);
-            } catch (Exception e) {
-                throw new ClientException(e);
-            }
-        }
-        return feedReaderService;
     }
 }
