@@ -17,10 +17,10 @@ import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.PathRef;
-import org.nuxeo.ecm.platform.actions.Action;
 import org.nuxeo.ecm.platform.ui.web.api.NavigationContext;
 import org.nuxeo.ecm.platform.usermanager.UserManager;
 import org.nuxeo.ecm.webapp.contentbrowser.DocumentActions;
+import org.nuxeo.ecm.webapp.helpers.EventManager;
 import org.nuxeo.rss.reader.service.RSSFeedService;
 
 @Name("rssFeedActions")
@@ -65,6 +65,7 @@ public class RssFeedActions implements Serializable {
     public void saveDocument() throws ClientException {
         rssFeed.createRssFeedModelContainerIfNeeded(documentManager);
         documentActions.saveDocument(newRssFeedModel);
+        EventManager.raiseEventsOnDocumentChange(newRssFeedModel);
         resetDocument();
         toggleForm();
     }
@@ -90,6 +91,7 @@ public class RssFeedActions implements Serializable {
 
         return RSS_FEED_CONTAINER_PATH;
     }
+
     public String getLink(String link) {
 
         try {
@@ -97,8 +99,10 @@ public class RssFeedActions implements Serializable {
             navigationContext.setCurrentDocument(documentManager.getDocument(new PathRef(
                     RSS_FEED_CONTAINER_PATH)));
         } catch (Exception e) {
-            if(log.isErrorEnabled()){
-                log.error("Unable to set the current document to "+RSS_FEED_CONTAINER_PATH);
+            if (log.isErrorEnabled()) {
+                log.error(String.format(
+                        "Unable to set the current document to \"%s\"",
+                        RSS_FEED_CONTAINER_PATH));
             }
         }
         return link;

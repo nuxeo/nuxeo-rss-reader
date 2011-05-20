@@ -21,10 +21,7 @@
         <a4j:commandButton styleClass="button"
           value="#{messages['command.create']}"
           action="#{rssFeedActions.saveDocument}" id="button_create"
-          reRender="rssFeedModelPanel">
-          <nxu:actionListenerMethod
-            value="#{contentViewActions.reset('rss_feed_management')}" />
-        </a4j:commandButton>
+          reRender="rssFeedModelPanel" />
         <a4j:commandButton styleClass="button"
           value="#{messages['command.cancel']}"
           action="#{rssFeedActions.toggleAndReset()}" immediate="true"

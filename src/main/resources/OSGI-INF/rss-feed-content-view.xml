@@ -13,9 +13,10 @@
         <property name="coreSession">#{documentManager}</property>
         <pattern>
           SELECT * FROM Document WHERE ecm:primaryType='RssFeed'
-          AND ecm:currentLifeCycleState != 'deleted' AND ecm:path STARTSWITH ?
+          AND ecm:currentLifeCycleState != 'deleted' AND ecm:path
+          STARTSWITH ?
         </pattern>
-        <sort column="dc:title" ascending="true" />
+        <sort column="ecm:pos" ascending="true" />
         <parameter>#{rssFeed.rssFeedModelContainerPath}</parameter>
         <pageSize>20</pageSize>
       </coreQueryPageProvider>
@@ -25,14 +26,14 @@
       <useGlobalPageSize>true</useGlobalPageSize>
       <refresh>
         <event>documentChanged</event>
-        <event>documentCreated</event>
+        <event>documentChildrenChanged</event>
       </refresh>
       <cacheKey>only_one_cache</cacheKey>
       <cacheSize>1</cacheSize>
 
       <resultLayouts>
         <layout name="rss_display_list" title="document_listing"
-          translateTitle="true" iconPath="/icons/document_listing_icon.png"/>
+          translateTitle="true" iconPath="/icons/document_listing_icon.png" />
       </resultLayouts>
 
       <selectionList>CURRENT_SELECTION</selectionList>

@@ -107,7 +107,7 @@
     <layout name="rss_display_list">
       <templates>
         <template mode="any">
-          /layouts/layout_listing_template.xhtml
+          /layouts/layout_listing_ajax_template.xhtml
         </template>
         <template mode="csv">
           /layouts/layout_listing_csv_template.xhtml
@@ -121,6 +121,20 @@
         <property name="showRowEvenOddClass">true</property>
       </properties>
       <columns>
+       <column>
+          <properties mode="any">
+            <property name="isListingSelectionBox">true</property>
+            <property name="useFirstWidgetLabelAsColumnHeader">false</property>
+            <property name="columnStyleClass">iconColumn</property>
+          </properties>
+          <properties mode="csv">
+            <property name="isHidden">true</property>
+          </properties>
+          <properties mode="pdf">
+            <property name="isHidden">true</property>
+          </properties>
+          <widget>listing_ajax_selection_box</widget>
+        </column>
         <column>
           <properties mode="any">
             <property name="useFirstWidgetLabelAsColumnHeader">true</property>
