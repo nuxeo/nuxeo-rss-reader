@@ -17,13 +17,14 @@
 
 package org.nuxeo.rss.reader.service;
 
-import static org.nuxeo.ecm.core.management.storage.DocumentStoreManager.MANAGEMENT_ROOT_PATH;
+import static org.nuxeo.rss.reader.manager.api.Constants.RSS_FEED;
 import static org.nuxeo.rss.reader.manager.api.Constants.RSS_FEEDS_FOLDER;
 import static org.nuxeo.rss.reader.manager.api.Constants.RSS_FEED_CONTAINER_PATH;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.nuxeo.ecm.core.api.ClientException;
+import org.nuxeo.ecm.core.api.CoreInstance;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.PathRef;
@@ -35,6 +36,7 @@ import org.nuxeo.ecm.core.api.security.SecurityConstants;
 import org.nuxeo.ecm.core.api.security.impl.ACLImpl;
 import org.nuxeo.ecm.core.api.security.impl.ACPImpl;
 import org.nuxeo.ecm.platform.usermanager.UserManager;
+import org.nuxeo.ecm.platform.userworkspace.api.UserWorkspaceService;
 import org.nuxeo.rss.reader.manager.api.Constants;
 import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.model.DefaultComponent;
@@ -58,6 +60,31 @@ public class RSSFeedComponent extends DefaultComponent implements
         }
     }
 
+    protected String getAndCreateUserRssFeedPathContainerIfNeeded(
+            String userWorkspace, CoreSession session) throws ClientException {
+        String userRssFeedPath = userWorkspace + "/" + RSS_FEED;
+        if (!session.exists(new PathRef(userRssFeedPath))) {
+            new UnrestrictedRssFeedContainerCreator(session, userRssFeedPath).changeACPNeeded(
+                    false).runUnrestricted();
+        }
+        return userRssFeedPath;
+    }
+
+    @Override
+    public String getCurrentUserRssFeedModelContainerPath(String userName,
+            DocumentModel currentDocument) throws ClientException {
+        try {
+            DocumentModel userWorkspace = getUserWorkspaceService().getCurrentUserPersonalWorkspace(
+                    userName, currentDocument);
+            return getAndCreateUserRssFeedPathContainerIfNeeded(
+                    userWorkspace.getPathAsString(),
+                    CoreInstance.getInstance().getSession(
+                            currentDocument.getSessionId()));
+        } catch (Exception e) {
+            throw ClientException.wrap(e);
+        }
+    }
+
     protected void createRssFeedContainer(CoreSession session, String path)
             throws ClientException {
         new UnrestrictedRssFeedContainerCreator(session, path).runUnrestricted();
@@ -67,42 +94,62 @@ public class RSSFeedComponent extends DefaultComponent implements
         return Framework.getService(UserManager.class);
     }
 
+    protected UserWorkspaceService getUserWorkspaceService() throws Exception {
+        return Framework.getService(UserWorkspaceService.class);
+    }
+
     protected class UnrestrictedRssFeedContainerCreator extends
             UnrestrictedSessionRunner {
 
+        protected String basePath;
+
         protected String rssFeedModelContainerPath;
+
+        protected boolean isACPNeeded = true;
 
         protected UnrestrictedRssFeedContainerCreator(CoreSession session,
                 String reportModelsContainerPath) {
             super(session);
+            this.basePath = reportModelsContainerPath.subSequence(0,
+                    reportModelsContainerPath.lastIndexOf("/")).toString();
             this.rssFeedModelContainerPath = reportModelsContainerPath;
+        }
+
+        public UnrestrictedRssFeedContainerCreator changeACPNeeded(boolean addACP) {
+            this.isACPNeeded = addACP;
+            return this;
         }
 
         @Override
         public void run() throws ClientException {
             if (!session.exists(new PathRef(rssFeedModelContainerPath))) {
-                DocumentModel doc = session.createDocumentModel(
-                        MANAGEMENT_ROOT_PATH, RSS_FEEDS_FOLDER,
-                        Constants.RSS_FEED_ROOT_TYPE);
+                DocumentModel doc = session.createDocumentModel(basePath,
+                        RSS_FEEDS_FOLDER, Constants.RSS_FEED_ROOT_TYPE);
                 doc.setPropertyValue("dc:title", "Rss Feed Models");
                 doc = session.createDocument(doc);
-
-                ACP acp = new ACPImpl();
-                ACL acl = new ACLImpl();
-                try {
-                    for (String administratorGroup : getUserManager().getAdministratorsGroups()) {
-                        ACE ace = new ACE(administratorGroup,
-                                SecurityConstants.EVERYTHING, true);
-                        acl.add(ace);
-                    }
-                } catch (Exception e) {
-                    log.error("Cannot set default ACE on FeedReader root path",
-                            e);
-                }
-                acp.addACL(acl);
-                doc.setACP(acp, true);
+                setACP(doc);
                 session.save();
             }
+        }
+
+        protected void setACP(DocumentModel doc) throws ClientException {
+            if (!isACPNeeded) {
+                return;
+            }
+
+            ACP acp = new ACPImpl();
+            ACL acl = new ACLImpl();
+            try {
+                for (String administratorGroup : getUserManager().getAdministratorsGroups()) {
+                    ACE ace = new ACE(administratorGroup,
+                            SecurityConstants.EVERYTHING, true);
+                    acl.add(ace);
+                }
+            } catch (Exception e) {
+                log.error("Cannot set default ACE on FeedReader root path", e);
+            }
+            acp.addACL(acl);
+            doc.setACP(acp, true);
         }
     }
 }

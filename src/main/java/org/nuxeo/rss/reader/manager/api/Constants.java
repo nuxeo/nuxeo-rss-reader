@@ -18,5 +18,4 @@ public class Constants {
 
     public static final String RSS_FEED_CONTAINER_PATH = MANAGEMENT_ROOT_PATH
             + "/" + RSS_FEEDS_FOLDER;
-
 }
