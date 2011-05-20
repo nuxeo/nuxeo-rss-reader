@@ -13,9 +13,10 @@
         <property name="coreSession">#{documentManager}</property>
         <pattern>
           SELECT * FROM Document WHERE ecm:primaryType='RssFeed'
-          AND ecm:currentLifeCycleState != 'deleted'
+          AND ecm:currentLifeCycleState != 'deleted' AND ecm:path STARTSWITH ?
         </pattern>
         <sort column="dc:title" ascending="true" />
+        <parameter>#{rssFeed.rssFeedModelContainerPath}</parameter>
         <pageSize>20</pageSize>
       </coreQueryPageProvider>
 

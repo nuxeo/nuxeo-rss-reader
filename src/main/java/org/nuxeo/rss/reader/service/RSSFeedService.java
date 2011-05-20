@@ -31,4 +31,6 @@ public interface RSSFeedService {
 
     String getCurrentUserRssFeedModelContainerPath(String userName, DocumentModel currentDocument)
         throws ClientException;
+
+    String getRssFeedModelContainerPath();
 }

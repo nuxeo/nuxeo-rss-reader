@@ -42,7 +42,7 @@ import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.model.DefaultComponent;
 
 /**
- * Default FeedReader component implementaion, it also default implemention of
+ * Default RSSFeed component implementation, it also default implementation of
  * {@code org.nuxeo.rss.reader.service.RSSFeedService}
  *
  * @author <a href="mailto:akervern@nuxeo.com">Arnaud Kervern</a>
@@ -58,6 +58,11 @@ public class RSSFeedComponent extends DefaultComponent implements
         if (!session.exists(new PathRef(RSS_FEED_CONTAINER_PATH))) {
             createRssFeedContainer(session, RSS_FEED_CONTAINER_PATH);
         }
+    }
+
+    @Override
+    public String getRssFeedModelContainerPath() {
+        return RSS_FEED_CONTAINER_PATH;
     }
 
     protected String getAndCreateUserRssFeedPathContainerIfNeeded(
@@ -147,7 +152,7 @@ public class RSSFeedComponent extends DefaultComponent implements
                     acl.add(ace);
                 }
             } catch (Exception e) {
-                log.error("Cannot set default ACE on FeedReader root path", e);
+                log.error("Cannot set default ACE on " + basePath, e);
             }
             acp.addACL(acl);
             doc.setACP(acp, true);
