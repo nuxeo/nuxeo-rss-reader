@@ -115,7 +115,8 @@ public class RSSFeedComponent extends DefaultComponent implements
             this.rssFeedModelContainerPath = reportModelsContainerPath;
         }
 
-        public UnrestrictedRssFeedContainerCreator changeACPNeeded(boolean addACP) {
+        public UnrestrictedRssFeedContainerCreator changeACPNeeded(
+                boolean addACP) {
             this.isACPNeeded = addACP;
             return this;
         }
