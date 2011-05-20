@@ -24,7 +24,7 @@ import org.nuxeo.ecm.core.api.ClientException;import org.nuxeo.ecm.core.api.Core
  * @author <a href="mailto:akervern@nuxeo.com">Arnaud Kervern</a>
  * @since 5.4.2
  */
-public interface FeedReaderService {
+public interface RSSFeedService {
 
     void createRssFeedModelContainerIfNeeded(CoreSession session)
             throws ClientException;

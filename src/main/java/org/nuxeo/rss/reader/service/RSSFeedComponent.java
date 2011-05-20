@@ -46,9 +46,9 @@ import org.nuxeo.runtime.model.DefaultComponent;
  * @author <a href="mailto:akervern@nuxeo.com">Arnaud Kervern</a>
  * @since 5.4.2
  */
-public class FeedReaderComponent extends DefaultComponent implements
-        FeedReaderService {
-    private static Log log = LogFactory.getLog(FeedReaderComponent.class);
+public class RSSFeedComponent extends DefaultComponent implements
+        RSSFeedService {
+    private static Log log = LogFactory.getLog(RSSFeedComponent.class);
 
     @Override
     public void createRssFeedModelContainerIfNeeded(CoreSession session)

@@ -37,12 +37,12 @@ import org.nuxeo.runtime.api.Framework;
  */
 @Name("feedReader")
 @Scope(CONVERSATION)
-public class FeedReaderServiceBusinessDelegate implements Serializable {
+public class RSSFeedServiceBusinessDelegate implements Serializable {
     private static final long serialVersionUID = -5326113474071108997L;
 
-    private static final Log log = LogFactory.getLog(FeedReaderServiceBusinessDelegate.class);
+    private static final Log log = LogFactory.getLog(RSSFeedServiceBusinessDelegate.class);
 
-    protected FeedReaderService feedReader;
+    protected RSSFeedService RSSFeed;
 
     // @Create
     public void initialize() {
@@ -50,33 +50,33 @@ public class FeedReaderServiceBusinessDelegate implements Serializable {
     }
 
     /**
-     * Acquires a new {@link FeedReaderService} reference.
+     * Acquires a new {@link RSSFeedService} reference.
      */
     @Unwrap
-    public FeedReaderService getFeedReaderService() throws ClientException {
-        if (null == feedReader) {
+    public RSSFeedService getFeedReaderService() throws ClientException {
+        if (null == RSSFeed) {
             try {
-                feedReader = Framework.getService(FeedReaderService.class);
+                RSSFeed = Framework.getService(RSSFeedService.class);
             } catch (Exception e) {
-                final String errMsg = "Error connecting to FeedReaderService. "
+                final String errMsg = "Error connecting to RSSFeedService. "
                         + e.getMessage();
                 throw new ClientException(errMsg, e);
             }
 
-            if (null == feedReader) {
-                throw new ClientException("FeedReaderService service not bound");
+            if (null == RSSFeed) {
+                throw new ClientException("RSSFeedService service not bound");
             }
         }
 
-        return feedReader;
+        return RSSFeed;
     }
 
     @Destroy
     @PermitAll
     public void destroy() {
-        if (null != feedReader) {
+        if (null != RSSFeed) {
             // typeManager.remove();
-            feedReader = null;
+            RSSFeed = null;
         }
     }
 }
