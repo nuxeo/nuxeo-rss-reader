@@ -4,12 +4,19 @@
   <require>org.nuxeo.ecm.platform.preview.actions</require>
   <require>org.nuxeo.ecm.platform.comment.actions</require>
 
-  <extension target="org.nuxeo.ecm.platform.actions.ActionService"
-    point="actions">
+  <extension target="org.nuxeo.ecm.platform.actions.ActionService" point="actions">
+    <!-- Admin center actions -->
+    <action id="FeedModel"
+    link="view_rss_feed_specific_admin-fragment.xhtml"
+    label="adm.rss.feed"
+      order="45">
+      <category>NUXEO_ADMIN</category>
+      <filter-id>only_for_manager</filter-id>
+    </action>
 
     <action id="TAB_VIEW_RSS_FEEDS" link="/incl/tabs/rss-feed.xhtml"
-      label="label.rss.feed" order="45">
-      <category>OAuthOpensocial_sub_tab</category>
+      label="tab.rss.feed" order="10">
+      <category>FeedModel_sub_tab</category>
       <filter-id>only_for_manager</filter-id>
     </action>
   </extension>

@@ -36,7 +36,7 @@
       </resultLayouts>
 
       <selectionList>CURRENT_SELECTION</selectionList>
-      <actions category="CURRENT_SELECTION_REPORTS_LIST" />
+      <actions category="ORDERABLE_CURRENT_SELECTION_LIST" />
     </contentView>
   </extension>
 </component>
