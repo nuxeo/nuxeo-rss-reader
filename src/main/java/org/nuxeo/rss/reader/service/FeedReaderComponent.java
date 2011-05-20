@@ -58,7 +58,8 @@ public class FeedReaderComponent extends DefaultComponent implements
         }
     }
 
-    protected void createRssFeedContainer(CoreSession session, String path) throws ClientException {
+    protected void createRssFeedContainer(CoreSession session, String path)
+            throws ClientException {
         new UnrestrictedRssFeedContainerCreator(session, path).runUnrestricted();
     }
 
@@ -89,13 +90,15 @@ public class FeedReaderComponent extends DefaultComponent implements
                 ACP acp = new ACPImpl();
                 ACL acl = new ACLImpl();
                 try {
-for (String administratorGroup : getUserManager().getAdministratorsGroups()) {
-                    ACE ace = new ACE(administratorGroup,
-                            SecurityConstants.EVERYTHING, true);
-                    acl.add(ace);
-                }} catch (Exception e) {
-                    log.error("Cannot set default ACE on FeedReader root path", e);
-}
+                    for (String administratorGroup : getUserManager().getAdministratorsGroups()) {
+                        ACE ace = new ACE(administratorGroup,
+                                SecurityConstants.EVERYTHING, true);
+                        acl.add(ace);
+                    }
+                } catch (Exception e) {
+                    log.error("Cannot set default ACE on FeedReader root path",
+                            e);
+                }
                 acp.addACL(acl);
                 doc.setACP(acp, true);
                 session.save();
