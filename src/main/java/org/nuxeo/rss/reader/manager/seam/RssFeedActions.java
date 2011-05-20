@@ -18,9 +18,9 @@ import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.platform.usermanager.UserManager;
 import org.nuxeo.ecm.webapp.contentbrowser.DocumentActions;
-import org.nuxeo.rss.reader.service.FeedReaderService;
+import org.nuxeo.rss.reader.service.RSSFeedService;
 
-@Name("rssFeedActions")
+@Name("rssFeed")
 @Scope(ScopeType.CONVERSATION)
 @Install(precedence = FRAMEWORK)
 public class RssFeedActions implements Serializable {
@@ -39,7 +39,7 @@ public class RssFeedActions implements Serializable {
     protected transient UserManager userManager;
 
     @In(create = true)
-    protected transient FeedReaderService feedReader;
+    protected transient RSSFeedService feedReader;
 
     protected DocumentModel newRssFeedModel = null;
 

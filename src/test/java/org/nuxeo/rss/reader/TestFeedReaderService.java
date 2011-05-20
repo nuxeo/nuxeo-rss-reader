@@ -25,7 +25,7 @@ import org.nuxeo.ecm.core.test.annotations.BackendType;
 import org.nuxeo.ecm.core.test.annotations.Granularity;
 import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
 import org.nuxeo.ecm.platform.test.PlatformFeature;
-import org.nuxeo.rss.reader.service.FeedReaderService;
+import org.nuxeo.rss.reader.service.RSSFeedService;
 import org.nuxeo.runtime.test.runner.Deploy;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
@@ -42,7 +42,7 @@ import com.google.inject.Inject;
         "org.nuxeo.ecm.automation.features", "org.nuxeo.ecm.platform.query.api" })
 public class TestFeedReaderService {
     @Inject
-    FeedReaderService feedReader;
+    RSSFeedService feedReader;
 
     @Test
     public void testServiceRegistration() {

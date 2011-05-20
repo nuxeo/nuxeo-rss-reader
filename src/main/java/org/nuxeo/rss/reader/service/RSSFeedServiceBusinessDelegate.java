@@ -35,7 +35,7 @@ import org.nuxeo.runtime.api.Framework;
 /**
  * @author <a href="mailto:akervern@nuxeo.com">Arnaud Kervern</a>
  */
-@Name("feedReader")
+@Name("rssFeed")
 @Scope(CONVERSATION)
 public class RSSFeedServiceBusinessDelegate implements Serializable {
     private static final long serialVersionUID = -5326113474071108997L;

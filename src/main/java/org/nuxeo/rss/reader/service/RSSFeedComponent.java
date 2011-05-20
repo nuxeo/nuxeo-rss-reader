@@ -41,7 +41,7 @@ import org.nuxeo.runtime.model.DefaultComponent;
 
 /**
  * Default FeedReader component implementaion, it also default implemention of
- * {@code org.nuxeo.rss.reader.service.FeedReaderService}
+ * {@code org.nuxeo.rss.reader.service.RSSFeedService}
  *
  * @author <a href="mailto:akervern@nuxeo.com">Arnaud Kervern</a>
  * @since 5.4.2
