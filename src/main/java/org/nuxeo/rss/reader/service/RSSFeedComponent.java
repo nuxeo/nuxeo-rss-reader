@@ -19,6 +19,10 @@ package org.nuxeo.rss.reader.service;
 
 import static org.nuxeo.rss.reader.manager.api.Constants.RSS_FEEDS_FOLDER;
 import static org.nuxeo.rss.reader.manager.api.Constants.RSS_FEED_CONTAINER_PATH;
+import static org.nuxeo.rss.reader.manager.api.Constants.RSS_FEED_URL_PROPERTY;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -26,6 +30,8 @@ import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreInstance;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
+import org.nuxeo.ecm.core.api.DocumentModelList;
+import org.nuxeo.ecm.core.api.DocumentRef;
 import org.nuxeo.ecm.core.api.PathRef;
 import org.nuxeo.ecm.platform.userworkspace.api.UserWorkspaceService;
 import org.nuxeo.rss.reader.runner.UnrestrictedDefaultRssFeedsCopier;
@@ -58,6 +64,31 @@ public class RSSFeedComponent extends DefaultComponent implements
         return RSS_FEED_CONTAINER_PATH;
     }
 
+    @Override
+    public List<String> getUserRssFeedAddresses(CoreSession session,
+            String currentDocument) throws ClientException {
+        List<String> addresses = new ArrayList<String>();
+        for (DocumentModel dc : getUserRssFeedDocumentModelList(session,
+                currentDocument)) {
+            addresses.add(dc.getPropertyValue(RSS_FEED_URL_PROPERTY).toString());
+        }
+        return addresses;
+    }
+
+    protected DocumentModelList getUserRssFeedDocumentModelList(
+            CoreSession session, String currentDocument) throws ClientException {
+        DocumentRef document = new PathRef(currentDocument);
+        if (!session.exists(document)) {
+            throw new ClientException(String.format(
+                    "Document %s doesn't exist.", currentDocument));
+        }
+
+        String currentUser = session.getPrincipal().getName();
+        return session.getChildren(new PathRef(
+                getCurrentUserRssFeedModelContainerPath(currentUser,
+                        session.getDocument(document))));
+    }
+
     protected String getAndCreateUserRssFeedPathContainerIfNeeded(
             String userWorkspace, CoreSession session) throws ClientException {
         String userRssFeedPath = userWorkspace + "/" + RSS_FEEDS_FOLDER;
@@ -65,7 +96,7 @@ public class RSSFeedComponent extends DefaultComponent implements
             new UnrestrictedRssFeedContainerCreator(session, userRssFeedPath).changeACPNeeded(
                     false).runUnrestricted();
             new UnrestrictedDefaultRssFeedsCopier(session, userRssFeedPath,
-                    getRssFeedModelContainerPath()).run();
+                    getRssFeedModelContainerPath()).runUnrestricted();
         }
         return userRssFeedPath;
     }

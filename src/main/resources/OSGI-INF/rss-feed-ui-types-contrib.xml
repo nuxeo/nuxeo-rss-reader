@@ -22,5 +22,31 @@
       </subtypes>
     </type>
 
+    <type id="RssFeedRoot">
+      <label>RssFeedRoot</label>
+      <icon>/icons/ordered_folder.png</icon>
+      <bigIcon>/icons/ordered_folder_100.png</bigIcon>
+      <icon-expanded>/icons/ordered_folder_open.png</icon-expanded>
+      <default-view>view_documents</default-view>
+      <subtypes>
+        <type>RssFeed</type>
+      </subtypes>
+      <layouts mode="any">
+        <layout>heading</layout>
+      </layouts>
+      <layouts mode="edit">
+        <layout>heading</layout>
+        <layout>dublincore</layout>
+      </layouts>
+      <contentViews category="content">
+        <contentView>orderable_document_content</contentView>
+      </contentViews>
+      <contentViews category="trash_content">
+        <contentView showInExportView="false">
+          document_trash_content
+        </contentView>
+      </contentViews>
+    </type>
+
   </extension>
 </component>

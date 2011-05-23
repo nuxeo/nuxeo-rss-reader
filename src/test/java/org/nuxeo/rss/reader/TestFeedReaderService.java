@@ -17,12 +17,15 @@
 
 package org.nuxeo.rss.reader;
 
-import static org.junit.Assert.assertEquals;import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.nuxeo.rss.reader.manager.api.Constants.RSS_FEEDS_FOLDER;
 import static org.nuxeo.rss.reader.manager.api.Constants.RSS_FEED_CONTAINER_PATH;
 import static org.nuxeo.rss.reader.manager.api.Constants.RSS_FEED_TYPE;
+
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -85,10 +88,10 @@ public class TestFeedReaderService {
         addSystemRoot();
 
         rssFeedService.createRssFeedModelContainerIfNeeded(session);
-        buildFeed("default1", true);
-        buildFeed("john", false);
-        buildFeed("doh", false);
-        buildFeed("default2", true);
+        buildFeed("default1", true, null);
+        buildFeed("john", false, null);
+        buildFeed("doh", false, null);
+        buildFeed("default2", true, null);
 
         String userFeeds = rssFeedService.getCurrentUserRssFeedModelContainerPath("Administrator",
                 session.getDocument(new PathRef("/default-domain")));
@@ -100,10 +103,27 @@ public class TestFeedReaderService {
         assertEquals(2, session.getChildren(userFeedsRef).size());
     }
 
-    protected DocumentModel buildFeed(String name, boolean isDefault) throws ClientException {
+    @Test
+    public void testGetUserFeeds() throws ClientException {
+        addSystemRoot();
+        rssFeedService.createRssFeedModelContainerIfNeeded(session);
+
+        buildFeed("feed1", true, "http://www.dummyRss.com");
+        buildFeed("feed2", false, "http://www.dummyRss.default.com");
+        buildFeed("feed3", true, "http://www.dummyRss.com");
+
+        List<String> adresses = rssFeedService.getUserRssFeedAddresses(session, "/default-domain");
+        assertEquals(2, adresses.size());
+        for(String feedAddress : adresses) {
+            assertEquals("http://www.dummyRss.com", feedAddress);
+        }
+    }
+
+    protected DocumentModel buildFeed(String name, boolean isDefault, String url) throws ClientException {
         DocumentModel feed = session.createDocumentModel(RSS_FEED_TYPE);
         feed.setPropertyValue("dc:title", name);
         feed.setPropertyValue("rf:is_default_feed", isDefault);
+        feed.setPropertyValue("rf:rss_address", url);
         feed.setPathInfo(RSS_FEED_CONTAINER_PATH, name);
         return session.createDocument(feed);
     }

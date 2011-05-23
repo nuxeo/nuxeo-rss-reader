@@ -17,7 +17,7 @@
           STARTSWITH ?
         </pattern>
         <sort column="ecm:pos" ascending="true" />
-        <parameter>#{rssFeed.rssFeedModelContainerPath}</parameter>
+        <parameter>#{rssFeed.getRssFeedModelContainerPath()}</parameter>
         <pageSize>20</pageSize>
       </coreQueryPageProvider>
 

@@ -87,11 +87,6 @@ public class RssFeedActions implements Serializable {
         resetDocument();
     }
 
-    public String getRssFeedsContainerPath() throws ClientException {
-
-        return RSS_FEED_CONTAINER_PATH;
-    }
-
     public String getLink(String link) {
 
         try {

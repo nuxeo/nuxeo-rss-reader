@@ -19,15 +19,18 @@ package org.nuxeo.rss.reader;
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 
-import net.sf.json.JSONObject;
-
 import org.nuxeo.ecm.automation.core.Constants;
+import org.nuxeo.ecm.automation.core.annotations.Context;
 import org.nuxeo.ecm.automation.core.annotations.Operation;
 import org.nuxeo.ecm.automation.core.annotations.OperationMethod;
 import org.nuxeo.ecm.automation.core.annotations.Param;
 import org.nuxeo.ecm.automation.core.util.StringList;
 import org.nuxeo.ecm.core.api.Blob;
+import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.impl.blob.InputStreamBlob;
+import org.nuxeo.rss.reader.service.RSSFeedService;
+
+import net.sf.json.JSONObject;
 
 /**
  * @author <a href="mailto:ei@nuxeo.com">Eugen Ionica</a>
@@ -43,15 +46,28 @@ public class FeedProviderOperation {
 
     public static final String ID = "Feed.Provider";
 
-    @Param(name = "urls")
-    protected StringList urls;
+    @Param(name = "domain", required = false)
+    protected String domain = "/default-domain";
+
+    @Param(name = "urls", required = false)
+    protected StringList urls = null;
 
     @Param(name = "limit", required = false)
     protected int limit = FeedHelper.NO_LIMIT;
 
+    @Context
+    protected CoreSession session;
+
+    @Context
+    protected RSSFeedService rssFeedService;
+
     @OperationMethod
     public Blob run() throws Exception {
-        if (urls == null || urls.size() == 0) {
+        if (urls == null) {
+            urls = new StringList(rssFeedService.getUserRssFeedAddresses(
+                    session, domain));
+        }
+        if (urls.size() == 0) {
             return buildBlob("");
         }
         if (urls.size() == 1) {

@@ -29,7 +29,6 @@
     var opCallParameters = {
         operationId : 'Feed.Provider',
         operationParams : {
-         urls :  'http://rss.lemonde.fr/c/205/f/3052/index.rss,http://actu.voila.fr/Magic/XML/rss-a-la-une.xml,http://feeds.feedburner.com/fubiz',
          limit : 4
         },
         entityType : 'blob',
