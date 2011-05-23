@@ -1,5 +1,21 @@
 ## Nuxeo RSS reader
 
+Nuxeo RSS related module. 
+
+## How to build
+
+#quick build:
+ant build 
+
+#build & test
+ant build-with-tests # or 
+mvn clean install
+
+# deploy in a nuxeo tomcat instance
+ant deploy-tomcat 
+
+Note: the tomcat.dir should be defined in a build.properties
+
 
 ## About Nuxeo
 
