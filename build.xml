@@ -21,7 +21,7 @@
     <echo message="ant deploy-tomcat      => Build Nuxeo RSS Reader Module  and deploy it on a Tomcat instance" />
   </target>
 
-  <target name="build" depends="build-unix,build-windows" description="Build Nuxeo Social Collaboration"/>
+  <target name="build" depends="build-unix,build-windows" description="Build Nuxeo RSS Reader"/>
   <target name="build-unix" if="osfamily-unix">
     <exec executable="mvn" failonerror="true">
       <arg value="clean" />
