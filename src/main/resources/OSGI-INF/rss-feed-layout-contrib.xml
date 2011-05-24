@@ -6,16 +6,20 @@
   <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager"
     point="widgets">
 
-    <widget name="rss_title_listing" type="text">
+    <widget name="rss_title_listing" type="template">
       <labels>
         <label mode="any">label.rss.feed.title</label>
       </labels>
       <translated>true</translated>
       <fields>
-        <field>data.dc.title</field>
+        <field>data</field>
       </fields>
+      <widgetModes>
+        <mode value="any">view</mode>
+      </widgetModes>
       <properties mode="any">
         <property name="help">help.rss.feed.title</property>
+        <property name="template">/widgets/listing_rss_feed_name_widget.xhtml</property>
       </properties>
     </widget>
 

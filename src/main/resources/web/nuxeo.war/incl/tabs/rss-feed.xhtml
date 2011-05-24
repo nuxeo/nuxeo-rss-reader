@@ -7,20 +7,43 @@
   xmlns:c="http://java.sun.com/jstl/core" id="rssFeedModelPanel">
 
   <f:subview id="rssFeedCreationForm"
-    rendered="#{rssFeedActions.showForm}">
+    rendered="#{rssFeedActions.showCreateForm}">
     <h3>
       <h:outputText
         value="#{messages['title.create.document']} #{messages['label.rss.feed']}" />
     </h3>
     <h:form enctype="multipart/form-data" id="document_create">
       <nxl:documentLayout mode="create"
-        value="#{rssFeedActions.newReportModel}" />
+        value="#{rssFeedActions.currentDocument}" />
       <input type="hidden" name="parentDocumentPath"
         value="#{rssFeed.rssFeedModelContainerPath}" />
       <p class="buttonsGadget">
         <a4j:commandButton styleClass="button"
           value="#{messages['command.create']}"
           action="#{rssFeedActions.saveDocument}" id="button_create"
+          reRender="rssFeedModelPanel" />
+        <a4j:commandButton styleClass="button"
+          value="#{messages['command.cancel']}"
+          action="#{rssFeedActions.toggleAndReset()}" immediate="true"
+          reRender="rssFeedModelPanel" />
+      </p>
+    </h:form>
+
+  </f:subview>
+
+  <f:subview id="rssFeedEditForm"
+    rendered="#{rssFeedActions.showEditForm}">
+    <h3>
+      <h:outputText
+        value="#{messages['title.edit']} #{messages['label.rss.feed']}" />
+    </h3>
+    <h:form enctype="multipart/form-data" id="document_edit">
+      <nxl:documentLayout mode="edit"
+        value="#{rssFeedActions.currentDocument}" />
+      <p class="buttonsGadget">
+        <a4j:commandButton styleClass="button"
+          value="#{messages['command.save']}"
+          action="#{rssFeedActions.saveDocument}" id="button_edit"
           reRender="rssFeedModelPanel" />
         <a4j:commandButton styleClass="button"
           value="#{messages['command.cancel']}"
