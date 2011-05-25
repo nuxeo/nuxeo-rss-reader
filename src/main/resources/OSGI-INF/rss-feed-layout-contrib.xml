@@ -33,6 +33,7 @@
       </fields>
       <properties mode="any">
         <property name="help">help.rss.feed.address</property>
+        <property name="styleClass">dataInputText</property>
       </properties>
     </widget>
 
