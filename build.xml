@@ -19,6 +19,7 @@
     <echo message="ant build              => Build Nuxeo RSS Reader Module" />
     <echo message="ant build-with-tests   => Build and Test Nuxeo RSS Reader Module" />
     <echo message="ant deploy-tomcat      => Build Nuxeo RSS Reader Module  and deploy it on a Tomcat instance" />
+    <echo message="integration-test       => Launch selenium tests suite" />
   </target>
 
   <target name="build" depends="build-unix,build-windows" description="Build Nuxeo RSS Reader"/>
@@ -56,6 +57,17 @@
       <arg value="clean" />
       <arg value="install" />
       <arg value="${mvn.opts}" />
+    </exec>
+  </target>
+
+  <target name="integration-test" depends="integration-test-unix" description="Run selenium test on a Tomcat instance" />
+  <target name="integration-test-unix" if="osfamily-unix">
+    <exec executable="mvn" failonerror="true">
+      <arg value="${mvn.opts}" />
+      <arg value="-Dmaven.test.skip=true" />
+      <arg value="clean" />
+      <arg value="integration-test" />
+      <arg value="-Ptestit" />
     </exec>
   </target>
 
