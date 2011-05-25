@@ -63,11 +63,11 @@
   <target name="integration-test" depends="integration-test-unix" description="Run selenium test on a Tomcat instance" />
   <target name="integration-test-unix" if="osfamily-unix">
     <exec executable="mvn" failonerror="true">
-      <arg value="${mvn.opts}" />
       <arg value="-Dmaven.test.skip=true" />
       <arg value="clean" />
       <arg value="integration-test" />
       <arg value="-Ptestit" />
+      <arg value="${mvn.opts}" />
     </exec>
   </target>
 

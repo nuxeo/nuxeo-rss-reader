@@ -1,6 +1,6 @@
 // set absolute path to current folder here, used in tests with file upload
 Selenium.prototype.doRetrieveTestFolderPath = function() {
-  storedVars['testfolderpath'] = "/Users/nuxeo/Nuxeo/nuxeo-addons/nuxeo-rss-reader/ftest/selenium/data/";
+  storedVars['testfolderpath'] = "/home/eugen/work2/nuxeo-rss-reader/ftest/selenium/data/";
 };
 
 // override default method to make sure privilege to type file path is enabled

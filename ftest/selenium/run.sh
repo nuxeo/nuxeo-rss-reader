@@ -10,7 +10,7 @@ fi
 HIDE_FF=${HIDE_FF:-}
 SUITES=${SUITES:-"suite"}
 URL=${URL:-http://localhost:8080/nuxeo/}
-FIREFOX_CONF="*firefox"
+FIREFOX_CONF="/usr/bin/firefox"
 USER_EXTENSIONS="$HERE/user-extensions.js"
 OUTPUT=${1:-../../target/integration/}
 
