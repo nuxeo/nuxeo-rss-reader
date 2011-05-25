@@ -108,18 +108,6 @@
   <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager"
     point="layouts">
 
-    <layout name="heading_">
-      <templates>
-        <template mode="any">/layouts/layout_default_template.xhtml
-        </template>
-      </templates>
-      <rows>
-        <row>
-          <widget>dc:title</widget>
-        </row>
-      </rows>
-    </layout>
-
     <layout name="rss_gadget">
       <templates>
         <template mode="any">/layouts/layout_default_template.xhtml
