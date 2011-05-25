@@ -39,11 +39,10 @@ public interface RSSFeedService {
 
     String getRssFeedModelContainerPath();
 
-<<<<<<< Updated upstream
     int getDisplayedArticleCount(CoreSession session) throws ClientException;
 
     int getMaximumFeedsCount(CoreSession session) throws ClientException;
-=======
+
     List<String> getUserRssFeedAddresses(CoreSession session)
             throws ClientException;
 
@@ -67,5 +66,4 @@ public interface RSSFeedService {
     DocumentModelList getGlobalFeedsDocumentModelList(CoreSession session)
             throws ClientException;
 
->>>>>>> Stashed changes
 }
