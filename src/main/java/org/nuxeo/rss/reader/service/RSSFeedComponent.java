@@ -20,6 +20,8 @@ package org.nuxeo.rss.reader.service;
 import static org.nuxeo.rss.reader.manager.api.Constants.RSS_FEEDS_FOLDER;
 import static org.nuxeo.rss.reader.manager.api.Constants.RSS_FEED_CONTAINER_PATH;
 import static org.nuxeo.rss.reader.manager.api.Constants.RSS_FEED_URL_PROPERTY;
+import static org.nuxeo.rss.reader.manager.api.Constants.RSS_GADGET_ARTICLE_COUNT;
+import static org.nuxeo.rss.reader.manager.api.Constants.RSS_GADGET_MAX_FEED_COUNT;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +59,12 @@ public class RSSFeedComponent extends DefaultComponent implements
         if (!session.exists(new PathRef(RSS_FEED_CONTAINER_PATH))) {
             createRssFeedContainer(session, RSS_FEED_CONTAINER_PATH);
         }
+    }
+
+    protected DocumentModel getRssFeedModelContainer(CoreSession session)
+            throws ClientException {
+        createRssFeedModelContainerIfNeeded(session);
+        return session.getDocument(new PathRef(getRssFeedModelContainerPath()));
     }
 
     @Override
@@ -114,6 +122,17 @@ public class RSSFeedComponent extends DefaultComponent implements
         } catch (Exception e) {
             throw ClientException.wrap(e);
         }
+    }
+
+    @Override
+    public int getDisplayedArticleCount(CoreSession session)
+            throws ClientException {
+        return ((Long)getRssFeedModelContainer(session).getPropertyValue(RSS_GADGET_ARTICLE_COUNT)).intValue();
+    }
+
+    @Override
+    public int getMaximumFeedsCount(CoreSession session) throws ClientException {
+        return ((Long)getRssFeedModelContainer(session).getPropertyValue(RSS_GADGET_MAX_FEED_COUNT)).intValue();
     }
 
     protected void createRssFeedContainer(CoreSession session, String path)

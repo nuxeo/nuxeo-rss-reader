@@ -52,9 +52,6 @@ public class FeedProviderOperation {
     @Param(name = "urls", required = false)
     protected StringList urls = null;
 
-    @Param(name = "limit", required = false)
-    protected int limit = FeedHelper.NO_LIMIT;
-
     @Context
     protected CoreSession session;
 
@@ -70,6 +67,7 @@ public class FeedProviderOperation {
         if (urls.size() == 0) {
             return buildBlob("");
         }
+        int limit = rssFeedService.getDisplayedArticleCount(session);
         if (urls.size() == 1) {
             JSONObject feed = FeedHelper.getFeed(urls.get(0), limit);
             return buildBlob(feed.toString());

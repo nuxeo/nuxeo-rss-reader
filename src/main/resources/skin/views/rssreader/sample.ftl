@@ -16,7 +16,9 @@
       $('.gadgets-gadget-chrome').openSocialGadget({
         baseURL: '${contextPath}' + '/',
         language: '${Context.locale.language}',
-        gadgetSpecs: ['${Context.baseURL}${contextPath}/site/gadgets/rssreader/rssreader.xml']
+        gadgetDefs: [ {specUrl : '${Context.baseURL}${contextPath}/site/gadgets/rssreader/rssreader.xml',
+                    title : 'Nuxeo RSS Reader',
+                    width : '100%'}]
       });
     });
 

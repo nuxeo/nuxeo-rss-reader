@@ -41,4 +41,8 @@ public interface RSSFeedService {
             String currentDocument) throws ClientException;
 
     String getRssFeedModelContainerPath();
+
+    int getDisplayedArticleCount(CoreSession session) throws ClientException;
+
+    int getMaximumFeedsCount(CoreSession session) throws ClientException;
 }

@@ -13,20 +13,25 @@ import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Install;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
+import org.jboss.seam.core.Events;
+import org.jboss.seam.international.StatusMessage;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
+import org.nuxeo.ecm.core.api.DocumentRef;
 import org.nuxeo.ecm.core.api.PathRef;
 import org.nuxeo.ecm.platform.ui.web.api.NavigationContext;
 import org.nuxeo.ecm.platform.usermanager.UserManager;
+import org.nuxeo.ecm.webapp.base.InputController;
 import org.nuxeo.ecm.webapp.contentbrowser.DocumentActions;
 import org.nuxeo.ecm.webapp.helpers.EventManager;
+import org.nuxeo.ecm.webapp.helpers.EventNames;
 import org.nuxeo.rss.reader.service.RSSFeedService;
 
 @Name("rssFeedActions")
 @Scope(ScopeType.CONVERSATION)
 @Install(precedence = FRAMEWORK)
-public class RssFeedActions implements Serializable {
+public class RssFeedActions extends InputController implements Serializable {
 
     private static final long serialVersionUID = 8882417548656036277L;
 
@@ -47,7 +52,7 @@ public class RssFeedActions implements Serializable {
     @In(create = true)
     protected transient NavigationContext navigationContext;
 
-    protected DocumentModel newRssFeedModel = null;
+    protected DocumentModel currentDocument = null;
 
     protected boolean showForm = false;
 
@@ -55,27 +60,60 @@ public class RssFeedActions implements Serializable {
         return documentManager.createDocumentModel(RSS_FEED_TYPE);
     }
 
-    public DocumentModel getNewReportModel() throws ClientException {
-        if (newRssFeedModel == null) {
-            newRssFeedModel = getBareFeedReaderModel();
+    public DocumentModel getCurrentDocument() throws ClientException {
+        if (currentDocument == null) {
+            currentDocument = getBareFeedReaderModel();
         }
-        return newRssFeedModel;
+        return currentDocument;
     }
 
     public void saveDocument() throws ClientException {
         rssFeed.createRssFeedModelContainerIfNeeded(documentManager);
-        documentActions.saveDocument(newRssFeedModel);
-        EventManager.raiseEventsOnDocumentChange(newRssFeedModel);
+        if (currentDocument.getId() == null) {
+            // save document
+            documentActions.saveDocument(currentDocument);
+            EventManager.raiseEventsOnDocumentChange(currentDocument);
+        } else {
+            // update an existing one
+            Events.instance().raiseEvent(EventNames.BEFORE_DOCUMENT_CHANGED,
+                    currentDocument);
+            currentDocument = documentManager.saveDocument(currentDocument);
+            documentManager.save();
+            facesMessages.add(StatusMessage.Severity.INFO,
+                    resourcesAccessor.getMessages().get("document_modified"),
+                    resourcesAccessor.getMessages().get(currentDocument.getType()));
+            EventManager.raiseEventsOnDocumentChange(currentDocument);
+        }
         resetDocument();
         toggleForm();
     }
 
+    public void setCurrentDocument(String path) throws ClientException {
+        if (!(path == null || "".equals(path))) {
+            DocumentRef ref = new PathRef(path);
+            if (documentManager.exists(ref)) {
+                currentDocument = documentManager.getDocument(new PathRef(path));
+            } else {
+                facesMessages.add(StatusMessage.Severity.WARN,
+                    resourcesAccessor.getMessages().get("Error.Document.Not.Found"));
+            }
+        }
+    }
+
     protected void resetDocument() {
-        newRssFeedModel = null;
+        currentDocument = null;
     }
 
     public boolean isShowForm() {
         return showForm;
+    }
+
+    public boolean isShowCreateForm() {
+        return isShowForm() && currentDocument != null && currentDocument.getId() == null;
+    }
+
+    public boolean isShowEditForm() {
+        return isShowForm() && currentDocument != null && currentDocument.getId() != null;
     }
 
     public void toggleForm() {

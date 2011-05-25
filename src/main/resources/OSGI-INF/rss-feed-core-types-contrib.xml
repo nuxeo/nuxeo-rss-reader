@@ -4,6 +4,7 @@
   <extension target="org.nuxeo.ecm.core.schema.TypeService"
     point="schema">
     <schema name="rss-feed" src="schemas/rss-feed.xsd" prefix="rf" />
+    <schema name="rss-gadget" src="schemas/rss-gadget-preference.xsd" prefix="rg" />
   </extension>
 
   <extension target="org.nuxeo.ecm.core.schema.TypeService"
@@ -15,7 +16,9 @@
       <schema name="dublincore" />
     </doctype>
 
-    <doctype name="RssFeedRoot" extends="OrderedFolder"/>
+    <doctype name="RssFeedRoot" extends="OrderedFolder">
+      <schema name="rss-gadget" />
+    </doctype>
   </extension>
 
 </component>
