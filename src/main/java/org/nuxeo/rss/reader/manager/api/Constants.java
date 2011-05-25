@@ -20,4 +20,8 @@ public class Constants {
             + "/" + RSS_FEEDS_FOLDER;
 
     public static final String RSS_FEED_URL_PROPERTY = "rf:rss_address";
+
+    public static final String RSS_GADGET_ARTICLE_COUNT = "rg:article_count";
+
+    public static final String RSS_GADGET_MAX_FEED_COUNT = "rg:max_feed_count";
 }
