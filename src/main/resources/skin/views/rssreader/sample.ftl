@@ -31,9 +31,25 @@
         'transitionOut'     : 'none',
         'type'              : 'iframe',
         'enableEscapeButton': true,
-        'centerOnScroll': true
+        'centerOnScroll'	: true
       });
     }
+
+	function addConfigBoxTo(a, onClosedCallback ) {
+      jQuery(a).fancybox({
+        'width'             : '75%',
+        'height'            : '75%',
+        'autoScale'         : true,
+        'transitionIn'      : 'none',
+        'transitionOut'     : 'none',
+        'type'              : 'iframe',
+        'enableEscapeButton': true,
+        'centerOnScroll'	: true,
+        'onClosed' 			: onClosedCallback
+      });
+    }
+
+
   </script>
 </head>
 <body>

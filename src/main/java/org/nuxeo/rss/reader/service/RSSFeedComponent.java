@@ -29,11 +29,9 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.nuxeo.ecm.core.api.ClientException;
-import org.nuxeo.ecm.core.api.CoreInstance;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
-import org.nuxeo.ecm.core.api.DocumentRef;
 import org.nuxeo.ecm.core.api.PathRef;
 import org.nuxeo.ecm.platform.userworkspace.api.UserWorkspaceService;
 import org.nuxeo.rss.reader.runner.UnrestrictedDefaultRssFeedsCopier;
@@ -73,28 +71,17 @@ public class RSSFeedComponent extends DefaultComponent implements
     }
 
     @Override
-    public List<String> getUserRssFeedAddresses(CoreSession session,
-            String currentDocument) throws ClientException {
+    public List<String> getUserRssFeedAddresses(CoreSession session) throws ClientException {
         List<String> addresses = new ArrayList<String>();
-        for (DocumentModel dc : getUserRssFeedDocumentModelList(session,
-                currentDocument)) {
+        for (DocumentModel dc : getUserRssFeedDocumentModelList(session)) {
             addresses.add(dc.getPropertyValue(RSS_FEED_URL_PROPERTY).toString());
         }
         return addresses;
     }
 
-    protected DocumentModelList getUserRssFeedDocumentModelList(
-            CoreSession session, String currentDocument) throws ClientException {
-        DocumentRef document = new PathRef(currentDocument);
-        if (!session.exists(document)) {
-            throw new ClientException(String.format(
-                    "Document %s doesn't exist.", currentDocument));
-        }
-
-        String currentUser = session.getPrincipal().getName();
-        return session.getChildren(new PathRef(
-                getCurrentUserRssFeedModelContainerPath(currentUser,
-                        session.getDocument(document))));
+    public DocumentModelList getUserRssFeedDocumentModelList( CoreSession session) throws ClientException {
+        String userFeedsContainerPath = getCurrentUserRssFeedModelContainerPath(session);
+        return session.getChildren(new PathRef(userFeedsContainerPath));
     }
 
     protected String getAndCreateUserRssFeedPathContainerIfNeeded(
@@ -110,15 +97,13 @@ public class RSSFeedComponent extends DefaultComponent implements
     }
 
     @Override
-    public String getCurrentUserRssFeedModelContainerPath(String userName,
-            DocumentModel currentDocument) throws ClientException {
+    public String getCurrentUserRssFeedModelContainerPath(CoreSession session) throws ClientException {
         try {
+            String userName = session.getPrincipal().getName();
+            DocumentModel currentDocument = getFirstDomain(session);
             DocumentModel userWorkspace = getUserWorkspaceService().getCurrentUserPersonalWorkspace(
                     userName, currentDocument);
-            return getAndCreateUserRssFeedPathContainerIfNeeded(
-                    userWorkspace.getPathAsString(),
-                    CoreInstance.getInstance().getSession(
-                            currentDocument.getSessionId()));
+            return getAndCreateUserRssFeedPathContainerIfNeeded( userWorkspace.getPathAsString(), session);
         } catch (Exception e) {
             throw ClientException.wrap(e);
         }
@@ -142,5 +127,26 @@ public class RSSFeedComponent extends DefaultComponent implements
 
     protected UserWorkspaceService getUserWorkspaceService() throws Exception {
         return Framework.getService(UserWorkspaceService.class);
+    }
+
+
+    /**
+     * method used for invocation of some methods of UserWorkspaceService
+     * @param session
+     * @return
+     * @throws ClientException
+     */
+    protected DocumentModel getFirstDomain(CoreSession session) throws ClientException {
+        DocumentModel root = session.getRootDocument();
+        DocumentModelList list = session.getChildren(root.getRef());
+        if ( list.size() > 0 ) {
+            return list.get(0);
+        }
+        return null;
+    }
+
+    public DocumentModelList getGlobalFeedsDocumentModelList(CoreSession session)
+            throws ClientException {
+        return session.getChildren(new PathRef(getRssFeedModelContainerPath()));
     }
 }

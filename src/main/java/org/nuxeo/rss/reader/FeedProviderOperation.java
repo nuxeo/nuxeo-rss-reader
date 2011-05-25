@@ -61,8 +61,7 @@ public class FeedProviderOperation {
     @OperationMethod
     public Blob run() throws Exception {
         if (urls == null) {
-            urls = new StringList(rssFeedService.getUserRssFeedAddresses(
-                    session, domain));
+            urls = new StringList(rssFeedService.getUserRssFeedAddresses(session));
         }
         if (urls.size() == 0) {
             return buildBlob("");

@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
-import org.nuxeo.ecm.core.api.DocumentModel;
+import org.nuxeo.ecm.core.api.DocumentModelList;
 
 /**
  * Service to provide some FeedReader features
@@ -34,15 +34,38 @@ public interface RSSFeedService {
     void createRssFeedModelContainerIfNeeded(CoreSession session)
             throws ClientException;
 
-    String getCurrentUserRssFeedModelContainerPath(String userName,
-            DocumentModel currentDocument) throws ClientException;
-
-    List<String> getUserRssFeedAddresses(CoreSession session,
-            String currentDocument) throws ClientException;
+    String getCurrentUserRssFeedModelContainerPath(CoreSession session)
+            throws ClientException;
 
     String getRssFeedModelContainerPath();
 
+<<<<<<< Updated upstream
     int getDisplayedArticleCount(CoreSession session) throws ClientException;
 
     int getMaximumFeedsCount(CoreSession session) throws ClientException;
+=======
+    List<String> getUserRssFeedAddresses(CoreSession session)
+            throws ClientException;
+
+    /**
+     * return user feeds
+     *
+     * @param session
+     * @return
+     * @throws ClientException
+     */
+    DocumentModelList getUserRssFeedDocumentModelList(CoreSession session)
+            throws ClientException;
+
+    /**
+     * return feed defined by administrator
+     *
+     * @param session
+     * @return
+     * @throws ClientException
+     */
+    DocumentModelList getGlobalFeedsDocumentModelList(CoreSession session)
+            throws ClientException;
+
+>>>>>>> Stashed changes
 }

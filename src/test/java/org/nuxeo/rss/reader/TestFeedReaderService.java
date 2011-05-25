@@ -65,8 +65,7 @@ public class TestFeedReaderService extends AbstractRSSFeedTestCase {
         DocumentRef userFeedContainer = new PathRef(
                 "/default-domain/UserWorkspaces/Administrator/" + RSS_FEEDS_FOLDER);
         assertFalse(session.exists(userFeedContainer));
-        rssFeedService.getCurrentUserRssFeedModelContainerPath("Administrator",
-                session.getDocument(new PathRef("/default-domain")));
+        rssFeedService.getCurrentUserRssFeedModelContainerPath(session);
         assertTrue(session.exists(userFeedContainer));
     }
 
@@ -78,8 +77,7 @@ public class TestFeedReaderService extends AbstractRSSFeedTestCase {
         buildFeed("doh", false, null);
         buildFeed("default2", true, null);
 
-        String userFeeds = rssFeedService.getCurrentUserRssFeedModelContainerPath("Administrator",
-                session.getDocument(new PathRef("/default-domain")));
+        String userFeeds = rssFeedService.getCurrentUserRssFeedModelContainerPath(session);
         assertEquals("/default-domain/UserWorkspaces/Administrator/" + RSS_FEEDS_FOLDER, userFeeds);
         DocumentRef userFeedsRef = new PathRef(userFeeds);
         assertTrue(session.exists(userFeedsRef));
@@ -96,7 +94,7 @@ public class TestFeedReaderService extends AbstractRSSFeedTestCase {
         buildFeed("feed2", false, "http://www.dummyRss.default.com");
         buildFeed("feed3", true, "http://www.dummyRss.com");
 
-        List<String> adresses = rssFeedService.getUserRssFeedAddresses(session, "/default-domain");
+        List<String> adresses = rssFeedService.getUserRssFeedAddresses(session);
         assertEquals(2, adresses.size());
         for(String feedAddress : adresses) {
             assertEquals("http://www.dummyRss.com", feedAddress);

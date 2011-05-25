@@ -1,5 +1,9 @@
 /* RSS styles - lk@nuxeo.com - May 11 2011*/
 
+img {
+border: none;
+}
+
 .entry {
   font: normal 11px "Trebuchet MS", Helvetica, sans-serif;
   border-bottom: 1px solid #eaeaea;
