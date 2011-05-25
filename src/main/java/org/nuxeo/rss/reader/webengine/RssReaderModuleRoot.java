@@ -9,12 +9,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
 import org.nuxeo.ecm.automation.core.annotations.Context;
-import org.nuxeo.ecm.automation.core.annotations.Param;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.IdRef;
-import org.nuxeo.ecm.core.api.PathRef;
 import org.nuxeo.ecm.webengine.model.WebObject;
 import org.nuxeo.ecm.webengine.model.impl.ModuleRoot;
 import org.nuxeo.rss.reader.FeedHelper;
@@ -52,6 +50,7 @@ public class RssReaderModuleRoot extends ModuleRoot {
     @Path("/config")
     public Object getConfigPage() throws Exception {
         CoreSession session = ctx.getCoreSession();
+        boolean isAbleToCreateNew = false;
         DocumentModelList userFeeds = getRSSService().getUserRssFeedDocumentModelList(
                 session);
         DocumentModelList globalFeeds = getRSSService().getGlobalFeedsDocumentModelList(
@@ -72,10 +71,11 @@ public class RssReaderModuleRoot extends ModuleRoot {
                     options.add(f1);
                 }
             }
-
+            isAbleToCreateNew = userFeeds.size() < getRSSService().getMaximumFeedsCount(session);
         }
+
         return getView("feed_configuration").arg("userFeeds", userFeeds).arg(
-                "globalFeeds", options);
+                "globalFeeds", options).arg("ableToCreateNew", isAbleToCreateNew);
     }
 
     @GET

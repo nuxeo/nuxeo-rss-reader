@@ -27,29 +27,31 @@ Current Feeds:
 </#list>
 </ul>
 
-<#if globalFeeds?has_content>
-<form id="addGlobaFeedForm" method="GET" action="addGlobalFeed">
-Add a defined feed:
-<div class="fieldRow">
-<select name="feedId" size="0">
-<#list globalFeeds as feed>
-<option value="${feed.id}">${feed["dc:title"]}</option>
-</#list>
-</select>
-<a href="javascript: submitForm('addGlobaFeedForm')"><img src="${skinPath}/icons/add.png" alt="" /></a>
-</div>
-</form>
-</#if>
+<#if ableToCreateNew>
+  <#if globalFeeds?has_content>
+  <form id="addGlobaFeedForm" method="GET" action="addGlobalFeed">
+  Add a defined feed:
+  <div class="fieldRow">
+  <select name="feedId" size="0">
+  <#list globalFeeds as feed>
+  <option value="${feed.id}">${feed["dc:title"]}</option>
+  </#list>
+  </select>
+  <a href="javascript: submitForm('addGlobaFeedForm')"><img src="${skinPath}/icons/add.png" alt="" /></a>
+  </div>
+  </form>
+  </#if>
 
-Add a new feed:
-<form id="addNewFeedForm" method="GET" action="addNewFeed">
-<div class="fieldRow">
-<input class="field" type="text" name="feedName" value="Feed Title" />
-<input class="field feedlink" type="text" name="feedLink" value="Feed link" />
-<a href="javascript: submitForm('addNewFeedForm')"><img src="${skinPath}/icons/add.png" alt="" /></a>
-</div>
-</div>
-</form>
+  Add a new feed:
+  <form id="addNewFeedForm" method="GET" action="addNewFeed">
+  <div class="fieldRow">
+  <input class="field" type="text" name="feedName" value="Feed Title" />
+  <input class="field feedlink" type="text" name="feedLink" value="Feed link" />
+  <a href="javascript: submitForm('addNewFeedForm')"><img src="${skinPath}/icons/add.png" alt="" /></a>
+  </div>
+  </div>
+  </form>
+</#if>
 
 
 <div class="submitBar">
