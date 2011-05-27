@@ -95,94 +95,20 @@ public class FeedHelper {
      * @param limit -
      * @return
      */
-
     public static JSONObject mergeFeeds(String[] urls, int limit) {
-        List<SyndFeed> feeds = new ArrayList<SyndFeed>();
-        List<SyndEntry> entries = new ArrayList<SyndEntry>();
-
-        // collect entries from feeds
-        for (String url : urls) {
-            try {
-                SyndFeed feed = parseFeed(url);
-                feeds.add(feed);
-
-                @SuppressWarnings("unchecked")
-                List<SyndEntry> list = feed.getEntries();
-                if (limit != NO_LIMIT && limit < list.size()) {
-                    list = list.subList(0, limit);
-                }
-                for (SyndEntry entry : list) {
-                    if (entry.getSource() == null) { // source needed when
-                                                     // merged entries are
-                                                     // rendered
-                        entry.setSource(feed);
-                    }
-                }
-                entries.addAll(list);
-            } catch (Exception e) {
-                log.warn("failed to retrieve feed " + url, e);
-            }
-        }
-
-        // sort entries
-        Collections.sort(entries, new Comparator<SyndEntry>() {
-            public int compare(SyndEntry o1, SyndEntry o2) {
-                Calendar c1 = Calendar.getInstance();
-                Calendar c2 = Calendar.getInstance();
-                c1.setTime(o1.getPublishedDate());
-                c2.setTime(o2.getPublishedDate());
-                return -c1.compareTo(c2);
-            }
-        });
-
-        // drop some elements is it's necessary
-        if (limit != NO_LIMIT && limit < entries.size()) {
-            entries = entries.subList(0, limit);
-        }
+        MergedEntries mergedEntries = new MergedEntries(urls, limit);
 
         // build the JSON with feed entries
         JSONObject object = new JSONObject();
-        addProperty(object, Field.FEEDS, buildFeedsInfoArray(feeds));
-        addProperty(object, Field.ENTRIES, buildEntriesArray(entries, true));
+        addProperty(object, Field.FEEDS, buildFeedsInfoArray(mergedEntries.getFeeds()));
+        addProperty(object, Field.ENTRIES, buildEntriesArray(mergedEntries.getEntries(), true));
         return object;
     }
 
     public static Map<String, Object> searchFeedEntry(String[] urls, String link) {
-        List<SyndFeed> feeds = new ArrayList<SyndFeed>();
-        List<SyndEntry> entries = new ArrayList<SyndEntry>();
+        MergedEntries mergedEntries = new MergedEntries(urls, NO_LIMIT);
 
-        // collect entries from feeds
-        for (String url : urls) {
-            try {
-                SyndFeed feed = parseFeed(url);
-                feeds.add(feed);
-
-                @SuppressWarnings("unchecked")
-                List<SyndEntry> list = feed.getEntries();
-                for (SyndEntry entry : list) {
-                    if (entry.getSource() == null) { // source needed when
-                                                     // merged entries are
-                                                     // rendered
-                        entry.setSource(feed);
-                    }
-                }
-                entries.addAll(list);
-            } catch (Exception e) {
-                log.warn("failed to retrieve feed " + url, e);
-            }
-        }
-
-        // sort entries
-        Collections.sort(entries, new Comparator<SyndEntry>() {
-            public int compare(SyndEntry o1, SyndEntry o2) {
-                Calendar c1 = Calendar.getInstance();
-                Calendar c2 = Calendar.getInstance();
-                c1.setTime(o1.getPublishedDate());
-                c2.setTime(o2.getPublishedDate());
-                return -c1.compareTo(c2);
-            }
-        });
-
+        List<SyndEntry> entries = mergedEntries.getEntries();
         Map<String, Object> foundEntry = new HashMap<String, Object>();
         for (int i = 0; i < entries.size(); i++) {
             SyndEntry entry = entries.get(i);
@@ -194,6 +120,7 @@ public class FeedHelper {
                 if (i < entries.size() - 1) {
                     foundEntry.put("next", entries.get(i + 1).getLink());
                 }
+                break;
             }
         }
         return foundEntry;
@@ -317,5 +244,62 @@ public class FeedHelper {
             }
         }
         return sb.toString();
+    }
+
+
+    public static class MergedEntries {
+
+        protected List<SyndFeed> feeds = new ArrayList<SyndFeed>();
+
+        protected List<SyndEntry> entries = new ArrayList<SyndEntry>();
+
+        public MergedEntries(String[] urls, int limit) {
+            // collect entries from feeds
+            for (String url : urls) {
+                try {
+                    SyndFeed feed = parseFeed(url);
+                    feeds.add(feed);
+
+                    @SuppressWarnings("unchecked")
+                    List<SyndEntry> list = feed.getEntries();
+                    if (limit != NO_LIMIT && limit < list.size()) {
+                        list = list.subList(0, limit);
+                    }
+                    for (SyndEntry entry : list) {
+                        if (entry.getSource() == null) { // source needed when merged entries are rendered
+                            entry.setSource(feed);
+                        }
+                    }
+                    entries.addAll(list);
+                } catch (Exception e) {
+                    log.warn("failed to retrieve feed " + url, e);
+                }
+            }
+
+            // sort entries
+            Collections.sort(entries, new Comparator<SyndEntry>() {
+                public int compare(SyndEntry o1, SyndEntry o2) {
+                    Calendar c1 = Calendar.getInstance();
+                    Calendar c2 = Calendar.getInstance();
+                    c1.setTime(o1.getPublishedDate());
+                    c2.setTime(o2.getPublishedDate());
+                    return -c1.compareTo(c2);
+                }
+            });
+
+            // drop some elements if it's necessary
+            if (limit != NO_LIMIT && limit < entries.size()) {
+                entries = entries.subList(0, limit);
+            }
+        }
+
+        public List<SyndFeed> getFeeds() {
+            return feeds;
+        }
+
+        public List<SyndEntry> getEntries() {
+            return entries;
+        }
+
     }
 }
