@@ -16,7 +16,7 @@ OUTPUT=${1:-../../target/integration/}
 
 # Build command line
 CMD="java -jar $OUTPUT/selenium-server.jar -log $OUTPUT/log.txt -port 14440 -timeout 7200 \
-      -htmlSuite "*chrome" $URL "
+      -htmlSuite "*firefox" $URL "
 if [ -n "$HIDE_FF" ]; then
     CMD="xvfb-run $CMD"
 fi
