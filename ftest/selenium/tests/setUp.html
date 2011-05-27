@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost:8080/nuxeo/" />
+<title>testCase</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">testCase</td></tr>
+</thead><tbody>
+<tr>
+	<td>setTimeout</td>
+	<td>12000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>restAPI/systemLog?token=dolog&amp;amp;level=INFO&amp;amp;message=----- Selenium&lt;br /&gt; setUp</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>username</td>
+	<td>Administrator</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>Administrator</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>Submit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Administrator</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Admin Center</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Users &amp; groups</td>
+	<td></td>
+</tr>
+<tr>
+	<td>watchA4jRequests</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Create a new user</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForA4jRequest</td>
+	<td>12000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>createUserView:createUser:nxl_user:nxw_username</td>
+	<td>John</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>createUserView:createUser:nxl_user:nxw_email</td>
+	<td>john@doh.com</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>createUserView:createUser:nxl_user:nxw_firstPassword</td>
+	<td>john</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>createUserView:createUser:nxl_user:nxw_secondPassword</td>
+	<td>john</td>
+</tr>
+<tr>
+	<td>watchA4jRequests</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>typeKeys</td>
+	<td>//input[@name='createUserView:createUser:nxl_user:nxw_groups_suggest']</td>
+	<td>members</td>
+</tr>
+<tr>
+	<td>waitForA4jRequest</td>
+	<td>10000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//*[@id='createUserView:createUser:nxl_user:nxw_groups_suggestionBox:suggest']/x:tbody/x:tr[1]/x:td[2]</td>
+	<td>members</td>
+</tr>
+<tr>
+	<td>watchA4jRequests</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//*[@id='createUserView:createUser:nxl_user:nxw_groups_suggestionBox:suggest']/x:tbody/x:tr[1]/x:td[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForA4jRequest</td>
+	<td>10000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>watchA4jRequests</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>createUserView:createUser:button_save_and_create</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForA4jRequest</td>
+	<td>12000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>createUserView:createUser:nxl_user:nxw_username</td>
+	<td>dummy</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>createUserView:createUser:nxl_user:nxw_email</td>
+	<td>dummy@doh.com</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>createUserView:createUser:nxl_user:nxw_firstPassword</td>
+	<td>dummy</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>createUserView:createUser:nxl_user:nxw_secondPassword</td>
+	<td>dummy</td>
+</tr>
+<tr>
+	<td>watchA4jRequests</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>createUserView:createUser:button_save_and_create</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForA4jRequest</td>
+	<td>12000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>createUserView:createUser:nxl_user:nxw_username</td>
+	<td>benj</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>createUserView:createUser:nxl_user:nxw_email</td>
+	<td>benj@lamalice.fr</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>createUserView:createUser:nxl_user:nxw_firstPassword</td>
+	<td>benj</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>createUserView:createUser:nxl_user:nxw_secondPassword</td>
+	<td>benj</td>
+</tr>
+<tr>
+	<td>watchA4jRequests</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>createUserView:createUser:button_save</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForA4jRequest</td>
+	<td>12000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=RSS Feed</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>This folder contains no document.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>watchA4jRequests</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=//span[@id=&quot;rssFeedModelPanel&quot;]/div/form/input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForA4jRequest</td>
+	<td>12000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>rssFeedCreationForm:document_create:nxl_heading:nxw_title</td>
+	<td>Le monde</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>rssFeedCreationForm:document_create:nxl_rss_display:nxw_rss_url</td>
+	<td>http://www.lemonde.fr/rss/une.xml</td>
+</tr>
+<tr>
+	<td>check</td>
+	<td>rssFeedCreationForm:document_create:nxl_rss_display:nxw_define_as_default_rss_feed</td>
+	<td></td>
+</tr>
+<tr>
+	<td>watchA4jRequests</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>rssFeedCreationForm:document_create:button_create</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForA4jRequest</td>
+	<td>12000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Le monde</td>
+	<td></td>
+</tr>
+<tr>
+	<td>watchA4jRequests</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Le monde</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForA4jRequest</td>
+	<td>12000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>watchA4jRequests</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>rssFeedEditForm:document_edit:j_id205</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForA4jRequest</td>
+	<td>12000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>watchA4jRequests</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=//span[@id=&quot;rssFeedModelPanel&quot;]/div/form/input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForA4jRequest</td>
+	<td>12000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>rssFeedCreationForm:document_create:nxl_heading:nxw_title</td>
+	<td>Gameblog</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>rssFeedCreationForm:document_create:nxl_rss_display:nxw_rss_url</td>
+	<td>http://www.gameblog.fr/rss.php</td>
+</tr>
+<tr>
+	<td>watchA4jRequests</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>rssFeedCreationForm:document_create:button_create</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForA4jRequest</td>
+	<td>12000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Gameblog</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Home</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>addGadgetButton</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@gadget-name='rssreader']</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>
