@@ -49,7 +49,7 @@
         feed_link = response.data["FEED_LINK"];
         entries = response.data["ENTRIES"];
         if ( typeof entries == 'undefined' ) {
-            return 'No entries';
+            return addActions() + '<p>No entries</p>';
         }
         feed = '';
         feed += addActions();

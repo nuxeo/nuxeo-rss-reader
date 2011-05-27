@@ -44,7 +44,11 @@ import net.sf.json.JSONObject;
 @Operation(id = FeedProviderOperation.ID, category = Constants.CAT_EXECUTION, label = "Parse Feed Operation", description = "Parse a feed and return a JSON array with feed entries.")
 public class FeedProviderOperation {
 
+
+
     public static final String ID = "Feed.Provider";
+
+    public static final JSONObject EMPTY_FEED = new JSONObject();
 
     @Param(name = "domain", required = false)
     protected String domain = "/default-domain";
@@ -64,7 +68,7 @@ public class FeedProviderOperation {
             urls = new StringList(rssFeedService.getUserRssFeedAddresses(session));
         }
         if (urls.size() == 0) {
-            return buildBlob("");
+            return buildBlob(EMPTY_FEED.toString());
         }
         int limit = rssFeedService.getDisplayedArticleCount(session);
         if (urls.size() == 1) {

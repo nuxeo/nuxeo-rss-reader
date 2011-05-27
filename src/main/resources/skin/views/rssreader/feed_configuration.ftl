@@ -21,7 +21,7 @@ Current Feeds:
 
 <#list userFeeds as feed>
 <li>
-	<a href="removeFeed?id=${feed.id}"><img src="${skinPath}/icons/remove.png" alt="" /></a>
+	<a href="removeFeed?id=${feed.id}" class="removeFeed"><img src="${skinPath}/icons/remove.png" alt=""/></a>
 	${feed["dc:title"]}- <span>${feed["rf:rss_address"]}</span>
 </li>
 </#list>
@@ -37,7 +37,7 @@ Current Feeds:
   <option value="${feed.id}">${feed["dc:title"]}</option>
   </#list>
   </select>
-  <a href="javascript: submitForm('addGlobaFeedForm')"><img src="${skinPath}/icons/add.png" alt="" /></a>
+  <a href="javascript: submitForm('addGlobaFeedForm')" class="addGlobalFeed"><img src="${skinPath}/icons/add.png" alt="" /></a>
   </div>
   </form>
   </#if>
@@ -47,7 +47,7 @@ Current Feeds:
   <div class="fieldRow">
   <input class="field" type="text" name="feedName" value="Feed Title" />
   <input class="field feedlink" type="text" name="feedLink" value="Feed link" />
-  <a href="javascript: submitForm('addNewFeedForm')"><img src="${skinPath}/icons/add.png" alt="" /></a>
+  <a href="javascript: submitForm('addNewFeedForm')" class="addNewFeed"><img src="${skinPath}/icons/add.png" alt="" /></a>
   </div>
   </div>
   </form>
