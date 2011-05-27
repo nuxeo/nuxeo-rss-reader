@@ -5,20 +5,24 @@ Nuxeo RSS related module.
 ## How to build
 
 # quick build:
-  ant build 
+
+> ant build 
 
 # build & test
-  ant build-with-tests 
-  #or 
-  mvn clean install
+
+> ant build-with-tests 
+> #or 
+> mvn clean install
 
 # deploy in a nuxeo tomcat instance
-  ant deploy-tomcat 
+
+> ant deploy-tomcat 
 
 Note: the tomcat.dir should be defined in a build.properties
 
 # Run integration test suite
-  ant integration-test
+
+> ant integration-test
 
 
 ## About Nuxeo
