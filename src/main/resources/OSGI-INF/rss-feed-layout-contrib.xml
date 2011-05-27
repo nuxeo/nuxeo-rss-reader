@@ -33,6 +33,7 @@
       </fields>
       <properties mode="any">
         <property name="help">help.rss.feed.address</property>
+        <property name="styleClass">dataInputText</property>
       </properties>
     </widget>
 
@@ -108,18 +109,6 @@
   <extension target="org.nuxeo.ecm.platform.forms.layout.WebLayoutManager"
     point="layouts">
 
-    <layout name="heading_">
-      <templates>
-        <template mode="any">/layouts/layout_default_template.xhtml
-        </template>
-      </templates>
-      <rows>
-        <row>
-          <widget>dc:title</widget>
-        </row>
-      </rows>
-    </layout>
-
     <layout name="rss_gadget">
       <templates>
         <template mode="any">/layouts/layout_default_template.xhtml
@@ -169,7 +158,7 @@
       <columns>
        <column>
           <properties mode="any">
-            <property name="isListingSelectionBox">true</property>
+            <property name="isListingSelectionBox">false</property>
             <property name="useFirstWidgetLabelAsColumnHeader">false</property>
             <property name="columnStyleClass">iconColumn</property>
           </properties>
