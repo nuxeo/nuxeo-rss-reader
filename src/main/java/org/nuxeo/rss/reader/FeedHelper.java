@@ -16,6 +16,8 @@
  */
 package org.nuxeo.rss.reader;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -25,6 +27,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -33,9 +38,6 @@ import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 /**
  * @author <a href="mailto:ei@nuxeo.com">Eugen Ionica</a> various static method
@@ -105,7 +107,9 @@ public class FeedHelper {
         return object;
     }
 
-    public static Map<String, Object> searchFeedEntry(String[] urls, String link) {
+    public static Map<String, Object> searchFeedEntry(String[] urls, String link) throws URISyntaxException {
+        link = new URI(link).toASCIIString();
+
         MergedEntries mergedEntries = new MergedEntries(urls, NO_LIMIT);
 
         List<SyndEntry> entries = mergedEntries.getEntries();
