@@ -13,10 +13,10 @@ import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.IdRef;
+import org.nuxeo.ecm.core.api.PathRef;
 import org.nuxeo.ecm.webengine.model.WebObject;
 import org.nuxeo.ecm.webengine.model.impl.ModuleRoot;
 import org.nuxeo.rss.reader.FeedHelper;
-import org.nuxeo.rss.reader.runner.UnrestrictedAddGlobalFeed;
 import org.nuxeo.rss.reader.service.RSSFeedService;
 import org.nuxeo.runtime.api.Framework;
 
@@ -51,7 +51,7 @@ public class RssReaderModuleRoot extends ModuleRoot {
     public Object getConfigPage() throws Exception {
         CoreSession session = ctx.getCoreSession();
         boolean isAbleToCreateNew = false;
-        DocumentModelList userFeeds = getRSSService().getUserRssFeedDocumentModelList(
+        DocumentModelList userFeeds = getRSSService().getCurrentUserRssFeedDocumentModelList(
                 session);
         DocumentModelList globalFeeds = getRSSService().getGlobalFeedsDocumentModelList(
                 session);
@@ -92,9 +92,9 @@ public class RssReaderModuleRoot extends ModuleRoot {
     public Object addGlobalFeed(@QueryParam("feedId") String feedId)
             throws Exception {
         CoreSession session = ctx.getCoreSession();
-        String userFeedsContainer = getRSSService().getCurrentUserRssFeedModelContainerPath(
-                session);
-        new UnrestrictedAddGlobalFeed(session, feedId, userFeedsContainer).runUnrestricted();
+        String userFeedsContainer = getRSSService().getCurrentUserRssFeedsContainer(
+                session).getPathAsString();
+        session.copy(new IdRef(feedId), new PathRef(userFeedsContainer), null);
         return getConfigPage();
     }
 
@@ -103,8 +103,8 @@ public class RssReaderModuleRoot extends ModuleRoot {
     public Object addGlobalFeed(@QueryParam("feedName") String feedName,
             @QueryParam("feedLink") String url) throws Exception {
         CoreSession session = ctx.getCoreSession();
-        String userFeedsContainerPath = getRSSService().getCurrentUserRssFeedModelContainerPath(
-                session);
+        String userFeedsContainerPath = getRSSService().getCurrentUserRssFeedsContainer(
+                session).getPathAsString();
         DocumentModel feed = session.createDocumentModel(
                 userFeedsContainerPath, feedName, "RssFeed");
         feed.setPropertyValue("dc:title", feedName);

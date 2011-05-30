@@ -17,7 +17,7 @@
 
 package org.nuxeo.rss.reader;
 
-import static org.nuxeo.rss.reader.manager.api.Constants.RSS_FEED_CONTAINER_PATH;
+import static org.nuxeo.rss.reader.manager.api.Constants.RSS_READER_MANAGEMENT_ROOT_PATH;
 import static org.nuxeo.rss.reader.manager.api.Constants.RSS_FEED_TYPE;
 import static org.nuxeo.rss.reader.manager.api.Constants.RSS_GADGET_ARTICLE_COUNT;
 import static org.nuxeo.rss.reader.manager.api.Constants.RSS_GADGET_MAX_FEED_COUNT;
@@ -44,7 +44,7 @@ public abstract class AbstractRSSFeedTestCase {
         feed.setPropertyValue("dc:title", name);
         feed.setPropertyValue("rf:is_default_feed", isDefault);
         feed.setPropertyValue("rf:rss_address", url);
-        feed.setPathInfo(RSS_FEED_CONTAINER_PATH, name);
+        feed.setPathInfo(RSS_READER_MANAGEMENT_ROOT_PATH, name);
         return session.createDocument(feed);
     }
 
@@ -59,7 +59,7 @@ public abstract class AbstractRSSFeedTestCase {
         // Ensure that we have the document
         rssFeedService.getDisplayedArticleCount(session);
 
-        DocumentModel containerModel = session.getDocument(new PathRef(RSS_FEED_CONTAINER_PATH));
+        DocumentModel containerModel = session.getDocument(new PathRef(RSS_READER_MANAGEMENT_ROOT_PATH));
         if (maxFeeds >= 0) {
             containerModel.setPropertyValue(RSS_GADGET_MAX_FEED_COUNT, maxFeeds);
         }

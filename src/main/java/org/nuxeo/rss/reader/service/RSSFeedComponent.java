@@ -17,25 +17,26 @@
 
 package org.nuxeo.rss.reader.service;
 
-import static org.nuxeo.rss.reader.manager.api.Constants.RSS_FEEDS_FOLDER;
-import static org.nuxeo.rss.reader.manager.api.Constants.RSS_FEED_CONTAINER_PATH;
+import static org.nuxeo.ecm.core.management.storage.DocumentStoreManager.MANAGEMENT_ROOT_PATH;
+import static org.nuxeo.rss.reader.manager.api.Constants.RSS_FEED_IS_DEFAULT_PROPERTY;
+import static org.nuxeo.rss.reader.manager.api.Constants.RSS_FEED_TYPE;
 import static org.nuxeo.rss.reader.manager.api.Constants.RSS_FEED_URL_PROPERTY;
 import static org.nuxeo.rss.reader.manager.api.Constants.RSS_GADGET_ARTICLE_COUNT;
 import static org.nuxeo.rss.reader.manager.api.Constants.RSS_GADGET_MAX_FEED_COUNT;
+import static org.nuxeo.rss.reader.manager.api.Constants.RSS_READER_MANAGEMENT_ROOT_NAME;
+import static org.nuxeo.rss.reader.manager.api.Constants.RSS_READER_MANAGEMENT_ROOT_PATH;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
+import org.nuxeo.ecm.core.api.DocumentRef;
 import org.nuxeo.ecm.core.api.PathRef;
 import org.nuxeo.ecm.platform.userworkspace.api.UserWorkspaceService;
-import org.nuxeo.rss.reader.runner.UnrestrictedDefaultRssFeedsCopier;
-import org.nuxeo.rss.reader.runner.UnrestrictedRssFeedContainerCreator;
+import org.nuxeo.rss.reader.runner.UnrestrictedRssReaderManagementRootGenerator;
 import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.model.DefaultComponent;
 
@@ -49,104 +50,114 @@ import org.nuxeo.runtime.model.DefaultComponent;
 public class RSSFeedComponent extends DefaultComponent implements
         RSSFeedService {
 
-    private static Log log = LogFactory.getLog(RSSFeedComponent.class);
-
     @Override
-    public void createRssFeedModelContainerIfNeeded(CoreSession session)
+    public DocumentModel getRssReaderManagementContainer(CoreSession session)
             throws ClientException {
-        if (!session.exists(new PathRef(RSS_FEED_CONTAINER_PATH))) {
-            createRssFeedContainer(session, RSS_FEED_CONTAINER_PATH);
+        if (!session.exists(new PathRef(RSS_READER_MANAGEMENT_ROOT_PATH))) {
+            new UnrestrictedRssReaderManagementRootGenerator(session,
+                    MANAGEMENT_ROOT_PATH).runUnrestricted();
         }
+
+        return session.getDocument(new PathRef(RSS_READER_MANAGEMENT_ROOT_PATH));
+
     }
 
-    protected DocumentModel getRssFeedModelContainer(CoreSession session)
+    @Override
+    public DocumentModel getCurrentUserRssFeedsContainer(CoreSession session)
             throws ClientException {
-        createRssFeedModelContainerIfNeeded(session);
-        return session.getDocument(new PathRef(getRssFeedModelContainerPath()));
-    }
 
-    @Override
-    public String getRssFeedModelContainerPath() {
-        return RSS_FEED_CONTAINER_PATH;
-    }
+        String userWorkspace = getCurrentUserWorkspace(session);
 
-    @Override
-    public List<String> getUserRssFeedAddresses(CoreSession session) throws ClientException {
-        List<String> addresses = new ArrayList<String>();
-        for (DocumentModel dc : getUserRssFeedDocumentModelList(session)) {
-            addresses.add(dc.getPropertyValue(RSS_FEED_URL_PROPERTY).toString());
-        }
-        return addresses;
-    }
-
-    public DocumentModelList getUserRssFeedDocumentModelList( CoreSession session) throws ClientException {
-        String userFeedsContainerPath = getCurrentUserRssFeedModelContainerPath(session);
-        return session.getChildren(new PathRef(userFeedsContainerPath));
-    }
-
-    protected String getAndCreateUserRssFeedPathContainerIfNeeded(
-            String userWorkspace, CoreSession session) throws ClientException {
-        String userRssFeedPath = userWorkspace + "/" + RSS_FEEDS_FOLDER;
+        String userRssFeedPath = userWorkspace + "/"
+                + RSS_READER_MANAGEMENT_ROOT_NAME;
         if (!session.exists(new PathRef(userRssFeedPath))) {
-            new UnrestrictedRssFeedContainerCreator(session, userRssFeedPath).changeACPNeeded(
-                    false).runUnrestricted();
-            new UnrestrictedDefaultRssFeedsCopier(session, userRssFeedPath,
-                    getRssFeedModelContainerPath()).runUnrestricted();
+            new UnrestrictedRssReaderManagementRootGenerator(session,
+                    userWorkspace).willSetRightsForAdminitrators(false).runUnrestricted();
+
+            session.copy(getDefaultRssFeedModels(session), new PathRef(
+                    userRssFeedPath));
         }
-        return userRssFeedPath;
+        return session.getDocument(new PathRef(userRssFeedPath));
     }
 
-    @Override
-    public String getCurrentUserRssFeedModelContainerPath(CoreSession session) throws ClientException {
-        try {
-            String userName = session.getPrincipal().getName();
-            DocumentModel currentDocument = getFirstDomain(session);
-            DocumentModel userWorkspace = getUserWorkspaceService().getCurrentUserPersonalWorkspace(
-                    userName, currentDocument);
-            return getAndCreateUserRssFeedPathContainerIfNeeded( userWorkspace.getPathAsString(), session);
-        } catch (Exception e) {
-            throw ClientException.wrap(e);
+    protected String getCurrentUserWorkspace(CoreSession session)
+            throws ClientException {
+        String userName = session.getPrincipal().getName();
+        DocumentModel root = session.getRootDocument();
+        DocumentModelList list = session.getChildren(root.getRef());
+        if (list.size() == 0) {
+            throw new ClientException(
+                    "No domain detected, we can't create or get the current UserWorkspace.");
         }
+
+        DocumentModel currentDomain = list.get(0);
+        UserWorkspaceService uws;
+        try {
+            uws = Framework.getService(UserWorkspaceService.class);
+        } catch (Exception e) {
+            throw new ClientException(
+                    "Can't fetch the UserWorkspace service, please check", e);
+        }
+
+        String userWorkspace = uws.getCurrentUserPersonalWorkspace(userName,
+                currentDomain).getPathAsString();
+        return userWorkspace;
     }
 
     @Override
     public int getDisplayedArticleCount(CoreSession session)
             throws ClientException {
-        return ((Long)getRssFeedModelContainer(session).getPropertyValue(RSS_GADGET_ARTICLE_COUNT)).intValue();
+        DocumentModel adminContainer = getRssReaderManagementContainer(session);
+        return ((Long) adminContainer.getPropertyValue(RSS_GADGET_ARTICLE_COUNT)).intValue();
     }
 
     @Override
     public int getMaximumFeedsCount(CoreSession session) throws ClientException {
-        return ((Long)getRssFeedModelContainer(session).getPropertyValue(RSS_GADGET_MAX_FEED_COUNT)).intValue();
+        DocumentModel adminContainer = getRssReaderManagementContainer(session);
+        return ((Long) adminContainer.getPropertyValue(RSS_GADGET_MAX_FEED_COUNT)).intValue();
     }
 
-    protected void createRssFeedContainer(CoreSession session, String path)
+    @Override
+    public DocumentModelList getGlobalFeedsDocumentModelList(CoreSession session)
             throws ClientException {
-        new UnrestrictedRssFeedContainerCreator(session, path).runUnrestricted();
+        return session.getChildren(
+                getRssReaderManagementContainer(session).getRef(),
+                RSS_FEED_TYPE);
     }
 
-    protected UserWorkspaceService getUserWorkspaceService() throws Exception {
-        return Framework.getService(UserWorkspaceService.class);
+    @Override
+    public DocumentModelList getCurrentUserRssFeedDocumentModelList(
+            CoreSession session) throws ClientException {
+        return session.getChildren(getCurrentUserRssFeedsContainer(session).getRef());
     }
 
+    @Override
+    public List<String> getCurrentUserRssFeedAddresses(CoreSession session)
+            throws ClientException {
+        List<String> addresses = new ArrayList<String>();
+        for (DocumentModel dc : getCurrentUserRssFeedDocumentModelList(session)) {
+            addresses.add(dc.getPropertyValue(RSS_FEED_URL_PROPERTY).toString());
+        }
+        return addresses;
+    }
 
     /**
-     * method used for invocation of some methods of UserWorkspaceService
+     * Return feeds proposed into the administration view but only ones set as default.
+     *
      * @param session
      * @return
      * @throws ClientException
      */
-    protected DocumentModel getFirstDomain(CoreSession session) throws ClientException {
-        DocumentModel root = session.getRootDocument();
-        DocumentModelList list = session.getChildren(root.getRef());
-        if ( list.size() > 0 ) {
-            return list.get(0);
+    protected List<DocumentRef> getDefaultRssFeedModels(CoreSession session)
+            throws ClientException {
+        List<DocumentRef> defaultFeeds = new ArrayList<DocumentRef>();
+        DocumentModelList docs = getGlobalFeedsDocumentModelList(session);
+        for (DocumentModel doc : docs) {
+            if (Boolean.TRUE.equals(doc.getPropertyValue(RSS_FEED_IS_DEFAULT_PROPERTY))) {
+                defaultFeeds.add(doc.getRef());
+            }
         }
-        return null;
+        return defaultFeeds;
     }
 
-    public DocumentModelList getGlobalFeedsDocumentModelList(CoreSession session)
-            throws ClientException {
-        return session.getChildren(new PathRef(getRssFeedModelContainerPath()));
-    }
 }

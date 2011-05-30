@@ -21,8 +21,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.nuxeo.rss.reader.manager.api.Constants.RSS_FEEDS_FOLDER;
-import static org.nuxeo.rss.reader.manager.api.Constants.RSS_FEED_CONTAINER_PATH;
+import static org.nuxeo.rss.reader.manager.api.Constants.RSS_READER_MANAGEMENT_ROOT_NAME;
+import static org.nuxeo.rss.reader.manager.api.Constants.RSS_READER_MANAGEMENT_ROOT_PATH;
 
 import java.util.List;
 
@@ -57,28 +57,28 @@ public class TestFeedReaderService extends AbstractRSSFeedTestCase {
 
     @Test
     public void testFeedRootsCreation() throws ClientException {
-        DocumentRef feedContainer = new PathRef(RSS_FEED_CONTAINER_PATH);
+        DocumentRef feedContainer = new PathRef(RSS_READER_MANAGEMENT_ROOT_PATH);
         assertFalse(session.exists(feedContainer));
-        rssFeedService.createRssFeedModelContainerIfNeeded(session);
+        rssFeedService.getRssReaderManagementContainer(session);
         assertTrue(session.exists(feedContainer));
 
         DocumentRef userFeedContainer = new PathRef(
-                "/default-domain/UserWorkspaces/Administrator/" + RSS_FEEDS_FOLDER);
+                "/default-domain/UserWorkspaces/Administrator/" + RSS_READER_MANAGEMENT_ROOT_NAME);
         assertFalse(session.exists(userFeedContainer));
-        rssFeedService.getCurrentUserRssFeedModelContainerPath(session);
+        rssFeedService.getCurrentUserRssFeedsContainer(session);
         assertTrue(session.exists(userFeedContainer));
     }
 
     @Test
     public void testChildrenCopy() throws ClientException {
-        rssFeedService.createRssFeedModelContainerIfNeeded(session);
+        rssFeedService.getRssReaderManagementContainer(session);
         buildFeed("default1", true, null);
         buildFeed("john", false, null);
         buildFeed("doh", false, null);
         buildFeed("default2", true, null);
 
-        String userFeeds = rssFeedService.getCurrentUserRssFeedModelContainerPath(session);
-        assertEquals("/default-domain/UserWorkspaces/Administrator/" + RSS_FEEDS_FOLDER, userFeeds);
+        String userFeeds = rssFeedService.getCurrentUserRssFeedsContainer(session).getPathAsString();
+        assertEquals("/default-domain/UserWorkspaces/Administrator/" + RSS_READER_MANAGEMENT_ROOT_NAME, userFeeds);
         DocumentRef userFeedsRef = new PathRef(userFeeds);
         assertTrue(session.exists(userFeedsRef));
         session.save();
@@ -88,13 +88,13 @@ public class TestFeedReaderService extends AbstractRSSFeedTestCase {
 
     @Test
     public void testGetUserFeeds() throws ClientException {
-        rssFeedService.createRssFeedModelContainerIfNeeded(session);
+        rssFeedService.getRssReaderManagementContainer(session);
 
         buildFeed("feed1", true, "http://www.dummyRss.com");
         buildFeed("feed2", false, "http://www.dummyRss.default.com");
         buildFeed("feed3", true, "http://www.dummyRss.com");
 
-        List<String> adresses = rssFeedService.getUserRssFeedAddresses(session);
+        List<String> adresses = rssFeedService.getCurrentUserRssFeedAddresses(session);
         assertEquals(2, adresses.size());
         for(String feedAddress : adresses) {
             assertEquals("http://www.dummyRss.com", feedAddress);

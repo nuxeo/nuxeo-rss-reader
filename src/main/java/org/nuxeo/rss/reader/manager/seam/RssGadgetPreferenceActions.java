@@ -31,7 +31,6 @@ import org.jboss.seam.international.StatusMessage;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
-import org.nuxeo.ecm.core.api.PathRef;
 import org.nuxeo.ecm.webapp.base.InputController;
 import org.nuxeo.ecm.webapp.helpers.EventManager;
 import org.nuxeo.ecm.webapp.helpers.EventNames;
@@ -72,22 +71,25 @@ public class RssGadgetPreferenceActions extends InputController implements
 
     public DocumentModel getPreference() throws ClientException {
         if (preference == null) {
-            rssFeed.createRssFeedModelContainerIfNeeded(documentManager);
-            String feedContainer = rssFeed.getRssFeedModelContainerPath();
-            preference = documentManager.getDocument(new PathRef(feedContainer));
+            preference = rssFeed.getRssReaderManagementContainer(documentManager);
         }
         return preference;
     }
 
+    public String getRssReaderManagementContainerPath() throws ClientException {
+        return rssFeed.getRssReaderManagementContainer(documentManager).getPathAsString();
+    }
+
     public void saveDocument() throws ClientException {
         Events.instance().raiseEvent(EventNames.BEFORE_DOCUMENT_CHANGED,
-                preference);
-        preference = documentManager.saveDocument(preference);
+                getPreference());
+        preference = documentManager.saveDocument(getPreference());
         documentManager.save();
+
         facesMessages.add(StatusMessage.Severity.INFO,
                 resourcesAccessor.getMessages().get("document_modified"),
-                resourcesAccessor.getMessages().get(preference.getType()));
-        EventManager.raiseEventsOnDocumentChange(preference);
+                resourcesAccessor.getMessages().get(getPreference().getType()));
+        EventManager.raiseEventsOnDocumentChange(getPreference());
         toggleForm();
     }
 

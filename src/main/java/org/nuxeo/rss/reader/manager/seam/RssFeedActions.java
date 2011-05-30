@@ -1,8 +1,8 @@
 package org.nuxeo.rss.reader.manager.seam;
 
 import static org.jboss.seam.annotations.Install.FRAMEWORK;
-import static org.nuxeo.rss.reader.manager.api.Constants.RSS_FEED_CONTAINER_PATH;
 import static org.nuxeo.rss.reader.manager.api.Constants.RSS_FEED_TYPE;
+import static org.nuxeo.rss.reader.manager.api.Constants.RSS_READER_MANAGEMENT_ROOT_PATH;
 
 import java.io.Serializable;
 
@@ -47,10 +47,10 @@ public class RssFeedActions extends InputController implements Serializable {
     protected transient UserManager userManager;
 
     @In(create = true)
-    protected transient RSSFeedService rssFeed;
+    protected transient NavigationContext navigationContext;
 
     @In(create = true)
-    protected transient NavigationContext navigationContext;
+    protected transient RSSFeedService rssFeed;
 
     protected DocumentModel currentDocument = null;
 
@@ -68,7 +68,7 @@ public class RssFeedActions extends InputController implements Serializable {
     }
 
     public void saveDocument() throws ClientException {
-        rssFeed.createRssFeedModelContainerIfNeeded(documentManager);
+        rssFeed.getRssReaderManagementContainer(documentManager);
         if (currentDocument.getId() == null) {
             // save document
             documentActions.saveDocument(currentDocument);
@@ -79,9 +79,11 @@ public class RssFeedActions extends InputController implements Serializable {
                     currentDocument);
             currentDocument = documentManager.saveDocument(currentDocument);
             documentManager.save();
-            facesMessages.add(StatusMessage.Severity.INFO,
+            facesMessages.add(
+                    StatusMessage.Severity.INFO,
                     resourcesAccessor.getMessages().get("document_modified"),
-                    resourcesAccessor.getMessages().get(currentDocument.getType()));
+                    resourcesAccessor.getMessages().get(
+                            currentDocument.getType()));
             EventManager.raiseEventsOnDocumentChange(currentDocument);
         }
         resetDocument();
@@ -94,8 +96,10 @@ public class RssFeedActions extends InputController implements Serializable {
             if (documentManager.exists(ref)) {
                 currentDocument = documentManager.getDocument(new PathRef(path));
             } else {
-                facesMessages.add(StatusMessage.Severity.WARN,
-                    resourcesAccessor.getMessages().get("Error.Document.Not.Found"));
+                facesMessages.add(
+                        StatusMessage.Severity.WARN,
+                        resourcesAccessor.getMessages().get(
+                                "Error.Document.Not.Found"));
             }
         }
     }
@@ -109,11 +113,13 @@ public class RssFeedActions extends InputController implements Serializable {
     }
 
     public boolean isShowCreateForm() {
-        return isShowForm() && currentDocument != null && currentDocument.getId() == null;
+        return isShowForm() && currentDocument != null
+                && currentDocument.getId() == null;
     }
 
     public boolean isShowEditForm() {
-        return isShowForm() && currentDocument != null && currentDocument.getId() != null;
+        return isShowForm() && currentDocument != null
+                && currentDocument.getId() != null;
     }
 
     public void toggleForm() {
@@ -128,14 +134,12 @@ public class RssFeedActions extends InputController implements Serializable {
     public String getLink(String link) {
 
         try {
-            rssFeed.createRssFeedModelContainerIfNeeded(documentManager);
-            navigationContext.setCurrentDocument(documentManager.getDocument(new PathRef(
-                    RSS_FEED_CONTAINER_PATH)));
+            navigationContext.setCurrentDocument(rssFeed.getRssReaderManagementContainer(documentManager));
         } catch (Exception e) {
             if (log.isErrorEnabled()) {
                 log.error(String.format(
                         "Unable to set the current document to \"%s\"",
-                        RSS_FEED_CONTAINER_PATH));
+                        RSS_READER_MANAGEMENT_ROOT_PATH));
             }
         }
         return link;
