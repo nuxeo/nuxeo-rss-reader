@@ -8,7 +8,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
-import org.nuxeo.ecm.automation.core.annotations.Context;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
@@ -25,19 +24,13 @@ import org.nuxeo.runtime.api.Framework;
 @Produces("text/html; charset=UTF-8")
 public class RssReaderModuleRoot extends ModuleRoot {
 
-    // XXX : to be removed when we'll use RssFeed documents
-    private static final String[] URLS = {
-            "http://rss.lemonde.fr/c/205/f/3052/index.rss",
-            "http://actu.voila.fr/Magic/XML/rss-a-la-une.xml",
-            "http://feeds.feedburner.com/fubiz" };
-
-    @Context
     protected RSSFeedService rssFeedService;
 
     @GET
     @Path("/item")
-    public Object getItemContent(@QueryParam("i") String id) {
-        return getView("item").args(FeedHelper.searchFeedEntry(URLS, id));
+    public Object getItemContent(@QueryParam("i") String id) throws Exception {
+        List<String> urls = getRSSService().getCurrentUserRssFeedAddresses(ctx.getCoreSession());
+        return getView("item").args(FeedHelper.searchFeedEntry(urls.toArray(new String[urls.size()]), id));
     }
 
     @GET

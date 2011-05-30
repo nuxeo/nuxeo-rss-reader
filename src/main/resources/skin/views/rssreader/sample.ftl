@@ -16,7 +16,7 @@
       $('.gadgets-gadget-chrome').openSocialGadget({
         baseURL: '${contextPath}' + '/',
         language: '${Context.locale.language}',
-        gadgetDefs: [ {specUrl : '${Context.baseURL}${contextPath}/site/gadgets/rssreader/rssreader.xml',
+        gadgetDefs: [ {specUrl : '${Runtime.getProperty('nuxeo.loopback.url')}/site/gadgets/rssreader/rssreader.xml',
                     title : 'Nuxeo RSS Reader',
                     width : '100%'}]
       });
@@ -35,7 +35,7 @@
       });
     }
 
-	function addConfigBoxTo(a, onClosedCallback ) {
+    function addConfigBoxTo(a, onClosedCallback ) {
       jQuery(a).fancybox({
         'width'             : '75%',
         'height'            : '75%',

@@ -47,12 +47,6 @@ a.itemNav:hover {
   float:right;
 }
 
-.itemContent {
-  max-height: 290px;
-  overflow: auto;
-  width: 100%;
-}
-
 .title a, .title a:hover, .title a:visited  {
   color: #333;
   font-size: 125%;
