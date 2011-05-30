@@ -16,8 +16,8 @@
 
     <div style="clear: both"></div>
     <div class="tabsContent">
-      <nxu:set var="v" value="#{rssFeedActions.getLink(currentAdminSubView.link)}">
-        <ui:include   src="#{v}" />
+      <nxu:set var="adminTabLink" value="#{currentAdminSubView.link}">
+        <ui:include   src="#{rssFeedActions.getLink(adminTabLink)}" />
       </nxu:set>
     </div>
 
