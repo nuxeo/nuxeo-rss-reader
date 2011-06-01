@@ -26,3 +26,4 @@ nuxeo-*/META-INF
 nuxeo-*/OSGI-INF
 *.bak
 run.conf
+user-extensions.js
