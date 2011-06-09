@@ -1,8 +1,8 @@
-body { margin: 0; color: #333; font: normal 14px "Trebuchet MS", Helvetica, sans-serif }
+body { margin: 0; color: #333; font: normal 14px "Lucida Grande", Helvetica, sans-serif }
   ul { margin:7px 0 15px; padding: 0 0 0 15px }
   li { list-style: none }
   .feedBlock { padding: 10px }
-  input.field, select.field { border: 1px solid #DEDEDE; padding: 3px; width: 160px }
+  input.field, select.field { border: 1px solid #dedede; padding: 3px; width: 160px }
   input.feedlink {background:url('') no-repeat right center; padding: 3px 20px 3px 3px}
   .fieldRow { padding: 5px 0 15px 27px }
   .submitBar { padding: 10px 8px 5px }
@@ -23,7 +23,7 @@ padding: 2px 5px;
 text-transform: uppercase;
 }
 
-.submitBar input:hover { color: #b11916}
+.submitBar input:hover { color: #2687e7}
 
 img {
 	border: none;

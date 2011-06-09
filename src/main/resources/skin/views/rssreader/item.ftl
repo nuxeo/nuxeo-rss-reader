@@ -16,7 +16,7 @@
   <div class="popupContent">
     <div class="title">
       <a href="${entry.link}" target="_blank">${entry.title}</a>
-    </div
+    </div>
     <div class="entryInfo">
       ${entry.publishedDate?datetime} - <a class="source" href="${entry.source.link}" target="_blank">${entry.source.title}</a>
     </div>
