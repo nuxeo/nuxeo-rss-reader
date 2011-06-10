@@ -4,11 +4,12 @@
   <parent>
     <groupId>org.nuxeo.ecm.platform</groupId>
     <artifactId>nuxeo-features-parent</artifactId>
-    <version>5.4.2-SNAPSHOT</version>
+    <version>5.4.2</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.nuxeo.rss.reader</groupId>
   <artifactId>nuxeo-rss-reader</artifactId>
+  <version>5.4.2-SNAPSHOT</version>
   <name>Nuxeo RSS Reader</name>
   <description>Nuxeo RSS Reader</description>
 
