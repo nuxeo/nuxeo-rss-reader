@@ -16,9 +16,13 @@
  */
 package org.nuxeo.rss.reader;
 
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.net.SocketAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -32,6 +36,7 @@ import net.sf.json.JSONObject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.nuxeo.common.utils.Base64;
 
 import com.sun.syndication.feed.synd.SyndContent;
 import com.sun.syndication.feed.synd.SyndEntry;
@@ -133,7 +138,22 @@ public class FeedHelper {
     public static SyndFeed parseFeed(String feedUrl) throws Exception {
         URL url = new URL(feedUrl);
         SyndFeedInput input = new SyndFeedInput();
-        SyndFeed feed = input.build(new XmlReader(url));
+        URLConnection urlConnection;
+        if (FeedUrlConfig.useProxy()) {
+            SocketAddress addr = new InetSocketAddress(FeedUrlConfig.getProxyHost(), FeedUrlConfig.getProxyPort());
+            Proxy proxy = new Proxy(Proxy.Type.HTTP, addr);
+            urlConnection = url.openConnection(proxy);
+            if (FeedUrlConfig.isProxyAuthenticated()) {
+                String encoded = Base64.encodeBytes(new String(
+                        FeedUrlConfig.getProxyLogin() + ":"
+                                + FeedUrlConfig.getProxyPassword()).getBytes());
+                urlConnection.setRequestProperty("Proxy-Authorization", "Basic " + encoded);
+                urlConnection.connect();
+            }
+        } else {
+            urlConnection = url.openConnection();
+        }
+        SyndFeed feed = input.build(new XmlReader(urlConnection));
         return feed;
     }
 
