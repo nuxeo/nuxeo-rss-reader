@@ -16,13 +16,14 @@
  */
 package org.nuxeo.rss.reader;
 
+import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.SocketAddress;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -90,8 +91,9 @@ public class FeedHelper {
      *
      * @param urls - URLs of the feeds that will be merged
      * @return
+     * @throws UnsupportedEncodingException
      */
-    public static JSONObject mergeFeeds(String[] urls) {
+    public static JSONObject mergeFeeds(String[] urls) throws UnsupportedEncodingException {
         return mergeFeeds(urls, NO_LIMIT);
     }
 
@@ -101,8 +103,9 @@ public class FeedHelper {
      * @param urls - URLs of the feeds that will be merged
      * @param limit -
      * @return
+     * @throws UnsupportedEncodingException
      */
-    public static JSONObject mergeFeeds(String[] urls, int limit) {
+    public static JSONObject mergeFeeds(String[] urls, int limit) throws UnsupportedEncodingException {
         MergedEntries mergedEntries = new MergedEntries(urls, limit);
 
         // build the JSON with feed entries
@@ -112,9 +115,7 @@ public class FeedHelper {
         return object;
     }
 
-    public static Map<String, Object> searchFeedEntry(String[] urls, String link) throws URISyntaxException {
-        link = new URI(link).toASCIIString();
-
+    public static Map<String, Object> searchFeedEntry(String[] urls, String link) throws URISyntaxException, UnsupportedEncodingException {
         MergedEntries mergedEntries = new MergedEntries(urls, NO_LIMIT);
 
         List<SyndEntry> entries = mergedEntries.getEntries();
@@ -124,10 +125,10 @@ public class FeedHelper {
             if (link.equals(entry.getLink())) {
                 foundEntry.put("entry", entry);
                 if (i > 0) {
-                    foundEntry.put("previous", entries.get(i - 1).getLink());
+                    foundEntry.put("previous", URLEncoder.encode(entries.get(i - 1).getLink(), "UTF-8"));
                 }
                 if (i < entries.size() - 1) {
-                    foundEntry.put("next", entries.get(i + 1).getLink());
+                    foundEntry.put("next", URLEncoder.encode(entries.get(i + 1).getLink(), "UTF-8"));
                 }
                 break;
             }
@@ -160,9 +161,10 @@ public class FeedHelper {
     /**
      * @param feed object
      * @return build the JSON object that represents the feed
+     * @throws UnsupportedEncodingException
      *
      */
-    private static JSONObject buildJson(SyndFeed feed, int limit) {
+    private static JSONObject buildJson(SyndFeed feed, int limit) throws UnsupportedEncodingException {
         JSONObject object = new JSONObject();
         addFeedInfo(object, feed);
 
@@ -192,12 +194,12 @@ public class FeedHelper {
     }
 
     private static JSONArray buildEntriesArray(List<SyndEntry> entries,
-            boolean addFeedInfo) {
+            boolean addFeedInfo) throws UnsupportedEncodingException {
         JSONArray array = new JSONArray();
         for (SyndEntry entry : entries) {
             JSONObject o = new JSONObject();
             addProperty(o, Field.TITLE, entry.getTitle());
-            addProperty(o, Field.LINK, entry.getLink());
+            addProperty(o, Field.LINK, URLEncoder.encode(entry.getLink(), "UTF-8"));
 
             SyndContent description = entry.getDescription();
             if (description != null) {
@@ -326,4 +328,5 @@ public class FeedHelper {
         }
 
     }
+
 }
