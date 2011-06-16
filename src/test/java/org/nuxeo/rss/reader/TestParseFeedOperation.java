@@ -127,6 +127,8 @@ public class TestParseFeedOperation extends AbstractRSSFeedTestCase {
                     entry.get(FeedHelper.Field.TITLE.name()));
         }
 
+        // check url encoding
+        assertEquals("http%3A%2F%2Fnuxeo.com%2F", ((JSONObject) array.get(0)).get(FeedHelper.Field.LINK.name()));
     }
 
 }
