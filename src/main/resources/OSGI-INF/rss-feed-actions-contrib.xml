@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<component name="org.nuxeo.platform.birt.reporting.actions">
-
-  <require>org.nuxeo.ecm.platform.preview.actions</require>
-  <require>org.nuxeo.ecm.platform.comment.actions</require>
+<component name="org.nuxeo.rss.feed.management.actions">
 
   <extension target="org.nuxeo.ecm.platform.actions.ActionService" point="actions">
     <!-- Admin center actions -->
