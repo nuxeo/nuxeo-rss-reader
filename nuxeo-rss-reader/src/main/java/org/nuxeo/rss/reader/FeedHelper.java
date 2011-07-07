@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -305,10 +306,15 @@ public class FeedHelper {
             // sort entries
             Collections.sort(entries, new Comparator<SyndEntry>() {
                 public int compare(SyndEntry o1, SyndEntry o2) {
+                    Date publishedDate1 = o1.getPublishedDate();
+                    Date publishedDate2 = o2.getPublishedDate();
+                    if (publishedDate1 == null || publishedDate2 == null) {
+                        return 0;
+                    }
                     Calendar c1 = Calendar.getInstance();
                     Calendar c2 = Calendar.getInstance();
-                    c1.setTime(o1.getPublishedDate());
-                    c2.setTime(o2.getPublishedDate());
+                    c1.setTime(publishedDate1);
+                    c2.setTime(publishedDate2);
                     return -c1.compareTo(c2);
                 }
             });
