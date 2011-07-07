@@ -7,7 +7,7 @@
   <target name="init" unless="init.done">
     <property name="integration.dir"
       value="${maven.project.build.directory}/integration" />
-    <property name="selenium.dir" value="ftest/selenium" />
+    <property name="selenium.dir" value="selenium" />
     <property name="tomcat" value="${integration.dir}/nuxeo-dm-tomcat" />
     <property name="init.done" value="true" />
   </target>
@@ -18,8 +18,7 @@
     <antcall target="run-selenium-tests" />
   </target>
 
-  <target name="prepare-distribution" description="Prepare distribution to test"
-    if="maven.profile.testit">
+  <target name="prepare-distribution" description="Prepare distribution to test">
     <delete failonerror="false" dir="${tomcat}" />
     <unzip dest="${integration.dir}">
       <artifact:resolveFile
@@ -31,9 +30,9 @@
     <chmod dir="${tomcat}/bin" perm="u+x" includes="*.sh,*ctl" />
 
     <copy todir="${tomcat}/nxserver/bundles/" overwrite="true" flatten="true">
-      <fileset dir="${maven.project.build.directory}">
-        <include name="${maven.project.artifactId}*.jar" />
-        <exclude name="*-sources.jar" />
+      <fileset dir="${basedir}/..">
+        <include name="**/target/nuxeo-rss-reader*.jar" />
+        <exclude name="**/target/nuxeo-rss-reader*-sources.jar" />
       </fileset>
     </copy>
   </target>
@@ -45,12 +44,10 @@
     </copy>
     <chmod dir="${selenium.dir}" perm="u+x" includes="*.sh,*ctl" />
 
-    <nx:profile name="testit">
-      <exec executable="${selenium.dir}/hudson-run.sh" failonerror="true">
-        <arg value="${tomcat}" />
-        <arg value="${integration.dir}" />
-      </exec>
-    </nx:profile>
+    <exec executable="${selenium.dir}/hudson-run.sh" failonerror="true">
+      <arg value="${tomcat}" />
+      <arg value="${integration.dir}" />
+    </exec>
   </target>
 
 </project>

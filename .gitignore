@@ -27,3 +27,6 @@ nuxeo-*/OSGI-INF
 *.bak
 run.conf
 user-extensions.js
+prefs.js
+selenium-server.jar
+result-suite.html

@@ -2,7 +2,7 @@
 // The url is set at runtime by the run.sh script
 user_pref("signed.applets.codebase_principal_support", true);
 user_pref("capability.principal.codebase.p0.granted", "UniversalFileRead");
-user_pref("capability.principal.codebase.p0.id", "http://127.0.0.1:8080/nuxeo/");
+user_pref("capability.principal.codebase.p0.id", "http://localhost:8080/nuxeo/");
 user_pref("capability.principal.codebase.p0.subjectName", "");
 
 // Set english as default language
