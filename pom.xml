@@ -4,19 +4,17 @@
   <parent>
     <groupId>org.nuxeo.ecm.platform</groupId>
     <artifactId>nuxeo-features-parent</artifactId>
-    <version>5.4.2</version>
+    <version>5.4.3-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.nuxeo.rss.reader</groupId>
   <artifactId>nuxeo-rss-reader-parent</artifactId>
-  <version>5.4.2</version>
   <name>Nuxeo RSS Reader Parent</name>
   <description>Nuxeo RSS Reader Parent</description>
   <packaging>pom</packaging>
 
   <properties>
     <nuxeo.version>${nuxeo.features.version}</nuxeo.version>
-    <nuxeo.rss.reader.version>5.4.2</nuxeo.rss.reader.version>
   </properties>
 
   <modules>
@@ -27,15 +25,15 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-	    <groupId>org.nuxeo.rss.reader</groupId>
+        <groupId>org.nuxeo.rss.reader</groupId>
         <artifactId>nuxeo-rss-reader</artifactId>
-        <version>${nuxeo.rss.reader.version}</version>
+	<version>${nuxeo.features.version}</version>
 	  </dependency>
       <dependency>
-	    <groupId>org.nuxeo.rss.reader</groupId>
+        <groupId>org.nuxeo.rss.reader</groupId>
         <artifactId>nuxeo-rss-reader-ui</artifactId>
-        <version>${nuxeo.rss.reader.version}</version>
-	  </dependency>
+	<version>${nuxeo.features.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
