@@ -9,14 +9,14 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.nuxeo.rss.reader</groupId>
   <artifactId>nuxeo-rss-reader-parent</artifactId>
-  <version>5.4.2-SNAPSHOT</version>
+  <version>5.4.2</version>
   <name>Nuxeo RSS Reader Parent</name>
   <description>Nuxeo RSS Reader Parent</description>
   <packaging>pom</packaging>
 
   <properties>
     <nuxeo.version>${nuxeo.features.version}</nuxeo.version>
-    <nuxeo.rss.reader.version>5.4.2-SNAPSHOT</nuxeo.rss.reader.version>
+    <nuxeo.rss.reader.version>5.4.2</nuxeo.rss.reader.version>
   </properties>
 
   <modules>
