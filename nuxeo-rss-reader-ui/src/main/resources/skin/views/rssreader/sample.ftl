@@ -22,31 +22,21 @@
       });
     });
 
-    function addFancyBoxTo(a) {
-      jQuery(a).fancybox({
-        'width'             : '75%',
-        'height'            : '75%',
-        'autoScale'         : true,
-        'transitionIn'      : 'none',
-        'transitionOut'     : 'none',
-        'type'              : 'iframe',
-        'enableEscapeButton': true,
-        'centerOnScroll'	: true
-      });
-    }
-
-    function addConfigBoxTo(a, onClosedCallback ) {
-      jQuery(a).fancybox({
-        'width'             : '75%',
-        'height'            : '75%',
-        'autoScale'         : true,
-        'transitionIn'      : 'none',
-        'transitionOut'     : 'none',
-        'type'              : 'iframe',
-        'enableEscapeButton': true,
-        'centerOnScroll'	: true,
-        'onClosed' 			: onClosedCallback
-      });
+    function addFancyBoxTo(a, onClosedCallback) {
+    	config = {
+        	'width'             : '75%',
+        	'height'            : '75%',
+        	'autoScale'         : true,
+        	'transitionIn'      : 'none',
+        	'transitionOut'     : 'none',
+        	'type'              : 'iframe',
+        	'enableEscapeButton': true,
+        	'centerOnScroll': true
+      	};
+      	if ( typeof onClosedCallback != 'undefined' ) {
+      		config['onClosed'] = onClosedCallback;
+      	}
+        jQuery(a).fancybox(config);
     }
 
 

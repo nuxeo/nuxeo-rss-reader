@@ -8,7 +8,7 @@ function submitForm(formName) {
 	document.forms[formName].submit();
 }
 function closePopUp() {
-	parent.$.fancybox.close();
+	parent.jQuery.fancybox.close();
 }
 
 </script>

@@ -41,7 +41,7 @@
         _gel("feedEntries").innerHTML = buildFeed(response);
         gadgets.window.adjustHeight();
         window.parent.addFancyBoxTo(jQuery(".feedItemPopup"));
-        window.parent.addConfigBoxTo(jQuery(".feedConfigPopup"), loadFeedItems);
+        window.parent.addFancyBoxTo(jQuery(".feedConfigPopup"), loadFeedItems);
     };
 
     function buildFeed(response) {
