@@ -43,7 +43,7 @@ import org.nuxeo.runtime.model.DefaultComponent;
 /**
  * Default RSSFeed component implementation, it also default implementation of
  * {@code org.nuxeo.rss.reader.service.RSSFeedService}
- *
+ * 
  * @author <a href="mailto:akervern@nuxeo.com">Arnaud Kervern</a>
  * @since 5.4.2
  */
@@ -82,15 +82,6 @@ public class RSSFeedComponent extends DefaultComponent implements
 
     protected String getCurrentUserWorkspace(CoreSession session)
             throws ClientException {
-        String userName = session.getPrincipal().getName();
-        DocumentModel root = session.getRootDocument();
-        DocumentModelList list = session.getChildren(root.getRef());
-        if (list.size() == 0) {
-            throw new ClientException(
-                    "No domain detected, we can't create or get the current UserWorkspace.");
-        }
-
-        DocumentModel currentDomain = list.get(0);
         UserWorkspaceService uws;
         try {
             uws = Framework.getService(UserWorkspaceService.class);
@@ -99,8 +90,8 @@ public class RSSFeedComponent extends DefaultComponent implements
                     "Can't fetch the UserWorkspace service, please check", e);
         }
 
-        String userWorkspace = uws.getCurrentUserPersonalWorkspace(userName,
-                currentDomain).getPathAsString();
+        String userWorkspace = uws.getCurrentUserPersonalWorkspace(session,
+                null).getPathAsString();
         return userWorkspace;
     }
 
@@ -142,8 +133,9 @@ public class RSSFeedComponent extends DefaultComponent implements
     }
 
     /**
-     * Return feeds proposed into the administration view but only ones set as default.
-     *
+     * Return feeds proposed into the administration view but only ones set as
+     * default.
+     * 
      * @param session
      * @return
      * @throws ClientException
