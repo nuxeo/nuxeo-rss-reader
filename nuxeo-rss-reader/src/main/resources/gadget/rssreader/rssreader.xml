@@ -73,15 +73,15 @@
         return feed;
     };
 
- 	function addActions(){
- 		s = '<div class="rssLinks">';
+     function addActions(){
+         s = '<div class="rssLinks">';
         s += '<span>RSS</span>';
         s += '<a class="feedConfigPopup" href="${clientSideBaseUrl}site/rssreader/config">';
         s += '<span><img src="${clientSideBaseUrl}site/gadgets/rssreader/rss_icon.png"></span>';
         s += '</a>';
         s += '</div>';
-		return s;
- 	}
+        return s;
+     }
 
 
     function buildEntry(entryData, feed_title, feed_link) {
@@ -89,7 +89,9 @@
         entry += '<div class="entry">';
 
         entry += '<div class="title">';
-        entry += '<a class="feedItemPopup" href="${clientSideBaseUrl}site/rssreader/item?i='+ entryData["LINK"] + '">';
+
+        entry_id = entryData["URI"] != null ? entryData["URI"] : entryData["LINK"];
+        entry += '<a class="feedItemPopup" href="${clientSideBaseUrl}site/rssreader/item?i='+ entry_id + '">';
         entry += entryData["TITLE"];
         entry += '</a>'
         entry += '</div>';
@@ -120,7 +122,7 @@
     gadgets.util.registerOnLoadHandler(loadFeedItems);
 
     function loadFeedItems() {
-    	doAutomationRequest(opCallParameters);
+        doAutomationRequest(opCallParameters);
     };
 
 

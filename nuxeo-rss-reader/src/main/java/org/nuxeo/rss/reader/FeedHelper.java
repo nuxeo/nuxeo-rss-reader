@@ -59,7 +59,7 @@ public class FeedHelper {
     public static final int NO_LIMIT = -1;
 
     public static enum Field {
-        FEED_TITLE, FEED_LINK, FEED_DESCRIPTION, FEED_PUBDATE, TITLE, DESCRIPTION, LINK, PUBDATE, ENTRIES, FEEDS
+        FEED_TITLE, FEED_LINK, FEED_DESCRIPTION, FEED_PUBDATE, TITLE, DESCRIPTION, LINK, PUBDATE, ENTRIES, FEEDS, URI
     };
 
     /**
@@ -116,20 +116,30 @@ public class FeedHelper {
         return object;
     }
 
-    public static Map<String, Object> searchFeedEntry(String[] urls, String link) throws URISyntaxException, UnsupportedEncodingException {
+    public static Map<String, Object> searchFeedEntry(String[] urls, String id) throws URISyntaxException, UnsupportedEncodingException {
         MergedEntries mergedEntries = new MergedEntries(urls, NO_LIMIT);
 
         List<SyndEntry> entries = mergedEntries.getEntries();
         Map<String, Object> foundEntry = new HashMap<String, Object>();
         for (int i = 0; i < entries.size(); i++) {
             SyndEntry entry = entries.get(i);
-            if (link.equals(entry.getLink())) {
+            if (id.equals(entry.getUri()) || id.equals(entry.getLink())) {
                 foundEntry.put("entry", entry);
                 if (i > 0) {
-                    foundEntry.put("previous", URLEncoder.encode(entries.get(i - 1).getLink(), "UTF-8"));
+                    SyndEntry previousEntry = entries.get(i - 1);
+                    String previousEntryId = previousEntry.getUri();
+                    if (previousEntryId == null) {
+                        previousEntryId = previousEntry.getLink();
+                    }
+                    foundEntry.put("previous", URLEncoder.encode(previousEntryId, "UTF-8"));
                 }
                 if (i < entries.size() - 1) {
-                    foundEntry.put("next", URLEncoder.encode(entries.get(i + 1).getLink(), "UTF-8"));
+                    SyndEntry nextEntry = entries.get(i + 1);
+                    String nextEntryId = nextEntry.getUri();
+                    if (nextEntryId == null) {
+                        nextEntryId = nextEntry.getLink();
+                    }
+                    foundEntry.put("next", URLEncoder.encode(nextEntryId, "UTF-8"));
                 }
                 break;
             }
@@ -201,6 +211,9 @@ public class FeedHelper {
             JSONObject o = new JSONObject();
             addProperty(o, Field.TITLE, entry.getTitle());
             addProperty(o, Field.LINK, URLEncoder.encode(entry.getLink(), "UTF-8"));
+            if (entry.getUri() != null) {
+                addProperty(o, Field.URI, URLEncoder.encode(entry.getUri(), "UTF-8"));
+            }
 
             SyndContent description = entry.getDescription();
             if (description != null) {
