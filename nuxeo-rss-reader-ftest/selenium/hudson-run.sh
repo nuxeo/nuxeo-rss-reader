@@ -18,9 +18,6 @@ echo "start jboss"
 chmod +x $JBOSS_HOME/bin/*ctl || exit 1
 $JBOSS_HOME/bin/nuxeoctl start || exit 1
 
-echo "Wait 30 sec ... to be sure that Nuxeo is accesibble."
-sleep 30
-
 echo "run selenium tests"
 chmod +x "$HERE"/run.sh $OUTPUT || exit 1
 HIDE_FF=true "$HERE"/run.sh $OUTPUT
