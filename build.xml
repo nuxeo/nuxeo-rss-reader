@@ -65,7 +65,7 @@
     <exec executable="mvn" failonerror="true">
       <arg value="-Dmaven.test.skip=true" />
       <arg value="clean" />
-      <arg value="integration-test" />
+      <arg value="verify" />
       <arg value="-Ptestit" />
       <arg value="${mvn.opts}" />
     </exec>
