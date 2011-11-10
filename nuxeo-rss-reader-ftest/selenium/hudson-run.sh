@@ -1,6 +1,8 @@
 #!/bin/sh -x
 HERE=$(cd $(dirname $0); pwd -P)
 
+echo DEPRECATED: should use nuxeo-ftest
+
 JBOSS_HOME=$1
 OUTPUT=$2
 

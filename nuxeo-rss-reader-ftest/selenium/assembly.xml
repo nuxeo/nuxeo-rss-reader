@@ -22,11 +22,11 @@
     <delete failonerror="false" dir="${tomcat}" />
     <unzip dest="${integration.dir}">
       <artifact:resolveFile
-        key="org.nuxeo.ecm.distribution:nuxeo-distribution-tomcat:${nuxeo.version}:zip"
+        key="org.nuxeo.ecm.distribution:nuxeo-distribution-tomcat:${nuxeo.distribution.version}:zip"
         classifier="nuxeo-dm" />
     </unzip>
     <rename dest="${tomcat}"
-      src="${integration.dir}/nuxeo-dm-${nuxeo.version}-tomcat" />
+      src="${integration.dir}/nuxeo-dm-${nuxeo.distribution.version}-tomcat" />
     <chmod dir="${tomcat}/bin" perm="u+x" includes="*.sh,*ctl" />
 
     <copy todir="${tomcat}/nxserver/bundles/" overwrite="true" flatten="true">
