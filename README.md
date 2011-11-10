@@ -6,25 +6,21 @@ Nuxeo RSS related module.
 
 ### quick build:
 
-    ant build 
+    mvn clean install -Dmaven.test.skip=true
 
 ### build & test
 
-    ant build-with-tests 
-
-or 
-
     mvn clean install
 
-### deploy in a nuxeo tomcat instance
+### Run integration test suite
+
+    mvn verify -f nuxeo-rss-reader-ftest/pom.xml
+
+### deploy in an existing nuxeo tomcat instance
 
     ant deploy-tomcat 
 
 Note: the `tomcat.dir` should be defined in a `build.properties` file.
-
-### Run integration test suite
-
-    ant integration-test
 
 
 ## About Nuxeo
