@@ -49,10 +49,9 @@
         feed_link = response.data["FEED_LINK"];
         entries = response.data["ENTRIES"];
         if ( typeof entries == 'undefined' ) {
-            return addActions() + '<p>No entries</p>';
+            return '<p>No entries</p>';
         }
         feed = '';
-        feed += addActions();
 
         for (var i = 0; i < entries.length; i++) {
             entry = entries[i];
@@ -72,17 +71,6 @@
         }
         return feed;
     };
-
-     function addActions(){
-         s = '<div class="rssLinks">';
-        s += '<span>RSS</span>';
-        s += '<a class="feedConfigPopup" href="${clientSideBaseUrl}site/rssreader/config">';
-        s += '<span><img src="${clientSideBaseUrl}site/gadgets/rssreader/rss_icon.png"></span>';
-        s += '</a>';
-        s += '</div>';
-        return s;
-     }
-
 
     function buildEntry(entryData, feed_title, feed_link) {
         entry = '';
@@ -130,6 +118,12 @@
 
   </head>
     <body>
+      <div class="tools">
+        <div class="actions">
+          <a class="feedConfigPopup" href="${clientSideBaseUrl}site/rssreader/config">__MSG_label.context.settings__</a>
+        </div>
+        <div style="clear: both;"></div>
+      </div>
       <div id="content">
         <#include "default-request-controls.ftl"/>
         <div id="feedEntries">

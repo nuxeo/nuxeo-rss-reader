@@ -14,3 +14,40 @@ a.source:hover { text-decoration: underline }
 
 .rssLinks { font: normal 14px "Lucida Grande", Helvetica, sans-serif; color: orange; text-align: right; padding: 0 7px }
 	.rssLinks span { padding-left: 3px; vertical-align: top }
+
+.actions {
+  float: right;
+}
+
+.tools a {
+  font-size: 80%;
+  display:block;
+  padding: 0.35em 0.5em;
+  margin-left:5px;
+  border:1px solid #ccc;
+  background-color:#e7e7e7;
+  text-decoration: none;
+  border-radius: 2px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  color:#333;
+  float:left;
+  background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(0, rgb(231,231,231)),
+    color-stop(0.66, rgb(255,255,255)));
+  background-image: -moz-linear-gradient(
+    center bottom,
+    rgb(231,231,231) 0%,
+    rgb(255,255,255) 66%);
+    /* For Internet Explorer 5.5 - 7 */
+   filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr='#ffffff', EndColorStr='#e8e8e8');
+    /* For Internet Explorer 8 */
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#ffffff, endColorstr=#e8e8e8)";
+}
+
+.tools a:link, .tools a:visited {
+  color:#333;
+}
