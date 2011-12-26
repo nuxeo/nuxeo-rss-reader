@@ -43,7 +43,7 @@ import org.nuxeo.runtime.model.DefaultComponent;
 /**
  * Default RSSFeed component implementation, it also default implementation of
  * {@code org.nuxeo.rss.reader.service.RSSFeedService}
- * 
+ *
  * @author <a href="mailto:akervern@nuxeo.com">Arnaud Kervern</a>
  * @since 5.4.2
  */
@@ -111,15 +111,21 @@ public class RSSFeedComponent extends DefaultComponent implements
     @Override
     public DocumentModelList getGlobalFeedsDocumentModelList(CoreSession session)
             throws ClientException {
-        return session.getChildren(
-                getRssReaderManagementContainer(session).getRef(),
-                RSS_FEED_TYPE);
+        String query = "SELECT * FROM Document where ecm:primaryType = '%s' "
+                + "AND ecm:parentId = '%s' "
+                + "AND ecm:currentLifeCycleState != 'deleted'";
+        return session.query(String.format(query, RSS_FEED_TYPE,
+                getRssReaderManagementContainer(session).getRef()));
     }
 
     @Override
     public DocumentModelList getCurrentUserRssFeedDocumentModelList(
             CoreSession session) throws ClientException {
-        return session.getChildren(getCurrentUserRssFeedsContainer(session).getRef());
+        String query = "SELECT * FROM Document where ecm:primaryType = '%s' "
+                + "AND ecm:parentId = '%s' "
+                + "AND ecm:currentLifeCycleState != 'deleted'";
+        return session.query(String.format(query, RSS_FEED_TYPE,
+                getCurrentUserRssFeedsContainer(session).getRef()));
     }
 
     @Override
@@ -135,7 +141,7 @@ public class RSSFeedComponent extends DefaultComponent implements
     /**
      * Return feeds proposed into the administration view but only ones set as
      * default.
-     * 
+     *
      * @param session
      * @return
      * @throws ClientException
