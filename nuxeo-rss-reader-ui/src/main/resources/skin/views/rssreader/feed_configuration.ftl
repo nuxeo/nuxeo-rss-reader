@@ -30,6 +30,10 @@
     $(this).select();
       });
     });
+
+    function confirmDeleteFeed() {
+      return confirm("${Context.getMessage('label.rss.feed.configuration.feed.remove.confirm')}");
+    }
   </script>
 </head>
 <body>
@@ -48,9 +52,9 @@
           </#list>
         </select>
       </form>
-    </#if>
 
-    ${Context.getMessage('label.rss.feed.configuration.add.custom.feed')}
+      <p>${Context.getMessage('label.rss.feed.configuration.add.custom.feed')}</p>
+    </#if>
 
     <form id="addNewFeedForm" method="POST" action="addNewFeed">
       <input class="field" type="text" name="feedName"
@@ -74,7 +78,8 @@
         <td>
           <form method="POST" action="removeFeed">
             <input type="hidden" name="id" value="${feed.id}" />
-            <input type="submit" value="${Context.getMessage('label.rss.feed.configuration.feed.remove')}"/>
+            <input type="submit" onclick="if( !confirmDeleteFeed() ) return false;"
+              value="${Context.getMessage('label.rss.feed.configuration.feed.remove')}"/>
           </form>
         </td>
       </tr>
