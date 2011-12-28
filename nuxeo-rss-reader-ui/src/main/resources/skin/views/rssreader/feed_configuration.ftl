@@ -67,7 +67,7 @@
 
     <h4>${Context.getMessage('label.rss.feed.configuration.receiving.feeds.title1')} ${userFeeds?size} ${Context.getMessage('label.rss.feed.configuration.receiving.feeds.title2')}</h4>
 
-    <p>${Context.getMessage('label.rss.feed.configuration.feeds.limit1')} ${maxFeedsCount} ${Context.getMessage('label.rss.feed.configuration.feeds.limit2')}</p>
+    <p>${Context.getMessage('label.rss.feed.configuration.feeds.limit1')} ${maxFeedsCount}${Context.getMessage('label.rss.feed.configuration.feeds.limit2')}</p>
 
     <table>
       <tbody>
