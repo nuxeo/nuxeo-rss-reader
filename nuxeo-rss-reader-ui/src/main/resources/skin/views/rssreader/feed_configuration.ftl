@@ -11,12 +11,7 @@
     src="${skinPath}/script/jquery/jquery.js"></script>
 
   <script type="text/javascript">
-    function submitForm() {
-      var selectedOption = $("#feedId option:selected");
-      var formName = "addGlobalFeedForm";
-      if (selectedOption.length == 0 || selectedOption.val() === "none") {
-        formName = "addNewFeedForm";
-      }
+    function submitForm(formName) {
       document.forms[formName].submit();
     }
 
@@ -32,6 +27,15 @@
         $(this).focus();
         $(this).select();
       });
+
+      $("#feedId").change(function() {
+        var selectedOption = $("#feedId option:selected");
+        if (selectedOption.length == 0 || selectedOption.val() === "none") {
+          $("#addGlobalFeedButton").attr("disabled", true);
+        } else {
+          $("#addGlobalFeedButton").removeAttr("disabled");
+        }
+      })
     });
 
     function confirmDeleteFeed() {
@@ -57,9 +61,9 @@
           </#list>
         </select>
       </form>
-      <button class="button smallButton"
-        <#if ableToCreateNew>onclick="submitForm()"
-        <#else>disabled="disabled" </#if> >${Context.getMessage('label.rss.feed.configuration.feed.add')}</button>
+      <button id="addGlobalFeedButton" class="button smallButton"
+        <#if ableToCreateNew>onclick="submitForm('addGlobalFeedForm')"</#if>
+        disabled="disabled">${Context.getMessage('label.rss.feed.configuration.feed.add')}</button>
       <span>${Context.getMessage('label.rss.feed.configuration.add.custom.feed')}</span>
     </#if>
 
@@ -70,7 +74,7 @@
           value="${Context.getMessage('label.rss.feed.configuration.custom.feed.link')}"/>
       </form>
       <button class="button smallButton"
-      <#if ableToCreateNew>onclick="submitForm()"
+      <#if ableToCreateNew>onclick="submitForm('addNewFeedForm')"
       <#else>disabled="disabled" </#if> >${Context.getMessage('label.rss.feed.configuration.feed.add')}</button>
     </div>
 
