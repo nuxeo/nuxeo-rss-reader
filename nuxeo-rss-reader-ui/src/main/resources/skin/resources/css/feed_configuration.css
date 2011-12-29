@@ -62,7 +62,7 @@ h4 { font-size: 1.06 em;
     cursor: default }
 /* RSS styles */
 .addFeedBlock { margin: .8em 0 1.5em }
-.addFeedBlock span { font-size: 0.85em; font-weight: bold; margin: 0 2em 0 5em }
+.addFeedBlock span { font-size: 0.85em; font-weight: bold; margin: 0 .3em 0 1.5em }
 .addFeedBlack select { max-width: 200px }
 .smallButton { font-size: .85em; margin: .3em .3em .4em;padding: 0 .4em }
 .listFeedBlock {}

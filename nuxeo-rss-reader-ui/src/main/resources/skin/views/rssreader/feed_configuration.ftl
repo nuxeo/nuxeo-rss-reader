@@ -81,8 +81,7 @@
     <div class="listFeedBlock">
       <h4>${Context.getMessage('label.rss.feed.configuration.receiving.feeds.title1')} ${userFeeds?size} ${Context.getMessage('label.rss.feed.configuration.receiving.feeds.title2')}</h4>
 
-      <p
-        class="detail">${Context.getMessage('label.rss.feed.configuration.feeds.limit1')} ${maxFeedsCount}${Context.getMessage('label.rss.feed.configuration.feeds.limit2')}</p>
+      <p class="detail">${Context.getMessage('label.rss.feed.configuration.feeds.limit1')} ${maxFeedsCount} ${Context.getMessage('label.rss.feed.configuration.feeds.limit2')}</p>
 
       <table class="dataList">
         <tbody>
