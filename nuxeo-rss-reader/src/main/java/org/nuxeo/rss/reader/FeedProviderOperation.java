@@ -19,6 +19,8 @@ package org.nuxeo.rss.reader;
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 
+import net.sf.json.JSONObject;
+
 import org.nuxeo.ecm.automation.core.Constants;
 import org.nuxeo.ecm.automation.core.annotations.Context;
 import org.nuxeo.ecm.automation.core.annotations.Operation;
@@ -29,8 +31,6 @@ import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.impl.blob.InputStreamBlob;
 import org.nuxeo.rss.reader.service.RSSFeedService;
-
-import net.sf.json.JSONObject;
 
 /**
  * @author <a href="mailto:ei@nuxeo.com">Eugen Ionica</a>
@@ -43,8 +43,6 @@ import net.sf.json.JSONObject;
 
 @Operation(id = FeedProviderOperation.ID, category = Constants.CAT_EXECUTION, label = "Parse Feed Operation", description = "Parse a feed and return a JSON array with feed entries.")
 public class FeedProviderOperation {
-
-
 
     public static final String ID = "Feed.Provider";
 
@@ -65,19 +63,26 @@ public class FeedProviderOperation {
     @OperationMethod
     public Blob run() throws Exception {
         if (urls == null) {
-            urls = new StringList(rssFeedService.getCurrentUserRssFeedAddresses(session));
+            urls = new StringList(
+                    rssFeedService.getCurrentUserRssFeedAddresses(session));
         }
         if (urls.size() == 0) {
             return buildBlob(EMPTY_FEED.toString());
         }
-        int limit = rssFeedService.getDisplayedArticleCount(session);
-        if (urls.size() == 1) {
-            JSONObject feed = FeedHelper.getFeed(urls.get(0), limit);
+
+        try {
+            int limit = rssFeedService.getDisplayedArticleCount(session);
+            if (urls.size() == 1) {
+                JSONObject feed = FeedHelper.getFeed(urls.get(0), limit);
+                return buildBlob(feed.toString());
+            }
+
+            JSONObject feed = FeedHelper.mergeFeeds(
+                    urls.toArray(new String[urls.size()]), limit);
             return buildBlob(feed.toString());
+        } catch (Exception e) {
+            return buildBlob(EMPTY_FEED.toString());
         }
-        JSONObject feed = FeedHelper.mergeFeeds(
-                urls.toArray(new String[urls.size()]), limit);
-        return buildBlob(feed.toString());
     }
 
     protected Blob buildBlob(String text) throws UnsupportedEncodingException {
