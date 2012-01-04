@@ -52,7 +52,7 @@
     <div class="addFeedBlock">
       <h4>${Context.getMessage('label.rss.feed.configuration.add.feed.title')}</h4>
     <#if globalFeeds?has_content>
-      <form id="addGlobalFeedForm" method="POST" action="addGlobalFeed">
+      <form id="addGlobalFeedForm" method="POST" action="addGlobalFeed?language=${Context.locale.language}">
         <select id="feedId" name="feedId" size="0">
           <option
             value="none">${Context.getMessage('label.rss.feed.configuration.select.defined.feed')}</option>
@@ -67,7 +67,7 @@
       <span>${Context.getMessage('label.rss.feed.configuration.add.custom.feed')}</span>
     </#if>
 
-      <form id="addNewFeedForm" method="POST" action="addNewFeed">
+      <form id="addNewFeedForm" method="POST" action="addNewFeed?language=${Context.locale.language}">
         <input class="field" type="text" name="feedName"
           value="${Context.getMessage('label.rss.feed.configuration.custom.feed.title')}"/>
         <input class="field feedlink" type="text" name="feedLink"
@@ -92,7 +92,7 @@
           <td class="feedName">${feed["dc:title"]}</td>
           <td>${feed["rf:rss_address"]}</td>
           <td class="actionColumn">
-            <form method="POST" action="removeFeed">
+            <form method="POST" action="removeFeed?language=${Context.locale.language}">
               <input type="hidden" name="id" value="${feed.id}"/>
               <input class="button  smallButton" type="submit"
                 onclick="if( !confirmDeleteFeed() ) return false;"
