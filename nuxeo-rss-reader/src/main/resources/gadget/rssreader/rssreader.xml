@@ -45,21 +45,20 @@
     };
 
     function buildFeed(response) {
-        feed_title = response.data["FEED_TITLE"];
-        feed_link = response.data["FEED_LINK"];
-        entries = response.data["ENTRIES"];
+        var feed_title = response.data["FEED_TITLE"];
+        var feed_link = response.data["FEED_LINK"];
+        var entries = response.data["ENTRIES"];
         if ( typeof entries == 'undefined' ) {
-            return addActions() + '<p>No entries</p>';
+            return '<p>No entries</p>';
         }
-        feed = '';
-        feed += addActions();
+        var feed = '';
 
         for (var i = 0; i < entries.length; i++) {
-            entry = entries[i];
+            var entry = entries[i];
 
             // handle the case when more feed are merged
-            entry_feed_title = entry["FEED_TITLE"];
-            entry_feed_link = entry["FEED_LINK"];
+            var entry_feed_title = entry["FEED_TITLE"];
+            var entry_feed_link = entry["FEED_LINK"];
             if ( typeof entry_feed_title == 'undefined' ) {
                 entry_feed_title = feed_title;
             }
@@ -73,25 +72,14 @@
         return feed;
     };
 
-     function addActions(){
-         s = '<div class="rssLinks">';
-        s += '<span>RSS</span>';
-        s += '<a class="feedConfigPopup" href="${clientSideBaseUrl}site/rssreader/config">';
-        s += '<span><img src="${clientSideBaseUrl}site/gadgets/rssreader/rss_icon.png"></span>';
-        s += '</a>';
-        s += '</div>';
-        return s;
-     }
-
-
     function buildEntry(entryData, feed_title, feed_link) {
-        entry = '';
+        var entry = '';
         entry += '<div class="entry">';
 
         entry += '<div class="title">';
 
-        entry_id = entryData["URI"] != null ? entryData["URI"] : entryData["LINK"];
-        entry += '<a class="feedItemPopup" href="${clientSideBaseUrl}site/rssreader/item?i='+ entry_id + '">';
+        var entry_id = entryData["URI"] != null ? entryData["URI"] : entryData["LINK"];
+        entry += '<a class="feedItemPopup" href="${clientSideBaseUrl}site/rssreader/item?i='+ entry_id + '&language=' + prefs.getLang() + '">';
         entry += entryData["TITLE"];
         entry += '</a>'
         entry += '</div>';
@@ -115,21 +103,31 @@
     };
 
     function buildDate(dataInfo) {
-        d = new Date(dataInfo["time"]);
+        var d = new Date(dataInfo["time"]);
         return d.getDate() + '/' + ( d.getMonth() + 1 ) + '/' + d.getFullYear();
     };
 
     gadgets.util.registerOnLoadHandler(loadFeedItems);
 
     function loadFeedItems() {
+        buildSettingsButton();
         doAutomationRequest(opCallParameters);
     };
 
+    function buildSettingsButton() {
+        var link = '<a class="feedConfigPopup" href="${clientSideBaseUrl}site/rssreader/config?language=' + prefs.getLang() + '">__MSG_label.context.settings__</a>';
+        _gel("actions").innerHTML = link;
+    };
 
   </script>
 
   </head>
     <body>
+      <div class="tools">
+        <div id="actions" class="actions">
+        </div>
+        <div style="clear: both;"></div>
+      </div>
       <div id="content">
         <#include "default-request-controls.ftl"/>
         <div id="feedEntries">
