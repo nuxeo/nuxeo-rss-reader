@@ -9,7 +9,7 @@
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">testFeedReaderConfiguration</td></tr>
+<tr><td rowspan="1" colspan="3">testRemoveFeed</td></tr>
 </thead><tbody>
 <tr>
 	<td>setTimeout</td>
@@ -58,28 +58,33 @@
 </tr>
 <tr>
 	<td>waitForElementPresent</td>
-	<td>//input[@value=&quot;Done&quot;]</td>
+	<td>//button[@class='button']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>//a[@class='removeFeed']</td>
+	<td>//input[@value='Unsubscribe']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>waitForElementPresent</td>
-	<td>//input[@value=&quot;Done&quot;]</td>
+  <td>//button[@class='button']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyXpathCount</td>
-	<td>//a[@class=&quot;removeFeed&quot;]</td>
+  <td>//input[@value='Unsubscribe']</td>
 	<td>0</td>
 </tr>
 <tr>
+	<td>assertConfirmation</td>
+	<td>Unsubscribe from this feed?</td>
+	<td></td>
+</tr>
+<tr>
 	<td>click</td>
-	<td>//input[@value='Done']</td>
-	<td>Done</td>
+  <td>//button[text()='Close']</td>
+	<td></td>
 </tr>
 </tbody></table>
 </body>
