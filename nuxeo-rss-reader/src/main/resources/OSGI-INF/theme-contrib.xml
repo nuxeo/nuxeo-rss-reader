@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<component name="org.nuxeo.rss.theme">
+
+  <require>org.nuxeo.theme.nuxeo.default</require>
+
+  <extension target="org.nuxeo.theme.services.ThemeService" point="resources">
+    <!-- CSS -->
+    <!-- Gadgets CSS -->
+    <resource name="gadget-rssreader.css">
+      <path>css/opensocial/gadgets/rssreader.css</path>
+    </resource>
+
+    <!-- JS -->
+    <!-- Gadgets JS -->
+    <resource name="gadget-rssreader.js">
+      <path>scripts/opensocial/gadgets/rssreader.js</path>
+    </resource>
+  </extension>
+
+</component>
