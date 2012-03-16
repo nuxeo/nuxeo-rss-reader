@@ -18,14 +18,10 @@
  - spaceProviderName: the name of the SpaceProvider to use to get the Space document
  - documentContextId: the id of the DocumentModel considered as context, if any, optional
  - spaceName: the Space name to use, optional
+ - applicationContextPath: the application context path, could be a document
+   different from the documentContext.
+   This path could be use for doing query for instance.
 </c:if>
-
-  <link rel="stylesheet" type="text/css" href="${baseURL}opensocial/css/reset-fonts-grids.css" />
-  <link rel="stylesheet" type="text/css" href="${baseURL}opensocial/css/container.css" />
-  <link rel="stylesheet" type="text/css" href="${baseURL}opensocial/css/gadgets.css" />
-  <link rel="stylesheet" type="text/css" href="${baseURL}css/jquery.fancybox.css" />
-
-  <script type="text/javascript" src="#{baseURL}scripts/jquery/jquery.fancybox.pack.js"></script>
 
   <script type="text/javascript">
     jQuery(document).ready(function() {
@@ -53,7 +49,8 @@
         parameters: {
           showPreferencesAfterAddingGadget: false,
           userLanguage: "#{localeSelector.language}",
-          generateTitle: true
+          generateTitle: true,
+          applicationContextPath: "#{nxu:javaScriptEscape(applicationContextPath)}"
         }
       }
 
@@ -64,20 +61,20 @@
       nuxeo.container.addGadget('wcopensocial', [{WC_GADGET_DEF_URL:url}, {WC_GADGET_NAME:name}]);
     }
 
-      function addFancyBoxTo(a, onClosedCallback) {
-    	config = {
-        	'width'             : '75%',
-        	'height'            : '75%',
-        	'autoScale'         : true,
-        	'transitionIn'      : 'none',
-        	'transitionOut'     : 'none',
-        	'type'              : 'iframe',
-        	'enableEscapeButton': true,
-        	'centerOnScroll'    : true
-      	};
-      	if ( typeof onClosedCallback != 'undefined' ) {
-      		config['onClosed'] = onClosedCallback;
-      	}
+    function addFancyBoxTo(a, onClosedCallback) {
+      config = {
+          'width'             : '75%',
+          'height'            : '75%',
+          'autoScale'         : true,
+          'transitionIn'      : 'none',
+          'transitionOut'     : 'none',
+          'type'              : 'iframe',
+          'enableEscapeButton': true,
+          'centerOnScroll'    : true
+        };
+        if ( typeof onClosedCallback != 'undefined' ) {
+          config['onClosed'] = onClosedCallback;
+        }
         jQuery(a).fancybox(config);
     }
   </script>
@@ -92,7 +89,7 @@
       <div class="opensocial_buttons">
         <ul>
           <li><a onclick="nuxeo.container.openContainerBuilder();" id="openContainerBuilder" title="#{messages['label.opensocial.container.change.layout']}">#{messages['label.opensocial.container.change.layout']}</a></li>
-          <li><a id="addGadgetButton" href="#{baseURL}site/gadgets">#{messages['label.opensocial.container.add.gadget']}</a></li>
+          <li><a id="addGadgetButton" href="#{baseURL}site/gadgets?language=#{localeSelector.language}">#{messages['label.opensocial.container.add.gadget']}</a></li>
         </ul>
       </div>
     </c:if>
@@ -100,7 +97,6 @@
 
   <div style="clear:both;"></div>
 
-  <script type="text/javascript" language="javascript" src="#{baseURL}opensocial/gadgets/js/rpc.js?c=1"></script>
   <script type="text/javascript" language="javascript" src="#{baseURL}site/gwt-container/gwtContainer/gwtContainer.nocache.js"></script>
   <div id="containerPanel">
     <div id="gwtContainerDiv" style=""></div>
