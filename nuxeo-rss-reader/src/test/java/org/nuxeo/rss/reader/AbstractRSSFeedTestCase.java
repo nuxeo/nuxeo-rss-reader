@@ -27,7 +27,9 @@ import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.PathRef;
+import org.nuxeo.ecm.core.event.EventService;
 import org.nuxeo.rss.reader.service.RSSFeedService;
+import org.nuxeo.runtime.api.Framework;
 
 import com.google.inject.Inject; /**
  * @author <a href="mailto:akervern@nuxeo.com">Arnaud Kervern</a>
@@ -47,6 +49,11 @@ public abstract class AbstractRSSFeedTestCase {
         feed.setPathInfo(RSS_READER_MANAGEMENT_ROOT_PATH, name);
         return session.createDocument(feed);
     }
+
+    protected void waitForAsyncCompletion() {
+        Framework.getLocalService(EventService.class).waitForAsyncCompletion();
+    }
+
 
     /**
      * Change gadget preference. Use a value < 1 to not change the existing one.
@@ -68,6 +75,7 @@ public abstract class AbstractRSSFeedTestCase {
         }
         session.saveDocument(containerModel);
         session.save();
+        waitForAsyncCompletion();
     }
 
     @Before
@@ -85,5 +93,7 @@ public abstract class AbstractRSSFeedTestCase {
             domain.setPathInfo("/", "default-domain");
             session.createDocument(domain);
         }
+        session.save();
+        waitForAsyncCompletion();
     }
 }
