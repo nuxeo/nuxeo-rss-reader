@@ -65,6 +65,7 @@ public abstract class AbstractRSSFeedTestCase {
             throws ClientException {
         // Ensure that we have the document
         rssFeedService.getDisplayedArticleCount(session);
+        waitForAsyncCompletion();
 
         DocumentModel containerModel = session.getDocument(new PathRef(RSS_READER_MANAGEMENT_ROOT_PATH));
         if (maxFeeds >= 0) {
