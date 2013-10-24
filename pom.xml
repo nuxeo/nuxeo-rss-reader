@@ -16,16 +16,6 @@
     <module>nuxeo-rss-reader-ui</module>
   </modules>
 
-  <profiles>
-    <profile>
-      <!-- Activate to unzip a tomcat and run IT tests against it -->
-      <id>testit</id>
-      <modules>
-        <module>nuxeo-rss-reader-ftest</module>
-      </modules>
-    </profile>
-  </profiles>
-
   <repositories>
     <repository>
       <id>public</id>
