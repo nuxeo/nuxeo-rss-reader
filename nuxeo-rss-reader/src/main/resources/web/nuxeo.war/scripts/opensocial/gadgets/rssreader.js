@@ -14,8 +14,8 @@ var opCallParameters = {
 function renderFeed(response, opCallParameters) {
     _gel("feedEntries").innerHTML = buildFeed(response);
     gadgets.window.adjustHeight();
-    window.parent.addFancyBoxTo(jQuery(".feedItemPopup"));
-    window.parent.addFancyBoxTo(jQuery(".feedConfigPopup"), loadFeedItems);
+    window.parent.nuxeo.rssReader.addFancyBoxTo(jQuery(".feedItemPopup"));
+    window.parent.nuxeo.rssReader.addFancyBoxTo(jQuery(".feedConfigPopup"), loadFeedItems);
 }
 
 function buildFeed(response) {

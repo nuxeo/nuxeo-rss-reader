@@ -3,6 +3,13 @@
 
   <require>org.nuxeo.theme.nuxeo.default</require>
 
+  <extension target="org.nuxeo.theme.services.ThemeService" point="views">
+    <view name="nuxeo5 includes" template-engine="jsf-facelets" merge="true">
+      <format-type>widget</format-type>
+      <resource>nuxeo-rss-reader.js</resource>
+    </view>
+  </extension>
+
   <extension target="org.nuxeo.theme.services.ThemeService" point="resources">
     <!-- CSS -->
     <!-- Gadgets CSS -->
@@ -11,6 +18,9 @@
     </resource>
 
     <!-- JS -->
+    <resource name="nuxeo-rss-reader.js">
+      <path>scripts/nuxeo-rss-reader.js</path>
+    </resource>
     <!-- Gadgets JS -->
     <resource name="gadget-rssreader.js">
       <path>scripts/opensocial/gadgets/rssreader.js</path>
