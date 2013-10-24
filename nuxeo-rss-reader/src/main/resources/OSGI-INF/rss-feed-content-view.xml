@@ -38,7 +38,6 @@
 
       <selectionList>CURRENT_SELECTION</selectionList>
       <actions category="ORDERABLE_CURRENT_SELECTION_LIST" />
-      <actions category="CURRENT_SELECTION_LIST" />
     </contentView>
   </extension>
 </component>
