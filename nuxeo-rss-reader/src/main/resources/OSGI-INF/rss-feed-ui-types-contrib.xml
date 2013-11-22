@@ -26,7 +26,6 @@
       <label>RssFeedRoot</label>
       <icon>/icons/ordered_folder.png</icon>
       <bigIcon>/icons/ordered_folder_100.png</bigIcon>
-      <icon-expanded>/icons/ordered_folder_open.png</icon-expanded>
       <default-view>view_documents</default-view>
       <subtypes>
         <type>RssFeed</type>
