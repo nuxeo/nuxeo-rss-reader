@@ -15,7 +15,7 @@
     $(document).ready(function() {
       $('.gadgets-gadget-chrome').openSocialGadget({
         baseURL: '${contextPath}' + '/',
-        language: '${Context.locale.language}',
+        language: '${Context.locale.language?js_string?html}',
         gadgetDefs: [ {specUrl : '${Runtime.getProperty('nuxeo.loopback.url')}/site/gadgets/rssreader/rssreader.xml',
                     title : 'Nuxeo RSS Reader',
                     width : '100%'}]
