@@ -22,12 +22,12 @@
     </div>
     <div class="navLinks">
       <#if previous??>
-      <a class="itemNav previousItem" href="${Context.modulePath}/item?i=${previous}&language=${Context.locale.language}">${Context.getMessage('label.rss.feed.item.previous')}</a>
+      <a class="itemNav previousItem" href="${Context.modulePath}/item?i=${previous}&language=${Context.locale.language?html}">${Context.getMessage('label.rss.feed.item.previous')}</a>
       <#else>
       <span class="disableItemNav previousItem">${Context.getMessage('label.rss.feed.item.previous')}</span>
       </#if>
       <#if next??>
-      <a class="itemNav nextItem" href="${Context.modulePath}/item?i=${next}&language=${Context.locale.language}">${Context.getMessage('label.rss.feed.item.next')}</a>
+      <a class="itemNav nextItem" href="${Context.modulePath}/item?i=${next}&language=${Context.locale.language?html}">${Context.getMessage('label.rss.feed.item.next')}</a>
       <#else>
       <span class="disableItemNav nextItem">${Context.getMessage('label.rss.feed.item.next')}</span>
       </#if>
