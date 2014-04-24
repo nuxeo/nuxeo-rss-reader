@@ -12,7 +12,7 @@
   <h:form id="gadget_administration">
     <a4j:commandButton action="#{rssGadgetPreferenceActions.toggleForm}"
           value="#{messages['command.edit']}" immediate="true"
-          styleClass="button" reRender="rssFeedGadgetPanel" rendered="#{!rssGadgetPreferenceActions.showForm}" />
+          styleClass="button" render="rssFeedGadgetPanel" rendered="#{!rssGadgetPreferenceActions.showForm}" />
     <nxl:layout name="rss_gadget" mode="#{nxu:test(rssGadgetPreferenceActions.showForm, 'edit', 'view')}"
       value="#{rssGadgetPreferenceActions.preference}" />
     <f:subview rendered="#{rssGadgetPreferenceActions.showForm}" id="buttonsGadgetView">
@@ -20,11 +20,11 @@
         <a4j:commandButton styleClass="button"
           value="#{messages['command.save']}"
           action="#{rssGadgetPreferenceActions.saveDocument}"
-          reRender="rssFeedGadgetPanel,facesStatusMessagePanel" />
+          render="rssFeedGadgetPanel,facesStatusMessagePanel" />
         <a4j:commandButton styleClass="button"
           value="#{messages['command.cancel']}"
           action="#{rssGadgetPreferenceActions.toggleForm}" immediate="true"
-          reRender="rssFeedGadgetPanel" />
+          render="rssFeedGadgetPanel" />
       </div>
     </f:subview>
   </h:form>

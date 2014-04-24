@@ -23,11 +23,11 @@
         <a4j:commandButton styleClass="button"
           value="#{messages['command.create']}"
           action="#{rssFeedActions.saveDocument}" id="button_create"
-          reRender="rssFeedModelPanel" />
+          render="rssFeedModelPanel" />
         <a4j:commandButton styleClass="button"
           value="#{messages['command.cancel']}"
           action="#{rssFeedActions.toggleAndReset()}" immediate="true"
-          reRender="rssFeedModelPanel" />
+          render="rssFeedModelPanel" />
       </p>
     </h:form>
 
@@ -46,11 +46,11 @@
         <a4j:commandButton styleClass="button"
           value="#{messages['command.save']}"
           action="#{rssFeedActions.saveDocument}" id="button_edit"
-          reRender="rssFeedModelPanel" />
+          render="rssFeedModelPanel" />
         <a4j:commandButton styleClass="button"
           value="#{messages['command.cancel']}"
           action="#{rssFeedActions.toggleAndReset()}" immediate="true"
-          reRender="rssFeedModelPanel" />
+          render="rssFeedModelPanel" />
       </p>
     </h:form>
 
@@ -66,7 +66,7 @@
       <h:form>
         <a4j:commandButton action="#{rssFeedActions.toggleForm()}"
           value="#{messages['label.rss.feed.create']}" immediate="true"
-          styleClass="button" reRender="rssFeedModelPanel" />
+          styleClass="button" render="rssFeedModelPanel" />
       </h:form>
       <a4j:status>
         <f:facet name="start">
