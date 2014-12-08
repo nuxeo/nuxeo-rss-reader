@@ -47,10 +47,8 @@ import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 
 /**
- * @author <a href="mailto:ei@nuxeo.com">Eugen Ionica</a> various static method
- *         to retrieve a feed, put feed content in a JSON object, merge two or
- *         more feeds, etc.
- *
+ * @author <a href="mailto:ei@nuxeo.com">Eugen Ionica</a> various static method to retrieve a feed, put feed content in
+ *         a JSON object, merge two or more feeds, etc.
  */
 public class FeedHelper {
 
@@ -81,8 +79,7 @@ public class FeedHelper {
      * @return - feed as JSON object
      * @throws Exception
      */
-    public static JSONObject getFeed(String feedUrl, int limit)
-            throws Exception {
+    public static JSONObject getFeed(String feedUrl, int limit) throws Exception {
         SyndFeed feed = parseFeed(feedUrl);
         return buildJson(feed, limit);
     }
@@ -116,7 +113,8 @@ public class FeedHelper {
         return object;
     }
 
-    public static Map<String, Object> searchFeedEntry(String[] urls, String id) throws URISyntaxException, UnsupportedEncodingException {
+    public static Map<String, Object> searchFeedEntry(String[] urls, String id) throws URISyntaxException,
+            UnsupportedEncodingException {
         MergedEntries mergedEntries = new MergedEntries(urls, NO_LIMIT);
 
         List<SyndEntry> entries = mergedEntries.getEntries();
@@ -156,9 +154,8 @@ public class FeedHelper {
             Proxy proxy = new Proxy(Proxy.Type.HTTP, addr);
             urlConnection = url.openConnection(proxy);
             if (FeedUrlConfig.isProxyAuthenticated()) {
-                String encoded = Base64.encodeBytes(new String(
-                        FeedUrlConfig.getProxyLogin() + ":"
-                                + FeedUrlConfig.getProxyPassword()).getBytes());
+                String encoded = Base64.encodeBytes(new String(FeedUrlConfig.getProxyLogin() + ":"
+                        + FeedUrlConfig.getProxyPassword()).getBytes());
                 urlConnection.setRequestProperty("Proxy-Authorization", "Basic " + encoded);
                 urlConnection.connect();
             }
@@ -173,7 +170,6 @@ public class FeedHelper {
      * @param feed object
      * @return build the JSON object that represents the feed
      * @throws UnsupportedEncodingException
-     *
      */
     private static JSONObject buildJson(SyndFeed feed, int limit) throws UnsupportedEncodingException {
         JSONObject object = new JSONObject();
@@ -204,8 +200,8 @@ public class FeedHelper {
         return array;
     }
 
-    private static JSONArray buildEntriesArray(List<SyndEntry> entries,
-            boolean addFeedInfo) throws UnsupportedEncodingException {
+    private static JSONArray buildEntriesArray(List<SyndEntry> entries, boolean addFeedInfo)
+            throws UnsupportedEncodingException {
         JSONArray array = new JSONArray();
         for (SyndEntry entry : entries) {
             JSONObject o = new JSONObject();
@@ -285,7 +281,6 @@ public class FeedHelper {
         }
         return sb.toString();
     }
-
 
     public static class MergedEntries {
 

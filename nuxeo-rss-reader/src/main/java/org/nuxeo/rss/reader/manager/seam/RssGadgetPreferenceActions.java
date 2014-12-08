@@ -45,8 +45,7 @@ import org.nuxeo.rss.reader.service.RSSFeedService;
 @Name("rssGadgetPreferenceActions")
 @Scope(ScopeType.PAGE)
 @Install(precedence = FRAMEWORK)
-public class RssGadgetPreferenceActions extends InputController implements
-        Serializable {
+public class RssGadgetPreferenceActions extends InputController implements Serializable {
 
     private static final long serialVersionUID = -1L;
 
@@ -81,13 +80,11 @@ public class RssGadgetPreferenceActions extends InputController implements
     }
 
     public void saveDocument() throws ClientException {
-        Events.instance().raiseEvent(EventNames.BEFORE_DOCUMENT_CHANGED,
-                getPreference());
+        Events.instance().raiseEvent(EventNames.BEFORE_DOCUMENT_CHANGED, getPreference());
         preference = documentManager.saveDocument(getPreference());
         documentManager.save();
 
-        facesMessages.add(StatusMessage.Severity.INFO,
-                resourcesAccessor.getMessages().get("document_modified"),
+        facesMessages.add(StatusMessage.Severity.INFO, resourcesAccessor.getMessages().get("document_modified"),
                 resourcesAccessor.getMessages().get(getPreference().getType()));
         EventManager.raiseEventsOnDocumentChange(getPreference());
         toggleForm();

@@ -31,7 +31,9 @@ import org.nuxeo.ecm.core.event.EventService;
 import org.nuxeo.rss.reader.service.RSSFeedService;
 import org.nuxeo.runtime.api.Framework;
 
-import com.google.inject.Inject; /**
+import com.google.inject.Inject;
+
+/**
  * @author <a href="mailto:akervern@nuxeo.com">Arnaud Kervern</a>
  */
 public abstract class AbstractRSSFeedTestCase {
@@ -54,15 +56,13 @@ public abstract class AbstractRSSFeedTestCase {
         Framework.getLocalService(EventService.class).waitForAsyncCompletion();
     }
 
-
     /**
      * Change gadget preference. Use a value < 1 to not change the existing one.
      *
      * @param maxFeeds
      * @param articleCount
      */
-    protected void changeGadgetPreferencesValues(int maxFeeds, int articleCount)
-            throws ClientException {
+    protected void changeGadgetPreferencesValues(int maxFeeds, int articleCount) throws ClientException {
         // Ensure that we have the document
         rssFeedService.getDisplayedArticleCount(session);
         waitForAsyncCompletion();

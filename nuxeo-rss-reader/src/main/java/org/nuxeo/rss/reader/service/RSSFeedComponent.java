@@ -47,15 +47,12 @@ import org.nuxeo.runtime.model.DefaultComponent;
  * @author <a href="mailto:akervern@nuxeo.com">Arnaud Kervern</a>
  * @since 5.4.2
  */
-public class RSSFeedComponent extends DefaultComponent implements
-        RSSFeedService {
+public class RSSFeedComponent extends DefaultComponent implements RSSFeedService {
 
     @Override
-    public DocumentModel getRssReaderManagementContainer(CoreSession session)
-            throws ClientException {
+    public DocumentModel getRssReaderManagementContainer(CoreSession session) throws ClientException {
         if (!session.exists(new PathRef(RSS_READER_MANAGEMENT_ROOT_PATH))) {
-            new UnrestrictedRssReaderManagementRootGenerator(session,
-                    MANAGEMENT_ROOT_PATH).runUnrestricted();
+            new UnrestrictedRssReaderManagementRootGenerator(session, MANAGEMENT_ROOT_PATH).runUnrestricted();
         }
 
         return session.getDocument(new PathRef(RSS_READER_MANAGEMENT_ROOT_PATH));
@@ -63,41 +60,34 @@ public class RSSFeedComponent extends DefaultComponent implements
     }
 
     @Override
-    public DocumentModel getCurrentUserRssFeedsContainer(CoreSession session)
-            throws ClientException {
+    public DocumentModel getCurrentUserRssFeedsContainer(CoreSession session) throws ClientException {
 
         String userWorkspace = getCurrentUserWorkspace(session);
 
-        String userRssFeedPath = userWorkspace + "/"
-                + RSS_READER_MANAGEMENT_ROOT_NAME;
+        String userRssFeedPath = userWorkspace + "/" + RSS_READER_MANAGEMENT_ROOT_NAME;
         if (!session.exists(new PathRef(userRssFeedPath))) {
-            new UnrestrictedRssReaderManagementRootGenerator(session,
-                    userWorkspace).willSetRightsForAdminitrators(false).runUnrestricted();
+            new UnrestrictedRssReaderManagementRootGenerator(session, userWorkspace).willSetRightsForAdminitrators(
+                    false).runUnrestricted();
 
-            session.copy(getDefaultRssFeedModels(session), new PathRef(
-                    userRssFeedPath));
+            session.copy(getDefaultRssFeedModels(session), new PathRef(userRssFeedPath));
         }
         return session.getDocument(new PathRef(userRssFeedPath));
     }
 
-    protected String getCurrentUserWorkspace(CoreSession session)
-            throws ClientException {
+    protected String getCurrentUserWorkspace(CoreSession session) throws ClientException {
         UserWorkspaceService uws;
         try {
             uws = Framework.getService(UserWorkspaceService.class);
         } catch (Exception e) {
-            throw new ClientException(
-                    "Can't fetch the UserWorkspace service, please check", e);
+            throw new ClientException("Can't fetch the UserWorkspace service, please check", e);
         }
 
-        String userWorkspace = uws.getCurrentUserPersonalWorkspace(session,
-                null).getPathAsString();
+        String userWorkspace = uws.getCurrentUserPersonalWorkspace(session, null).getPathAsString();
         return userWorkspace;
     }
 
     @Override
-    public int getDisplayedArticleCount(CoreSession session)
-            throws ClientException {
+    public int getDisplayedArticleCount(CoreSession session) throws ClientException {
         DocumentModel adminContainer = getRssReaderManagementContainer(session);
         return ((Long) adminContainer.getPropertyValue(RSS_GADGET_ARTICLE_COUNT)).intValue();
     }
@@ -109,28 +99,21 @@ public class RSSFeedComponent extends DefaultComponent implements
     }
 
     @Override
-    public DocumentModelList getGlobalFeedsDocumentModelList(CoreSession session)
-            throws ClientException {
-        String query = "SELECT * FROM Document where ecm:primaryType = '%s' "
-                + "AND ecm:parentId = '%s' "
+    public DocumentModelList getGlobalFeedsDocumentModelList(CoreSession session) throws ClientException {
+        String query = "SELECT * FROM Document where ecm:primaryType = '%s' " + "AND ecm:parentId = '%s' "
                 + "AND ecm:currentLifeCycleState != 'deleted'";
-        return session.query(String.format(query, RSS_FEED_TYPE,
-                getRssReaderManagementContainer(session).getRef()));
+        return session.query(String.format(query, RSS_FEED_TYPE, getRssReaderManagementContainer(session).getRef()));
     }
 
     @Override
-    public DocumentModelList getCurrentUserRssFeedDocumentModelList(
-            CoreSession session) throws ClientException {
-        String query = "SELECT * FROM Document where ecm:primaryType = '%s' "
-                + "AND ecm:parentId = '%s' "
+    public DocumentModelList getCurrentUserRssFeedDocumentModelList(CoreSession session) throws ClientException {
+        String query = "SELECT * FROM Document where ecm:primaryType = '%s' " + "AND ecm:parentId = '%s' "
                 + "AND ecm:currentLifeCycleState != 'deleted'";
-        return session.query(String.format(query, RSS_FEED_TYPE,
-                getCurrentUserRssFeedsContainer(session).getRef()));
+        return session.query(String.format(query, RSS_FEED_TYPE, getCurrentUserRssFeedsContainer(session).getRef()));
     }
 
     @Override
-    public List<String> getCurrentUserRssFeedAddresses(CoreSession session)
-            throws ClientException {
+    public List<String> getCurrentUserRssFeedAddresses(CoreSession session) throws ClientException {
         List<String> addresses = new ArrayList<String>();
         for (DocumentModel dc : getCurrentUserRssFeedDocumentModelList(session)) {
             addresses.add(dc.getPropertyValue(RSS_FEED_URL_PROPERTY).toString());
@@ -139,15 +122,13 @@ public class RSSFeedComponent extends DefaultComponent implements
     }
 
     /**
-     * Return feeds proposed into the administration view but only ones set as
-     * default.
+     * Return feeds proposed into the administration view but only ones set as default.
      *
      * @param session
      * @return
      * @throws ClientException
      */
-    protected List<DocumentRef> getDefaultRssFeedModels(CoreSession session)
-            throws ClientException {
+    protected List<DocumentRef> getDefaultRssFeedModels(CoreSession session) throws ClientException {
         List<DocumentRef> defaultFeeds = new ArrayList<DocumentRef>();
         DocumentModelList docs = getGlobalFeedsDocumentModelList(session);
         for (DocumentModel doc : docs) {

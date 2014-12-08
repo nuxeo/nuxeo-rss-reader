@@ -37,20 +37,16 @@ import org.nuxeo.ecm.platform.usermanager.UserManager;
 import org.nuxeo.runtime.api.Framework;
 
 /**
- * Unrestricted runner to create Rss Reader Management Containers. This runner
- * can create the administration container and the container for user. For user,
- * you give the userworkspace path into the contructor and call the
- * willSetRightsForAdminitrators(false) to let the default rights inheritated.
- * For the Administration container creation simply call the constructor with
- * the root management path , and call the unrestricted run.
- *
+ * Unrestricted runner to create Rss Reader Management Containers. This runner can create the administration container
+ * and the container for user. For user, you give the userworkspace path into the contructor and call the
+ * willSetRightsForAdminitrators(false) to let the default rights inheritated. For the Administration container creation
+ * simply call the constructor with the root management path , and call the unrestricted run.
  *
  * @author <a href="mailto:akervern@nuxeo.com">Arnaud Kervern</a>
  * @author <a href="mailto:bjalon@nuxeo.com">Benjamin JALON</a>
  * @since 5.4.2
  */
-public class UnrestrictedRssReaderManagementRootGenerator extends
-        UnrestrictedSessionRunner {
+public class UnrestrictedRssReaderManagementRootGenerator extends UnrestrictedSessionRunner {
 
     private static Log log = LogFactory.getLog(UnrestrictedRssReaderManagementRootGenerator.class);
 
@@ -59,24 +55,20 @@ public class UnrestrictedRssReaderManagementRootGenerator extends
     protected String containerPath;
 
     /**
-     * Create Unrestricted runner that will create into the containerPath a rss
-     * reader management root
+     * Create Unrestricted runner that will create into the containerPath a rss reader management root
      *
      * @param session
      * @param containerPath
      */
-    public UnrestrictedRssReaderManagementRootGenerator(CoreSession session,
-            String containerPath) {
+    public UnrestrictedRssReaderManagementRootGenerator(CoreSession session, String containerPath) {
         super(session);
         this.containerPath = containerPath;
     }
 
     @Override
     public void run() throws ClientException {
-        if (!session.exists(new PathRef(containerPath
-                + RSS_READER_MANAGEMENT_ROOT_NAME))) {
-            DocumentModel doc = session.createDocumentModel(containerPath,
-                    RSS_READER_MANAGEMENT_ROOT_NAME,
+        if (!session.exists(new PathRef(containerPath + RSS_READER_MANAGEMENT_ROOT_NAME))) {
+            DocumentModel doc = session.createDocumentModel(containerPath, RSS_READER_MANAGEMENT_ROOT_NAME,
                     RSS_READER_MANAGEMENT_ROOT_TYPE);
             doc.setPropertyValue("dc:title", "Rss Feed Models");
             doc = session.createDocument(doc);
@@ -87,21 +79,18 @@ public class UnrestrictedRssReaderManagementRootGenerator extends
     }
 
     /**
-     * Specify if the during the creation of the rss reader container we add
-     * rights for administrator groups.
+     * Specify if the during the creation of the rss reader container we add rights for administrator groups.
      *
      * @param addACP
      * @return
      */
-    public UnrestrictedRssReaderManagementRootGenerator willSetRightsForAdminitrators(
-            boolean addACP) {
+    public UnrestrictedRssReaderManagementRootGenerator willSetRightsForAdminitrators(boolean addACP) {
         this.isACPNeeded = addACP;
         return this;
     }
 
     /**
-     * This methods set Right Manage everything for all administration groups and gives
-     * access read for everyones.
+     * This methods set Right Manage everything for all administration groups and gives access read for everyones.
      *
      * @param doc
      * @throws ClientException
@@ -111,19 +100,16 @@ public class UnrestrictedRssReaderManagementRootGenerator extends
             return;
         }
 
-
         ACL acl = doc.getACP().getOrCreateACL();
         try {
             for (String administratorGroup : getUserManager().getAdministratorsGroups()) {
-                ACE ace = new ACE(administratorGroup,
-                        SecurityConstants.EVERYTHING, true);
+                ACE ace = new ACE(administratorGroup, SecurityConstants.EVERYTHING, true);
                 acl.add(ace);
             }
         } catch (Exception e) {
             log.error("Cannot set default ACE on " + containerPath, e);
         }
-        ACE ace = new ACE(SecurityConstants.EVERYONE, SecurityConstants.READ,
-                true);
+        ACE ace = new ACE(SecurityConstants.EVERYONE, SecurityConstants.READ, true);
         acl.add(ace);
 
         session.setACP(doc.getRef(), doc.getACP(), true);

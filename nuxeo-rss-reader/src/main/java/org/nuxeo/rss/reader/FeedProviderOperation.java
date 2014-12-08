@@ -33,12 +33,8 @@ import org.nuxeo.ecm.core.api.impl.blob.InputStreamBlob;
 import org.nuxeo.rss.reader.service.RSSFeedService;
 
 /**
- * @author <a href="mailto:ei@nuxeo.com">Eugen Ionica</a>
- *
- *         Operation that will retrieve one or more feeds from the url(s)
- *         provided, merge the entries if necessary and return the result in a
- *         JSON object
- *
+ * @author <a href="mailto:ei@nuxeo.com">Eugen Ionica</a> Operation that will retrieve one or more feeds from the url(s)
+ *         provided, merge the entries if necessary and return the result in a JSON object
  */
 
 @Operation(id = FeedProviderOperation.ID, category = Constants.CAT_EXECUTION, label = "Parse Feed Operation", description = "Parse a feed and return a JSON array with feed entries.")
@@ -63,8 +59,7 @@ public class FeedProviderOperation {
     @OperationMethod
     public Blob run() throws Exception {
         if (urls == null) {
-            urls = new StringList(
-                    rssFeedService.getCurrentUserRssFeedAddresses(session));
+            urls = new StringList(rssFeedService.getCurrentUserRssFeedAddresses(session));
         }
         if (urls.size() == 0) {
             return buildBlob(EMPTY_FEED.toString());
@@ -77,8 +72,7 @@ public class FeedProviderOperation {
                 return buildBlob(feed.toString());
             }
 
-            JSONObject feed = FeedHelper.mergeFeeds(
-                    urls.toArray(new String[urls.size()]), limit);
+            JSONObject feed = FeedHelper.mergeFeeds(urls.toArray(new String[urls.size()]), limit);
             return buildBlob(feed.toString());
         } catch (Exception e) {
             return buildBlob(EMPTY_FEED.toString());
@@ -86,8 +80,7 @@ public class FeedProviderOperation {
     }
 
     protected Blob buildBlob(String text) throws UnsupportedEncodingException {
-        return new InputStreamBlob(new ByteArrayInputStream(
-                text.getBytes("UTF-8")), "application/json");
+        return new InputStreamBlob(new ByteArrayInputStream(text.getBytes("UTF-8")), "application/json");
     }
 
 }

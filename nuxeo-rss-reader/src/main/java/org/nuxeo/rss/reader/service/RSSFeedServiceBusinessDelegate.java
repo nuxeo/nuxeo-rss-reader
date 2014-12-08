@@ -58,8 +58,7 @@ public class RSSFeedServiceBusinessDelegate implements Serializable {
             try {
                 RSSFeed = Framework.getService(RSSFeedService.class);
             } catch (Exception e) {
-                final String errMsg = "Error connecting to RSSFeedService. "
-                        + e.getMessage();
+                final String errMsg = "Error connecting to RSSFeedService. " + e.getMessage();
                 throw new ClientException(errMsg, e);
             }
 

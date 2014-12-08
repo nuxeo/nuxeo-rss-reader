@@ -75,15 +75,11 @@ public class RssFeedActions extends InputController implements Serializable {
             EventManager.raiseEventsOnDocumentChange(currentDocument);
         } else {
             // update an existing one
-            Events.instance().raiseEvent(EventNames.BEFORE_DOCUMENT_CHANGED,
-                    currentDocument);
+            Events.instance().raiseEvent(EventNames.BEFORE_DOCUMENT_CHANGED, currentDocument);
             currentDocument = documentManager.saveDocument(currentDocument);
             documentManager.save();
-            facesMessages.add(
-                    StatusMessage.Severity.INFO,
-                    resourcesAccessor.getMessages().get("document_modified"),
-                    resourcesAccessor.getMessages().get(
-                            currentDocument.getType()));
+            facesMessages.add(StatusMessage.Severity.INFO, resourcesAccessor.getMessages().get("document_modified"),
+                    resourcesAccessor.getMessages().get(currentDocument.getType()));
             EventManager.raiseEventsOnDocumentChange(currentDocument);
         }
         resetDocument();
@@ -96,10 +92,8 @@ public class RssFeedActions extends InputController implements Serializable {
             if (documentManager.exists(ref)) {
                 currentDocument = documentManager.getDocument(new PathRef(path));
             } else {
-                facesMessages.add(
-                        StatusMessage.Severity.WARN,
-                        resourcesAccessor.getMessages().get(
-                                "Error.Document.Not.Found"));
+                facesMessages.add(StatusMessage.Severity.WARN,
+                        resourcesAccessor.getMessages().get("Error.Document.Not.Found"));
             }
         }
     }
@@ -113,13 +107,11 @@ public class RssFeedActions extends InputController implements Serializable {
     }
 
     public boolean isShowCreateForm() {
-        return isShowForm() && currentDocument != null
-                && currentDocument.getId() == null;
+        return isShowForm() && currentDocument != null && currentDocument.getId() == null;
     }
 
     public boolean isShowEditForm() {
-        return isShowForm() && currentDocument != null
-                && currentDocument.getId() != null;
+        return isShowForm() && currentDocument != null && currentDocument.getId() != null;
     }
 
     public void toggleForm() {
@@ -137,9 +129,7 @@ public class RssFeedActions extends InputController implements Serializable {
             navigationContext.setCurrentDocument(rssFeed.getRssReaderManagementContainer(documentManager));
         } catch (Exception e) {
             if (log.isErrorEnabled()) {
-                log.error(String.format(
-                        "Unable to set the current document to \"%s\"",
-                        RSS_READER_MANAGEMENT_ROOT_PATH));
+                log.error(String.format("Unable to set the current document to \"%s\"", RSS_READER_MANAGEMENT_ROOT_PATH));
             }
         }
         return link;

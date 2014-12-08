@@ -44,9 +44,9 @@ import org.nuxeo.runtime.test.runner.FeaturesRunner;
 @RunWith(FeaturesRunner.class)
 @Features(PlatformFeature.class)
 @RepositoryConfig(cleanup = Granularity.METHOD)
-@Deploy( { "org.nuxeo.rss.reader", "org.nuxeo.ecm.automation.core", "org.nuxeo.ecm.platform.userworkspace.types",
+@Deploy({ "org.nuxeo.rss.reader", "org.nuxeo.ecm.automation.core", "org.nuxeo.ecm.platform.userworkspace.types",
         "org.nuxeo.ecm.automation.features", "org.nuxeo.ecm.platform.query.api",
-"org.nuxeo.ecm.platform.userworkspace.api", "org.nuxeo.ecm.platform.userworkspace.core"})
+        "org.nuxeo.ecm.platform.userworkspace.api", "org.nuxeo.ecm.platform.userworkspace.core" })
 public class TestFeedReaderService extends AbstractRSSFeedTestCase {
 
     @Test
@@ -61,8 +61,8 @@ public class TestFeedReaderService extends AbstractRSSFeedTestCase {
         rssFeedService.getRssReaderManagementContainer(session);
         assertTrue(session.exists(feedContainer));
 
-        DocumentRef userFeedContainer = new PathRef(
-                "/default-domain/UserWorkspaces/Administrator/" + RSS_READER_MANAGEMENT_ROOT_NAME);
+        DocumentRef userFeedContainer = new PathRef("/default-domain/UserWorkspaces/Administrator/"
+                + RSS_READER_MANAGEMENT_ROOT_NAME);
         assertFalse(session.exists(userFeedContainer));
         rssFeedService.getCurrentUserRssFeedsContainer(session);
         assertTrue(session.exists(userFeedContainer));
@@ -95,7 +95,7 @@ public class TestFeedReaderService extends AbstractRSSFeedTestCase {
 
         List<String> adresses = rssFeedService.getCurrentUserRssFeedAddresses(session);
         assertEquals(2, adresses.size());
-        for(String feedAddress : adresses) {
+        for (String feedAddress : adresses) {
             assertEquals("http://www.dummyRss.com", feedAddress);
         }
     }

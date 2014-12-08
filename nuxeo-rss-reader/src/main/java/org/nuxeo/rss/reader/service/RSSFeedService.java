@@ -34,16 +34,14 @@ import org.nuxeo.ecm.core.api.DocumentModelList;
 public interface RSSFeedService {
 
     /**
-     * This Rss Reader Management container store administration values and
-     * store feeds proposed by the administrator for user. If this container
-     * doesn't exists, this method create it.
+     * This Rss Reader Management container store administration values and store feeds proposed by the administrator
+     * for user. If this container doesn't exists, this method create it.
      *
      * @param session
      * @return
      * @throws ClientException
      */
-    DocumentModel getRssReaderManagementContainer(CoreSession session)
-            throws ClientException;
+    DocumentModel getRssReaderManagementContainer(CoreSession session) throws ClientException;
 
     /**
      * Return the max number of articles proposed into the rss gadget.
@@ -55,8 +53,7 @@ public interface RSSFeedService {
     int getDisplayedArticleCount(CoreSession session) throws ClientException;
 
     /**
-     * Return the number of maximum feeds the user can merge into the Rss Reader
-     * gadget
+     * Return the number of maximum feeds the user can merge into the Rss Reader gadget
      *
      * @param session
      * @return
@@ -64,8 +61,7 @@ public interface RSSFeedService {
      */
     int getMaximumFeedsCount(CoreSession session) throws ClientException;
 
-    List<String> getCurrentUserRssFeedAddresses(CoreSession session)
-            throws ClientException;
+    List<String> getCurrentUserRssFeedAddresses(CoreSession session) throws ClientException;
 
     /**
      * return user feeds that will be displayed into the Rss Reader Gadget
@@ -74,8 +70,7 @@ public interface RSSFeedService {
      * @return
      * @throws ClientException
      */
-    DocumentModelList getCurrentUserRssFeedDocumentModelList(CoreSession session)
-            throws ClientException;
+    DocumentModelList getCurrentUserRssFeedDocumentModelList(CoreSession session) throws ClientException;
 
     /**
      * return feed defined by administrator
@@ -84,18 +79,15 @@ public interface RSSFeedService {
      * @return
      * @throws ClientException
      */
-    DocumentModelList getGlobalFeedsDocumentModelList(CoreSession session)
-            throws ClientException;
+    DocumentModelList getGlobalFeedsDocumentModelList(CoreSession session) throws ClientException;
 
     /**
-     * return rss feed container of the current user and if not exists create it
-     * and copy in it the default rss feed marked as default and proposed by the
-     * Administration view.
+     * return rss feed container of the current user and if not exists create it and copy in it the default rss feed
+     * marked as default and proposed by the Administration view.
      *
      * @param session
      * @return
      * @throws ClientException
      */
-    DocumentModel getCurrentUserRssFeedsContainer(CoreSession session)
-            throws ClientException;
+    DocumentModel getCurrentUserRssFeedsContainer(CoreSession session) throws ClientException;
 }

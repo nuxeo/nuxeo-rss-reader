@@ -43,14 +43,13 @@ import net.sf.json.JSONObject;
 
 /**
  * @author <a href="mailto:ei@nuxeo.com">Eugen Ionica</a>
- *
  */
 @RunWith(FeaturesRunner.class)
 @Features(PlatformFeature.class)
 @RepositoryConfig(cleanup = Granularity.METHOD)
 @Deploy({ "org.nuxeo.rss.reader", "org.nuxeo.ecm.automation.core", "org.nuxeo.ecm.platform.userworkspace.types",
         "org.nuxeo.ecm.automation.features", "org.nuxeo.ecm.platform.query.api",
-"org.nuxeo.ecm.platform.userworkspace.api", "org.nuxeo.ecm.platform.userworkspace.core" })
+        "org.nuxeo.ecm.platform.userworkspace.api", "org.nuxeo.ecm.platform.userworkspace.core" })
 public class TestParseFeedOperation extends AbstractRSSFeedTestCase {
 
     @Inject
@@ -67,16 +66,14 @@ public class TestParseFeedOperation extends AbstractRSSFeedTestCase {
         assertNotNull(url);
 
         OperationChain chain = new OperationChain("fakeChain");
-        OperationParameters oparams = new OperationParameters(
-                FeedProviderOperation.ID);
+        OperationParameters oparams = new OperationParameters(FeedProviderOperation.ID);
         oparams.set("urls", url.toExternalForm());
         chain.add(oparams);
 
         Blob result = (Blob) service.run(ctx, chain);
 
         JSONObject object = JSONObject.fromObject(result.getString());
-        assertEquals("Feed title",
-                object.get(FeedHelper.Field.FEED_TITLE.name()));
+        assertEquals("Feed title", object.get(FeedHelper.Field.FEED_TITLE.name()));
         JSONArray array = object.getJSONArray(FeedHelper.Field.ENTRIES.name());
         assertEquals(3, array.size());
 
@@ -106,8 +103,7 @@ public class TestParseFeedOperation extends AbstractRSSFeedTestCase {
         urls.add(url1.toExternalForm());
 
         OperationChain chain = new OperationChain("fakeChain");
-        OperationParameters oparams = new OperationParameters(
-                FeedProviderOperation.ID);
+        OperationParameters oparams = new OperationParameters(FeedProviderOperation.ID);
         oparams.set("urls", urls);
         chain.add(oparams);
 
@@ -122,8 +118,7 @@ public class TestParseFeedOperation extends AbstractRSSFeedTestCase {
         // check the order
         for (int i = 0; i < 6; i++) {
             JSONObject entry = (JSONObject) array.get(i);
-            assertEquals("title " + (i + 1),
-                    entry.get(FeedHelper.Field.TITLE.name()));
+            assertEquals("title " + (i + 1), entry.get(FeedHelper.Field.TITLE.name()));
         }
 
         // check url encoding

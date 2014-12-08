@@ -22,7 +22,6 @@ package org.nuxeo.rss.reader;
 import org.nuxeo.runtime.api.Framework;
 
 /**
- *
  * Helper to manage URL configuration
  *
  * @author <a href="mailto:qlamerand@nuxeo.com">Quentin Lamerand</a>
@@ -53,7 +52,7 @@ public class FeedUrlConfig {
         if (useProxy == null) {
             String host = getProxyHost();
             if (host == null || host.isEmpty() || host.startsWith("$")) {
-                useProxy=false;
+                useProxy = false;
             } else {
                 useProxy = true;
             }
@@ -65,7 +64,7 @@ public class FeedUrlConfig {
         if (isProxyAuthenticated == null) {
             String login = getProxyLogin();
             if (login == null || login.isEmpty() || login.startsWith("$")) {
-                isProxyAuthenticated=false;
+                isProxyAuthenticated = false;
             } else {
                 isProxyAuthenticated = true;
             }
@@ -74,34 +73,29 @@ public class FeedUrlConfig {
     }
 
     public static String getProxyHost() {
-        return Framework.getProperty(FEED_PROXY_HOST_PROPERTY,
-                Framework.getProperty(NUXEO_PROXY_HOST_PROPERTY, null));
+        return Framework.getProperty(FEED_PROXY_HOST_PROPERTY, Framework.getProperty(NUXEO_PROXY_HOST_PROPERTY, null));
     }
 
     public static int getProxyPort() {
-        String portAsString = Framework.getProperty(
-                FEED_PROXY_PORT_PROPERTY, Framework.getProperty(
-                        NUXEO_PROXY_PORT_PROPERTY, null));
+        String portAsString = Framework.getProperty(FEED_PROXY_PORT_PROPERTY,
+                Framework.getProperty(NUXEO_PROXY_PORT_PROPERTY, null));
         if (portAsString == null || portAsString.isEmpty() || portAsString.startsWith("$")) {
             return 80;
         }
         try {
-           return Integer.parseInt(portAsString);
+            return Integer.parseInt(portAsString);
         } catch (NumberFormatException e) {
-           return 80;
+            return 80;
         }
     }
 
     public static String getProxyLogin() {
-        return Framework.getProperty(
-                FEED_PROXY_LOGIN_PROPERTY,
-                Framework.getProperty(NUXEO_PROXY_LOGIN_PROPERTY, null));
+        return Framework.getProperty(FEED_PROXY_LOGIN_PROPERTY, Framework.getProperty(NUXEO_PROXY_LOGIN_PROPERTY, null));
     }
 
     public static String getProxyPassword() {
         return Framework.getProperty(FEED_PROXY_PASSWORD_PROPERTY,
-                Framework.getProperty(NUXEO_PROXY_PASSWORD_PROPERTY,
-                        null));
+                Framework.getProperty(NUXEO_PROXY_PASSWORD_PROPERTY, null));
     }
 
 }

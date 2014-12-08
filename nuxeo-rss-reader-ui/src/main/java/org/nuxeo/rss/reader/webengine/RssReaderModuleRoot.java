@@ -30,14 +30,11 @@ public class RssReaderModuleRoot extends ModuleRoot {
 
     @GET
     @Path("/item")
-    public Object getItemContent(@QueryParam("i") String id,
-            @QueryParam("language") String language) throws Exception {
+    public Object getItemContent(@QueryParam("i") String id, @QueryParam("language") String language) throws Exception {
         WebEngine.getActiveContext().setLocale(new Locale(language));
         RSSFeedService rssFeedService = Framework.getLocalService(RSSFeedService.class);
         List<String> urls = rssFeedService.getCurrentUserRssFeedAddresses(ctx.getCoreSession());
-        return getView("item").args(
-                FeedHelper.searchFeedEntry(
-                        urls.toArray(new String[urls.size()]), id));
+        return getView("item").args(FeedHelper.searchFeedEntry(urls.toArray(new String[urls.size()]), id));
     }
 
     @GET
@@ -48,8 +45,7 @@ public class RssReaderModuleRoot extends ModuleRoot {
 
     @GET
     @Path("/config")
-    public Object getConfigPage(@QueryParam("language") String language)
-            throws Exception {
+    public Object getConfigPage(@QueryParam("language") String language) throws Exception {
         WebEngine.getActiveContext().setLocale(new Locale(language));
         CoreSession session = ctx.getCoreSession();
         boolean isAbleToCreateNew = false;
@@ -75,16 +71,13 @@ public class RssReaderModuleRoot extends ModuleRoot {
             isAbleToCreateNew = userFeeds.size() < rssFeedService.getMaximumFeedsCount(session);
         }
 
-        return getView("feed_configuration").arg("userFeeds", userFeeds).arg(
-                "globalFeeds", options).arg("ableToCreateNew",
-                isAbleToCreateNew).arg("maxFeedsCount",
-                rssFeedService.getMaximumFeedsCount(session));
+        return getView("feed_configuration").arg("userFeeds", userFeeds).arg("globalFeeds", options).arg(
+                "ableToCreateNew", isAbleToCreateNew).arg("maxFeedsCount", rssFeedService.getMaximumFeedsCount(session));
     }
 
     @POST
     @Path("/removeFeed")
-    public Object removeFeed(@FormParam("id") String id,
-            @QueryParam("language") String language) throws Exception {
+    public Object removeFeed(@FormParam("id") String id, @QueryParam("language") String language) throws Exception {
         CoreSession session = ctx.getCoreSession();
         session.removeDocument(new IdRef(id));
         session.save();
@@ -93,39 +86,33 @@ public class RssReaderModuleRoot extends ModuleRoot {
 
     @POST
     @Path("/addGlobalFeed")
-    public Object addGlobalFeed(@FormParam("feedId") String feedId,
-            @QueryParam("language") String language) throws Exception {
+    public Object addGlobalFeed(@FormParam("feedId") String feedId, @QueryParam("language") String language)
+            throws Exception {
         CoreSession session = ctx.getCoreSession();
         RSSFeedService rssFeedService = Framework.getLocalService(RSSFeedService.class);
         DocumentModelList userFeeds = rssFeedService.getCurrentUserRssFeedDocumentModelList(session);
-        if (userFeeds != null
-                && userFeeds.size() >= rssFeedService.getMaximumFeedsCount(session)) {
+        if (userFeeds != null && userFeeds.size() >= rssFeedService.getMaximumFeedsCount(session)) {
             return getConfigPage(language);
         }
 
-        String userFeedsContainer = rssFeedService.getCurrentUserRssFeedsContainer(
-                session).getPathAsString();
+        String userFeedsContainer = rssFeedService.getCurrentUserRssFeedsContainer(session).getPathAsString();
         session.copy(new IdRef(feedId), new PathRef(userFeedsContainer), null);
         return getConfigPage(language);
     }
 
     @POST
     @Path("/addNewFeed")
-    public Object addGlobalFeed(@FormParam("feedName") String feedName,
-            @FormParam("feedLink") String url,
+    public Object addGlobalFeed(@FormParam("feedName") String feedName, @FormParam("feedLink") String url,
             @QueryParam("language") String language) throws Exception {
         CoreSession session = ctx.getCoreSession();
         RSSFeedService rssFeedService = Framework.getLocalService(RSSFeedService.class);
         DocumentModelList userFeeds = rssFeedService.getCurrentUserRssFeedDocumentModelList(session);
-        if (userFeeds != null
-                && userFeeds.size() >= rssFeedService.getMaximumFeedsCount(session)) {
+        if (userFeeds != null && userFeeds.size() >= rssFeedService.getMaximumFeedsCount(session)) {
             return getConfigPage(language);
         }
 
-        String userFeedsContainerPath = rssFeedService.getCurrentUserRssFeedsContainer(
-                session).getPathAsString();
-        DocumentModel feed = session.createDocumentModel(
-                userFeedsContainerPath, feedName, "RssFeed");
+        String userFeedsContainerPath = rssFeedService.getCurrentUserRssFeedsContainer(session).getPathAsString();
+        DocumentModel feed = session.createDocumentModel(userFeedsContainerPath, feedName, "RssFeed");
         feed.setPropertyValue("dc:title", feedName);
         feed.setPropertyValue("rf:rss_address", url);
         feed = session.createDocument(feed);
