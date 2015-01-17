@@ -16,7 +16,6 @@
  */
 package org.nuxeo.rss.reader;
 
-import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 
 import net.sf.json.JSONObject;
@@ -29,7 +28,7 @@ import org.nuxeo.ecm.automation.core.annotations.Param;
 import org.nuxeo.ecm.automation.core.util.StringList;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.CoreSession;
-import org.nuxeo.ecm.core.api.impl.blob.InputStreamBlob;
+import org.nuxeo.ecm.core.api.impl.blob.StringBlob;
 import org.nuxeo.rss.reader.service.RSSFeedService;
 
 /**
@@ -80,7 +79,7 @@ public class FeedProviderOperation {
     }
 
     protected Blob buildBlob(String text) throws UnsupportedEncodingException {
-        return new InputStreamBlob(new ByteArrayInputStream(text.getBytes("UTF-8")), "application/json");
+        return new StringBlob(text, "application/json");
     }
 
 }
