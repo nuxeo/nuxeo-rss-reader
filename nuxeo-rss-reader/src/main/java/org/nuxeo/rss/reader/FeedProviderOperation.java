@@ -27,8 +27,8 @@ import org.nuxeo.ecm.automation.core.annotations.OperationMethod;
 import org.nuxeo.ecm.automation.core.annotations.Param;
 import org.nuxeo.ecm.automation.core.util.StringList;
 import org.nuxeo.ecm.core.api.Blob;
+import org.nuxeo.ecm.core.api.Blobs;
 import org.nuxeo.ecm.core.api.CoreSession;
-import org.nuxeo.ecm.core.api.impl.blob.StringBlob;
 import org.nuxeo.rss.reader.service.RSSFeedService;
 
 /**
@@ -79,7 +79,7 @@ public class FeedProviderOperation {
     }
 
     protected Blob buildBlob(String text) throws UnsupportedEncodingException {
-        return new StringBlob(text, "application/json");
+        return Blobs.createBlob(text, "application/json");
     }
 
 }
