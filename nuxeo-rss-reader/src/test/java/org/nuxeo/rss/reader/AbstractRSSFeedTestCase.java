@@ -22,6 +22,8 @@ import static org.nuxeo.rss.reader.manager.api.Constants.RSS_FEED_TYPE;
 import static org.nuxeo.rss.reader.manager.api.Constants.RSS_GADGET_ARTICLE_COUNT;
 import static org.nuxeo.rss.reader.manager.api.Constants.RSS_GADGET_MAX_FEED_COUNT;
 
+import javax.inject.Inject;
+
 import org.junit.Before;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
@@ -30,8 +32,6 @@ import org.nuxeo.ecm.core.api.PathRef;
 import org.nuxeo.ecm.core.event.EventService;
 import org.nuxeo.rss.reader.service.RSSFeedService;
 import org.nuxeo.runtime.api.Framework;
-
-import com.google.inject.Inject;
 
 /**
  * @author <a href="mailto:akervern@nuxeo.com">Arnaud Kervern</a>
