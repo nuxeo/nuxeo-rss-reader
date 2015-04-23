@@ -1,7 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 1
-Bundle-Name: nuxeo-rss-reader-ui
-Bundle-SymbolicName: org.nuxeo.rss.reader.webengine;singleton:=true
-Bundle-Version: 0.0.1
-Bundle-Vendor: Nuxeo
-Nuxeo-WebModule: org.nuxeo.ecm.webengine.app.WebEngineModule
